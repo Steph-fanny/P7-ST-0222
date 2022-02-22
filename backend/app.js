@@ -16,10 +16,13 @@ const express = require("express");
 const bodyParser = require ("body-parser");
 const mysql = require("mysql2");
 const cors = require ("cors");
-const app = express();
+//importer le router de user
+const userRoutes = require("./routes/users");
 
-// const db = require("./models/index");
+const app = express();
+const db = require("./models/index");
 // db.sequelize.sync();
+// supprime la table si elle existe déja
 
 const path = require(`path`); // donne accés systéme de fichier images
 
@@ -27,7 +30,8 @@ var corsOptions = {
   origin: "http://localhost:8081",
 };
 
-//******mise en place sécurité */
+
+//********************************sécurité ***********/
 app.use(cors(corsOptions));
 // parse requests of content-type - application/json
 
@@ -57,15 +61,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // gérer la ressource image de maniere statique
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+/**************************fin sécurité*********************** */
 
-
+/*************************routes*******************************/
+//chemin + nom router
+app.use('api/auth', userRoutes);
 
 app.get("/", (req, res) => {
  res.json({ message: "Welcome to bezkoder application." });
 });
-// ROUTES : debut de la route + NOM routeur : si le chemin prend ce debut de route => envoi vers router
-// app.use("/api/sauces", sauceRoutes);
-// app.use("/api/auth", userRoutes);
+
 
 
 // gérer la ressource image de maniere statique
