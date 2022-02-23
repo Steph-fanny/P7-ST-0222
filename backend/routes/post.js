@@ -3,10 +3,10 @@ module.exports = app => {
 1.express (pour le router) 
 2.appeler le router avec la méthode express 
 3.MIDD ath*/
-  const router = express.router();
+  const router = express.Router();
   const express = require("express");
 
-  const auth = require("../middleware/auth");
+  const auth = require("../middleware/auth.Jwt");
   const multer = require("../middleware/multer.config");
  
   const postCtrl = require("../controllers/post.ctr");

@@ -1,6 +1,6 @@
 /*importer les modeles */
-const db = require("../models");
-const Comment = db.Comment;
+const db = require("../models/comment.models");
+const Comment = db.comment;
 
 /**** creation d'un commentaire */
 exports.createComment = (req, res, next) => {

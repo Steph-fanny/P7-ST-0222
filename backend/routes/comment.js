@@ -5,10 +5,10 @@ module.exports = app => {
 3.MIDD auth */
 
 
-  const router = express.router();
+  const router = express.Router();
   const express = require("express");
 
-  const auth = require('../middleware/auth');
+  const auth = require('../middleware/auth.Jwt');
  
   const commentCtrl = require("../controllers/comment.ctr");
 

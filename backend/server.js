@@ -1,7 +1,9 @@
 // Require : importer le package http
 const http = require("http");
 // importer l'application
-const app = require("./app");
+const app = require("./app")
+// importer variable environnement
+require('dotenv').config({path:'./config/.env'})
 
 //fonction normalizePort : renvoie un port valide, forme n° ou chaine
 const normalizePort = (val) => {
@@ -16,6 +18,7 @@ const normalizePort = (val) => {
   return false;
 };
 // indiquer sur quel port va tourner express//
+/**process.env.Port = (config/.env) **/
 const port = normalizePort(process.env.PORT || "8080");
 app.set("port", port);
 

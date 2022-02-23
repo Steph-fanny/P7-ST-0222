@@ -1,4 +1,4 @@
-//***roles dans la BDD***/
+/***table des utilisateurs et rôles dans BDD MySQL.***/
 module.exports = (sequelize, Sequelize) => {
   const Role = sequelize.define("roles", {
     id: {

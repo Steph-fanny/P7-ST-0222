@@ -1,20 +1,20 @@
-const db = require("../models");
+/*importattion modele user*/
+const db = require("../models/user.models");
 const User = db.user;
-const bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken");
-const { response } = require("express");
+const bcrypt = require('bcrypt'); // hacher le MDP
+const jwt = require("jsonwebtoken"); // token 
+const mysql = require('../config/db.config').connexion;
 
 
 // Nouveau utilisateur + save 
 exports.signup = (req, res, next) => {
-    // appeler bscrypt, hacher le MDP : algoritme: 10tours
+    // appeler bcrypt, hacher le MDP : algoritme: 10tours
     bcrypt.hash(req.body.password, 10)
     .then (hash => {
         // création du nouvel user
-        const user = new User({
-        id : req.body.id,
+        const user = new User({        
         firstName : req.body.firstName,
-        lastName : req.body.lastName,
+        lastName : req.body.lastName,        
         email: req.body.email,
         password : hash,
         })
@@ -29,16 +29,19 @@ exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
+    // test si champ rempli
+    
+    // récupére un utilisateur de la BDD : findOne
     User.findOne ({
         // email
         where: {
             email : req.body.email
         }
-        // utilisateur déja crée
+        // utilisateur inconnu
     }).then(user => {
-        if(user){
+        if(!user){
             return res.status(400).json({
-                message: 'utilisateur a déja crée'
+                message: 'utilisateur inconnu'
             });
             
         } //MDP : comparer le MDP avec bcrypt:

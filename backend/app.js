@@ -15,16 +15,21 @@
 const express = require("express");
 const bodyParser = require ("body-parser");
 const mysql = require("mysql2");
+const connexion = require('./config/db.config');
+// middleware express pour activer cors
 const cors = require ("cors");
-//importer le router de user
-const userRoutes = require("./routes/users");
-
-const app = express();
-const db = require("./models/index");
-// db.sequelize.sync();
-// supprime la table si elle existe déja
 
 const path = require(`path`); // donne accés systéme de fichier images
+const helmet = require('helmet'); // sécuriser les entêtes
+
+
+const app = express();
+app.use(express);
+const db = require("./models");
+const Role = db.role;
+db.sequelize.sync();
+
+
 
 var corsOptions = {
   origin: "http://localhost:8081",
@@ -39,7 +44,7 @@ app.use(cors(corsOptions));
   //application accéde à l'api en sécurité
   //configuration des en-têtes CORS
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "*" );
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
@@ -51,29 +56,40 @@ app.use((req, res, next) => {
   next();
 });
 
-/****** methode express */
-// //protection des en-têtes HTTP grâce à Helmet
-// app.use(helmet());
 
-// bodyparser
+
+// bodyparser : transformation du corps de la requete en objet js 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 // gérer la ressource image de maniere statique
 app.use("/images", express.static(path.join(__dirname, "images")));
+
+// //protection des en-têtes HTTP grâce à Helmet
+app.use(helmet());
 
 /**************************fin sécurité*********************** */
 
-/*************************routes*******************************/
-//chemin + nom router
-app.use('api/auth', userRoutes);
 
-app.get("/", (req, res) => {
+/*************************routes*******************************/
+
+//importer les routes à l'application : user, route post et comment
+const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
+const commentRoutes = require("./routes/comment");
+
+// route pour le frontend :chemin + nom router : lorsque reconcontre api/user=> routes 
+app.use("api/user", userRoutes);
+app.use("api/post", postRoutes);
+app.use("api/comment", commentRoutes);
+
+/* essai routes */
+app.get("/", (req, res, next) => {
  res.json({ message: "Welcome to bezkoder application." });
 });
 
+/*********************** FIN ROUTES*************************/
 
 
-// gérer la ressource image de maniere statique
-app.use("/images", express.static(path.join(__dirname, "images")));
-
+//accéder à l'appli depuis les autres fichiers
 module.exports = app;

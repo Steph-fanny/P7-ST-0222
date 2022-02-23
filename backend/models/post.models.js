@@ -1,15 +1,13 @@
 /*Modéle de données Sequelize*/
 module.exports = (sequelize, Sequelize) => {
   const Post = sequelize.define("post", {
-    title: {
+    content: {
       type: Sequelize.STRING,
     },
-    description: {
+    imageUrl: {
       type: Sequelize.STRING,
     },
-    published: {
-      type: Sequelize.BOOLEAN,
-    },
+   
   });
   return Post;
 };
