@@ -1,5 +1,5 @@
-/* configuration de la BDD*/
-
+/* configuration de sequelize pour la BDD*/
+"use strict";
 const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");

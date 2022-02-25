@@ -21,6 +21,33 @@
 //   //   idle: 10000,
 //   // },
 //   });
+
+{
+  "development" : {
+    "username": "DB_USERNAME";
+    "password": "DB_PASSWORD",
+    "database": "DB_NAME", // nom de la  BDD
+    "host": "DB_HOST",
+    "dialect": "mysql"
+  };
+  "test": {
+    "username": "DB_USERNAME",
+    "password": "DB_PASSWORD",
+    "database":"DB_NAME" ,
+    "host": "DB_HOST",
+    "dialect": "mysql"
+  };
+  "production": {
+    "username": "DB_USERNAME",
+    "password": "DB_PASSWORD",
+    "database": "DB_NAME",
+    "host": "DB_HOST",
+    "dialect": "mysql"
+  }
+}
+
+
+
 //   conn.connect(function (err) {
 //   if (err) throw err;
 //   console.log("Connected!");

@@ -1,4 +1,4 @@
-/*importer les modeles */
+/*importer les modeles et package */
 const db = require("../models/post.models");
 const Post = db.post;
 
