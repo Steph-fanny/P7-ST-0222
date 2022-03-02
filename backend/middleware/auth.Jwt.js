@@ -11,15 +11,18 @@ module.exports = (req, resp, next) => {
     /*recupérer le token dans le header auth : split (tableau avec beared et token)*/
     const token = req.headers.authorization.split(' ')[1];
     /*decoder le token*/
-    const decoderToken = jtw.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
 
     if(req.body.userId && req.body.userId !== userId){
         throw 'utilisateur invalide';
     }else{
+        // vérifier que c'est bien l'utilisateur "local"
+        // res.locals.idUser=userId,
         next();
     }
+    // si erreur sur l'une des const => renvoie catch
     } catch {
-        resp.status(401).json ({
+        res.status(401).json ({
             error : new Error('requete invalide')
         });
     }

@@ -55,6 +55,14 @@ exports.deletePost  = (req, res, next) => {
 
 };
 
+/**liker un post */
+exports.likePost  = (req, res, next) => {
+    Post.findOne({        
+    })
+   
+
+};
+
 
 /*** admin supprime un post */
 

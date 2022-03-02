@@ -1,8 +1,8 @@
-// header logo 
+<!-- header logo -->
 
 <template>
     <header>
-        //logo 
+        /*logo 
         <img alt="Vue logo" src="../assets/logo-blanc.png">  
                  
     </header>

@@ -80,19 +80,18 @@ export default {
         }
     },
     methods: {
-        sendData (){
+        function sendData() {
             this.$emit();
 
-        sendLoginData() {  
+        function sendLoginData() {
             // recupere email et password validés
             const emailValid = document.getElementById("email").value.checkValidity();
             const passwordValid = document.getElementById("password").value.checkValidity();  
             if (passwordValid && emailValid)
             this.$emit ();
-            }
+            },
         },
-    },
-};
+    }
 
 
 </script>

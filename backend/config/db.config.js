@@ -1,60 +1,50 @@
-// /* exporter les paramétres de configuration pour la connexion SQL et Sequelize*/
-//   const mysql = require("mysql");
-// // const Connection = require("mysql2/typings/mysql/lib/Connection");
+/* exporter les paramétres de configuration pour la connexion SQL et Sequelize*/
+  const mysql = require("mysql");
+  // masquer les informations sensibles : MDP et identifiants
+  require('dotenv').config({path:'./config/.env'})
 
-//   console.log("Get connection ...");
+  const NAME = process.env.NAME;
+  const PASS = process.env.PASS;
+  const HOST = process.env.HOST;
 
-//   var conn = mysql.createConnection({
-//   /*connexion à la BDD SQL */
-//   host: "localhost",
-//   user: "root",
-//   password: "12345",
-//   database: "mytestdb",
-//   dialect: "mysql",
-//   /* pool facultatif*/
-//   // pool: {
-//   //   max: 5 /*nb max de connexion dans le pool*/,
-//   //   min: 0,
-//   //   /* temps max en ms que le pool essaiera d'obtenir une connexion avant de lancer 1 erreur*/
-//   //   acquire: 30000,
-//   //   /*temps max en ms pendant lequel une connexion peut etre inactive avant d'être libérée*/
-//   //   idle: 10000,
-//   // },
-//   });
+  // connexion à la BDD MySql
+  const db = mysql.createConnection ({
+    host : HOST,
+    user : NAME,
+    password : PASS,
+    database : "Groupomania",
+    dialect: "mysql"  
+  /* pool facultatif*/
+  // pool: {
+  //   max: 5 /*nb max de connexion dans le pool*/,
+  //   min: 0,
+  //   /* temps max en ms que le pool essaiera d'obtenir une connexion avant de lancer 1 erreur*/
+  //   acquire: 30000,
+  //   /*temps max en ms pendant lequel une connexion peut etre inactive avant d'être libérée*/
+  //   idle: 10000,
+  // },
+  //});
+  })
 
-{
-  "development" : {
-    "username": "DB_USERNAME";
-    "password": "DB_PASSWORD",
-    "database": "DB_NAME", // nom de la  BDD
-    "host": "DB_HOST",
-    "dialect": "mysql"
-  };
-  "test": {
-    "username": "DB_USERNAME",
-    "password": "DB_PASSWORD",
-    "database":"DB_NAME" ,
-    "host": "DB_HOST",
-    "dialect": "mysql"
-  };
-  "production": {
-    "username": "DB_USERNAME",
-    "password": "DB_PASSWORD",
-    "database": "DB_NAME",
-    "host": "DB_HOST",
-    "dialect": "mysql"
-  }
-}
+  
+db.connect ((err) => {
+ if (err) throw err; 
+})
+ console.log("Connected!")
+
+module.exports = db;
 
 
 
-//   conn.connect(function (err) {
-//   if (err) throw err;
-//   console.log("Connected!");
-//   conn.query(sql, function(err, result){
-//     if(err) throw err;
-//     console.log("result : "+ result);
-//   });
-//   });
 
-// module.exports = conn;
+
+
+
+
+
+
+
+
+
+
+

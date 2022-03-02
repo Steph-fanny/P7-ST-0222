@@ -58,7 +58,7 @@ app.use((req, res, next) => {
 
 
 
-// bodyparser : transformation du corps de la requete en objet js 
+// bodyparser : transformation du corps de la requete en objet js  : toutes les routes de l'appli
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

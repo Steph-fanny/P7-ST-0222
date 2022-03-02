@@ -19,7 +19,7 @@ const normalizePort = (val) => {
 };
 // indiquer sur quel port va tourner express//
 /**process.env.Port = (config/.env) **/
-const port = normalizePort(process.env.PORT || "8080");
+const port = normalizePort(process.env.PORT )
 app.set("port", port);
 
 //fonction errorHandler : recherche les erreurs

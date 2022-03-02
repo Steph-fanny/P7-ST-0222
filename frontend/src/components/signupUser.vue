@@ -102,15 +102,15 @@ name : "signupUser",
 components : {
     headerLogo,
 },
-data(){
-    return{         
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-    }
+  data(){
+      return{         
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+      }
+  }
 }
-
 </script>
 
 <style>

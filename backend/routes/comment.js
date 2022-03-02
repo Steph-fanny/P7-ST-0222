@@ -1,30 +1,26 @@
-module.exports = app => {
-  /*importer : 
+/*importer : 
 1.express (pour le router) 
 2.appeler le router avec la méthode express 
-3.MIDD auth */
+3.middleware pour autorisation jwt 
+4.controller pour crud comment*/
 
+
+module.exports = app => {
 
   const router = express.Router();
   const express = require("express");
-
-  const auth = require('../middleware/auth.Jwt');
- 
+  const auth = require('../middleware/auth.Jwt'); 
   const commentCtrl = require("../controllers/comment.ctr");
 
   /*** créer un nouveau commentaire ***/
-  router.post = ("/", auth, commentCtrl.createComment);
+  router.post = ("/:id", auth, commentCtrl.addComment);
 
   /*** afficher tous les commentaire ***/
-  router.get = ("/", auth, commentCtrl.findAllComment);
-  /*** afficher un post ***/
-  router.get = ("/:id", auth, commentCtrl.findOneComment);
+  router.get = ("/", auth, commentCtrl.getAllComment);
 
-  // *** modifier un post ***
-  router.put = ("/:id", auth, commentCtrl.findOneComment);
+   // *** supprimer un commentaire posté ***
+  router.delete = ("/delete/:id", auth, commentCtrl.deleteComment);
 
-  /*** supprimer un post ***/
-  router.delete = ("/:id", auth, commentCtrl.deleteComment);
 
   app.use("/api/comment", router);
 }

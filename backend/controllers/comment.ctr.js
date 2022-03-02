@@ -3,7 +3,7 @@ const db = require("../models/comment.models");
 const Comment = db.comment;
 
 /**** creation d'un commentaire */
-exports.createComment = (req, res, next) => {
+exports.addComment = (req, res, next) => {
 Comment.create({    
 })
 

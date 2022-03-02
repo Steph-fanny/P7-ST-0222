@@ -1,13 +1,10 @@
-/*Modéle de données Sequelize*/
+
 module.exports = (sequelize, Sequelize) => {
   const Post = sequelize.define("post", {
-    content: {
-      type: Sequelize.STRING,
-    },
-    imageUrl: {
-      type: Sequelize.STRING,
-    },
    
+    message :  {type: Sequelize.TEXT, allowNull: false},
+    photo :    { type: sequelize.string, allowNull: true},
+     
   });
   return Post;
-};
+}

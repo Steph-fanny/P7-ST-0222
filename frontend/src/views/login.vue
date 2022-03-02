@@ -1,6 +1,7 @@
 <template>
   <div class="home_Login">
     <headerLogo/>
+    <loginUser/>
     
     
   </div>
