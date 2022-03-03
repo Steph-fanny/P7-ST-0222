@@ -4,9 +4,10 @@
 
 
 require("dotenv").config();
-const db = require("../models");
+const db = require("../models/user.models");
 const token = require ("../middleware/auth.Jwt");
 const fs = require("fs");
+
 
 
 
@@ -84,7 +85,7 @@ exports.updateUser = async (req, resp, next) => {
     
  //****supprimer un compte */     
 /*** suppression du profile ***/
-exports.deleteUser = (req, res, next) => {    
+exports.deleteUser = async (req, res, next) => {    
         const user = await db.User.findOne({
             where: {id: req.params.id}
         });

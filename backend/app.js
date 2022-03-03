@@ -18,16 +18,16 @@ const mysql = require("mysql2");
 const connexion = require('./config/db.config');
 // middleware express pour activer cors
 const cors = require ("cors");
-
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
+require('dotenv').config();
+
+const app =  express()
+ 
 
 
-const app = express();
-app.use(express);
-const db = require("./models");
-const Role = db.role;
-db.sequelize.sync();
+// BDD//
+const  {sequelize} = require('./models/index.models')
 
 
 
@@ -87,8 +87,18 @@ app.use("api/comment", commentRoutes);
 app.get("/", (req, res, next) => {
  res.json({ message: "Welcome to bezkoder application." });
 });
-
 /*********************** FIN ROUTES*************************/
+
+// test connexion 
+const dbTest = async function () {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+dbTest();
 
 
 //accéder à l'appli depuis les autres fichiers

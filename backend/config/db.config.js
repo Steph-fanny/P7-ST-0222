@@ -6,13 +6,14 @@
   const NAME = process.env.NAME;
   const PASS = process.env.PASS;
   const HOST = process.env.HOST;
+  const DATABASE = process.env.DATABASE
 
   // connexion à la BDD MySql
   const db = mysql.createConnection ({
     host : HOST,
     user : NAME,
     password : PASS,
-    database : "Groupomania",
+    database : DATABASE,
     dialect: "mysql"  
   /* pool facultatif*/
   // pool: {

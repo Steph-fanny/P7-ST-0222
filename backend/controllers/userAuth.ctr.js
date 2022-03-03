@@ -1,14 +1,15 @@
 /*importation modele user*/
 
-const db = require("../models");
+const db = require("../models/user.models");
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 
 const mysql = require('../config/db.config').connexion;
 const { isEmail } = require('validator'); // bibliothéque validation
 
 
+
 // Nouveau utilisateur + save 
-module.exports.signup = async (req, res, next) => {
+module.exports.signup =  (req, res, next) => {
     // valider le format de l'email avec validator
     const isValidateEmail = { isEmail}.validate(req.body.email);
     if (!isValidateEmail) {
@@ -33,7 +34,7 @@ module.exports.signup = async (req, res, next) => {
 }
 }
 
-exports.login = (req, res, next) => {
+exports.login = async (req, res, next) => {
     // test si champ rempli
     try {
     // récupére les données de l'utilisateur

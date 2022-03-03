@@ -1,11 +1,16 @@
 /*importer les modeles et package */
-const db = require("../models/post.models");
-const Post = db.post;
+// package fs : telechargement et suppression d'images//
+const fs = require ('fs');
+//modles
+const db = require("../models");
+const Post = db.Post;
+const User = db.User;
+
 
 
 /*** créer un nouveau post (et sauvegarder) ***/
 exports.createPost = (req, res, next) => {
-    // test
+    // test si post contient du contenu
     if(!req.body.content){
         res.status(400).send({ message: "le commentaire ne peux pas être vide"
         });
@@ -14,11 +19,16 @@ exports.createPost = (req, res, next) => {
     //créer un post
     const post = {
        content : req.body.content,
-       imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+       photo : `${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
        /*id de l'user*/
     }  
     
-     Post.create(post)
+     Post.create(post)({
+        content,
+        photo
+        
+
+     })
      .then(()=> res.status(201).json({ message : 'post crée '}))
      .catch((error)=> res.status(400).json({error, message : 'le post ne peux pas être publié'}))
 };
