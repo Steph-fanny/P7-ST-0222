@@ -4,8 +4,7 @@ const http = require("http");
 const app = require("./app");
 // importer variable environnement
 require('dotenv').config();
-// BDD
-const db =  require("./models/index2.models")
+
 
 //fonction normalizePort : renvoie un port valide, forme n° ou chaine
 const normalizePort = (val) => {
@@ -20,7 +19,7 @@ const normalizePort = (val) => {
 };
 // indiquer sur quel port va tourner express//
 /**process.env.Port = (config/.env) **/
-const port = normalizePort(process.env.PORT||8080 );
+const port = normalizePort(process.env.PORT||'8080' );
 app.set("port", port);
 
 //fonction errorHandler : recherche les erreurs
@@ -48,7 +47,7 @@ if (error.syscall !== "listen") {
 // créer un server : fonction qui sera appelé à chaque requête recu par le server
 const server = http.createServer(app);
 
-db.sequelize.sync().then(function () {
+
 // ecouteur d'événement : port ou canal nommé pour execution server
 server.on("error", errorHandler);
 server.on("listening", () => {
@@ -57,5 +56,5 @@ server.on("listening", () => {
   console.log("Listening on " + bind);
 });
 server.listen(port);
-require("./config/admin");
-});
+
+

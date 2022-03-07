@@ -11,35 +11,18 @@
   6 : routes
   7 : exportation de l'app */
 
-
 const express = require("express");
 const bodyParser = require ("body-parser");
-const mysql = require("mysql2");
-const connexion = require('./config/db.config');
-// middleware express pour activer cors
-const cors = require ("cors");
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
-require('dotenv').config();
 
-const app =  express()
+
+//Db
+const { sequelize } = require('./models/index2');
+
+const app =  express();
  
-
-
-// BDD//
-const  {sequelize} = require('./models/index.models')
-
-
-
-var corsOptions = {
-  origin: "http://localhost:8081",
-};
-
-
 //********************************sécurité ***********/
-app.use(cors(corsOptions));
-// parse requests of content-type - application/json
-
   // 1 er middleware exécuté par le server  : appliqué à toutes les réquetes
   //application accéde à l'api en sécurité
   //configuration des en-têtes CORS
@@ -56,50 +39,30 @@ app.use((req, res, next) => {
   next();
 });
 
-
+//importer les routes à l'application : user, route post et comment
+const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
+const commentRoutes = require("./routes/comment");
 
 // bodyparser : transformation du corps de la requete en objet js  : toutes les routes de l'appli
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// gérer la ressource image de maniere statique
+// gérer la ressource image de maniere statique//
 app.use("/images", express.static(path.join(__dirname, "images")));
-
-// //protection des en-têtes HTTP grâce à Helmet
-app.use(helmet());
-
-/**************************fin sécurité*********************** */
-
-
-/*************************routes*******************************/
-
-//importer les routes à l'application : user, route post et comment
-const userRoutes = require("./routes/user");
-const postRoutes = require("./routes/post");
-const commentRoutes = require("./routes/comment");
+app.use(express.json());
 
 // route pour le frontend :chemin + nom router : lorsque reconcontre api/user=> routes 
 app.use("api/user", userRoutes);
 app.use("api/post", postRoutes);
 app.use("api/comment", commentRoutes);
 
-/* essai routes */
-app.get("/", (req, res, next) => {
- res.json({ message: "Welcome to bezkoder application." });
-});
-/*********************** FIN ROUTES*************************/
-
-// test connexion 
-const dbTest = async function () {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-};
-dbTest();
+// //protection des en-têtes HTTP grâce à Helmet
+app.use(helmet());
 
 
-//accéder à l'appli depuis les autres fichiers
+
+//exporter l'appli depuis les autres fichiers
 module.exports = app;
+
+

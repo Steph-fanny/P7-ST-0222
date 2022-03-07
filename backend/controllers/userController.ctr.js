@@ -4,12 +4,9 @@
 
 
 require("dotenv").config();
-const db = require("../models/user.models");
+const db = require("../models/user");
 const token = require ("../middleware/auth.Jwt");
 const fs = require("fs");
-
-
-
 
 
 //****récupérer tous les utilisateurs

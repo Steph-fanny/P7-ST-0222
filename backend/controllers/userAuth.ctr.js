@@ -1,9 +1,8 @@
 /*importation modele user*/
 
-const db = require("../models/user.models");
+const db = require("../models/user");
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 
-const mysql = require('../config/db.config').connexion;
 const { isEmail } = require('validator'); // bibliothéque validation
 
 
