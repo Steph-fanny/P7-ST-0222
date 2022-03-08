@@ -34,22 +34,26 @@ export default {
 
 <style>
 
+
 a {
   font-weight: bold;
   text-align: center;
-  color: #f02b0862;
+  color: #c02c1162;
   font-size: 25px;  
 }
 
 .link {
 text-align: center;
-margin-top: 55px;
+margin-top: 100px;
 }
 
 .homeTittle{
    text-align: center;
    font-size : 35px;
-   color : #27279b
+   color : #4d4a48;
+   margin-top : 35px;
 }
+
+
 
 </style>

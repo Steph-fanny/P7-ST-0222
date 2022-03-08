@@ -1,7 +1,7 @@
 <template>
  
  <header>
-      <img src="../assets/logo-haut.png" width="300" height="300" alt="le logo de groupomania" title="logo groupomania" id="logo" />
+      <img src="../assets/logo-haut.png" width="350" height="250" alt="le logo de groupomania" title="logo groupomania" id="logo" />
  </header>
 
 </template>
@@ -18,7 +18,9 @@ header{
   display: flex;  
   align-items: center;
   height: 8 rem;
-  margin-top: 55px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding-top: 20px;
 }
 
 #logo{
