@@ -22,7 +22,7 @@ const multer =require ("../middleware/multer.config");
 
 /*création et enregistrement d'un nouvel utilisateur*/
 //avant création verification MDP : middleware passwordValidation
-router.post("/signup", passwordValidation, userAuth.signup);
+router.post("/signup",passwordValidation, userAuth.signup);
 /*connexion d'un utilisateur*/
 router.post("/login", userAuth.login);
 /* se deconnecter*/
@@ -36,7 +36,7 @@ router.get("/logout",userAuth.logout);
    /*modifier un utilisateur*/
    router.put("/accounts/:id", auth , multer, userController.updateUser);
    /*supprimer un utilisateur*/
-   router.delete("/accounts/:id",authAdmin, userController.deleteUser);
+   router.delete("/accounts/:id",auth, userController.deleteUser);
 
 
 

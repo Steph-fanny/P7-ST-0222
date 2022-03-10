@@ -7,14 +7,16 @@ const Sequelize = require('sequelize');
 
 
 
-const sequelize = new Sequelize(process.env.DB_USERNAME, 
-  process.env.DB_PASS,
-  process.env.DB_DATABASE, {
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USERNAME, 
+  process.env.DB_PASS, 
+  {
   host: process.env.DB_HOST,
   port : process.env.DB_PORT,
   dialect: 'mysql'
 });
-
+console.log(sequelize)
 
 const db = {};
 db.sequelize = sequelize;

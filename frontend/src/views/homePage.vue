@@ -7,12 +7,12 @@
 
   <router-link 
   to="/signup"
-  class="a connectionLink"  
+  class="home-pagelink"  
   >S'inscrire</router-link> |
   
   <router-link 
   to="/login"
-  class="a inscriptionLink" 
+  class="home-pagelink" 
   >Se connecter</router-link>  
 </div>
 
@@ -36,22 +36,21 @@ export default {
 <style>
 
 
-a {
+.link {
   font-weight: bold;
   text-align: center;
-  color: #c02c1162;
-  font-size: 25px;  
+  color: #f1670b;
+  font-size: 35px;  
+  text-align: center;
+  margin-top: 100px;
 }
 
-.link {
-text-align: center;
-margin-top: 100px;
-}
+
 
 .homeTittle{
    text-align: center;
    font-size : 35px;
-   color : #4d4a48;
+   color : #0d0764;
    margin-top : 35px;
 }
 

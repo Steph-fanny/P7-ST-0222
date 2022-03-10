@@ -96,7 +96,7 @@ name: 'loginUser',
         "password": this.dataLogin.password
       }
       console.log(loginData)
-      let urlLogin = "http//localhost:3000/api/auth/login"
+      let urlLogin = "http//localhost:3000/api/login"
       let option ={
         method : "POST",
         body :JSON.stringify(loginData),
@@ -112,7 +112,7 @@ name: 'loginUser',
             localStorage.setItem("token", res.token)
             localStorage.setItem("isAdmin", res.isAdmin);
             console.log(localStorage)
-            this.$router.push("message");
+            this.$router.push("homePost");            
             alert(" Vous etes connecté !");
           } else {
             alert(" Mot de passe incorrect ! ");
@@ -175,7 +175,7 @@ form-login {
 
 a{
 
-  color : #862626;
+  color : #862626 !important;
   text-decoration: none;
   font-size: 20px;
   text-align: center;

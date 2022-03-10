@@ -13,7 +13,7 @@ const fs = require("fs");
 exports.getAllUsers = async (req, resp, next) => {
     try{    
     const users = await db.User.findAll({
-        attributes : ['id', 'firstName', 'lastName', 'email', 'photo', 'isAdmin'  ]
+        attributes : ['id', 'firstName', 'lastName', 'email', 'photo']
     })
         res.status(200).send(users);
   } catch(error) {
@@ -28,7 +28,7 @@ exports.getOneUser = async (req, resp, next) => {
     // on récupére les infos depuis la BDD*/
   try{
       const user = await db.User.findOne({
-          attributes : ['firstName', 'lastName', 'email', 'photo', 'isAdmin'],
+          attributes : ['firstName', 'lastName', 'email', 'photo', ],
           where : { id : req.params.id},
       });
       res.status(200).send(user);

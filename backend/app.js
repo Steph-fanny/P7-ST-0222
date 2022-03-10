@@ -19,7 +19,8 @@ const helmet = require('helmet'); // sécuriser les entêtes
 
 //Db
 const { sequelize } = require('./models/index2');
-
+const db = require("./models/index2");
+db.sequelize.sync();
 const app =  express();
  
 //********************************sécurité ***********/

@@ -1,5 +1,5 @@
 <template>
-<div class = container-profil>
+<div class = "container-profil">
   <section class="vh-100" style="background-color: #f4f5f7;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -82,5 +82,10 @@ data(){
 </script>
 
 <style>
+.container-profil{
+  width: 100%;
+  height:100%;
+  
+}
 
 </style>

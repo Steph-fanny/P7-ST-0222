@@ -7,7 +7,6 @@
   
     
 
-
 </div>  
 
 
@@ -18,6 +17,7 @@
 <script>
 import navApp from '@/components/navApp'
 // import postUser from '@/components/postUser'
+
 import createPost from '@/components/createPost'
 
 
@@ -29,7 +29,9 @@ name: 'homePost',
   components: {
   navApp,
   // postUser,
+ 
   createPost,
+ 
  
   
   

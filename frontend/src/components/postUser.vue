@@ -1,48 +1,14 @@
 
-/*{ 
-
-
-
-
-
-<!-- <p class="login-tittle">Votre compte</p> 
-
-    <div class=" mx-auto" style="width: 350px">
-      <form class="form-login ">
-        <div class="form-group ">
-          <label for="email">Email: </label>
-          <input v-model= "dataLogin.email"
-          type="email" 
-          class="form-control" 
-          id="email" 
-          placeholder="email@example.com" required>
-        </div>
-
-        <div class="form-group ">
-          <label for="Password">Password</label>
-          <input 
-          v-model= "dataLogin.password"
-          type="password" 
-          class="form-control" 
-          id="Password" 
-          placeholder="Password" required>
-      </div>
-      
-      <button 
-      @click.prevent="loginAccount"
-      type="submit" 
-      class="btn btn-primary" 
-      style="width: 250px">Se connecter</button>
-      </form>
-      <div class="inscription"></div>
-        <nav class="navlogsign">Vous n'avez pas de compte ?<br>
-        <router-link to = "/signup">Rejoignez-nous !</router-link></nav>  */
-
-
-
-      //   add comment
-      //  Post
-                /*{ <!-- <div class="card gedf-card">
+<template>
+<div>
+    
+    <div class="container-fluid gedf-wrapper">
+        <div class="row">
+                        
+            <div class="col-md-6 gedf-main">
+                
+                <!--- \\\\\\\Post-->
+                <div class="card gedf-card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -86,4 +52,34 @@
                         <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
-                </div>          }--> */
+                </div>                
+                                           
+            </div>
+        </div>
+    </div>
+                
+               
+             
+                
+      
+
+</div>
+</template>
+
+<script>
+
+export default {
+name: "postUser",
+
+}
+
+
+</script>
+
+<style lang = "css">
+container-fluid gedf-wrapper{
+height: auto;
+width: 100%;
+}
+
+</style>

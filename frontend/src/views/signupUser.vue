@@ -17,7 +17,7 @@
                
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example1cg">Prénom</label>
-                  <input v-model= "firstName"
+                  <input v-model= " inputSignup.firstName"
                   type="text" 
                   id="firstName" class="form-control form-control-lg"
                   placeholder="Votre prénom" required/>                  
@@ -25,7 +25,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example1cg">Nom</label>
-                  <input v-model= "lastName"
+                  <input v-model= " inputSignup.lastName"
                   type="text" 
                   id="lastName" class="form-control form-control-lg"
                   placeholder="Votre nom" required/>                  
@@ -34,7 +34,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example3cg">Email</label>
-                  <input v-model= "email"
+                  <input v-model= " inputSignup.email"
                   type="email" 
                   id="form3Example3cg" class="form-control form-control-lg" 
                   placeholder="Votre adresse email valide" required
@@ -43,7 +43,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example4cg">Mot de passe</label>
-                  <input v-model= "password"
+                  <input v-model= " inputSignup.password"
                   type="password" id="form3Example4cg" class="form-control form-control-lg" 
                   placeholder="Votre mot de passe*" required
                   pattern = " ^(?=.{5,}$)(?=(?:.*?[A-Z]){1})(?=.*?[a-z])(?=(?:.*?[0-9]){2}).*$"/>
@@ -75,8 +75,7 @@
 </section>
 
    
-  <nav class= "navlogsign"><p>Vous avez déja un compte ? 
-  <router-link to="/login">Connectez vous !</router-link></p></nav>  
+ 
          
 </div>     
                        
@@ -111,7 +110,7 @@ data(){
         "password": this.inputSignup.password
       }
       console.log(inputData)
-      let urlSignup = "http//localhost:3000/api/auth/signup"
+      let urlSignup = "http//localhost:3000/api/user/signup"
       let option = {
         method : "POST",
         body :JSON.stringify(inputData),
@@ -126,7 +125,7 @@ data(){
                     localStorage.setItem("userId", res.userId);
                     localStorage.setItem("token", res.token);
                     console.log(localStorage)
-                    this.$router.push("/post");
+                    this.$router.push("homePost");
                     alert(" Bienvenue sur Groupomania");
                     
                 })

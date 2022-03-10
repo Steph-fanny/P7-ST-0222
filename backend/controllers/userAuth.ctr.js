@@ -3,35 +3,49 @@
 const db = require("../models/user");
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 
-const { isEmail } = require('validator'); // bibliothéque validation
+// const { isEmail } = require('validator'); // bibliothéque validation
 
-
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 // Nouveau utilisateur + save 
 module.exports.signup =  (req, res, next) => {
+    console.log("coucou");
     // valider le format de l'email avec validator
-    const isValidateEmail = { isEmail}.validate(req.body.email);
-    if (!isValidateEmail) {
-    res.status(400).json({message :"Le format de l'email est incorrect !"}); 
-    }else {
+    // const isValidateEmail = { isEmail}.validate(req.body.email);
+    // if (!isValidateEmail) {
+    if (emailRegex.test(req.body.email)){
+    // res.status(400).json({message :"Le format de l'email est incorrect !"}); 
+    // }else {
     // appeler bcrypt, hacher le MDP : algoritme: 10tours
     bcrypt.hash(req.body.password, 10)
     .then (hash => {
         // création du nouvel user
-        const user = new User({        
-        firstName : req.body.firstName,
-        lastName : req.body.lastName,        
-        email: req.body.email,
-        password : hash,
-        IsAdmin : req.body.IsAdmin,
+        const User= db.User
+        User.create({     
+            id: req.body.id,   
+            firstName : req.body.firstName,
+            lastName : req.body.lastName,        
+            email: req.body.email,
+            password : hash,
+            IsAdmin : 0,            
         })
-        user.save()
-            .then(() => res.status(201).json({message: 'utilisateur créer'}))
-            .catch(error => res.status(400).json ({message: 'utilisateur non crée!'}))             
+      
+            .then((user) => res.status(201).json({
+                userId:jwt.sign({
+                    userId: user.id,                    
+                },
+                 `${process.env.SECRET_KEY}`, {
+                    expiresIn: '24h'}
+                ),
+                message: 'utilisateur créer'                
+                }))
+
+            .catch(error => res.status(400).json ({error ,message: 'compte non crée!'}))             
     })
     .catch (error => res.status(500).json ({error}));
+    }
 }
-}
+
 
 exports.login = async (req, res, next) => {
     // test si champ rempli

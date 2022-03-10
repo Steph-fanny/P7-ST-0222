@@ -31,7 +31,7 @@ const routes = [
 
   {
     path: '/post',
-    name: 'post',
+    name: 'homePost',
     component : homePost  
   },
   
