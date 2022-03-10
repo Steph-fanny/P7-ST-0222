@@ -1,7 +1,7 @@
 <template>
  
  <header>
-      <img src="../assets/logo-haut.png" width="350" height="250" alt="le logo de groupomania" title="logo groupomania" id="logo" />
+      <img src="../assets/icon-left-font.png" width="350" height="250" alt="le logo de groupomania" title="logo groupomania" id="logo" />
  </header>
 
 </template>
@@ -19,7 +19,7 @@ header{
   align-items: center;
   height: 8 rem;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
   padding-top: 20px;
 }
 
@@ -27,6 +27,7 @@ header{
       display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-top : 5 px;
 }
 
 </style>

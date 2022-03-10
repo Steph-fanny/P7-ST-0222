@@ -1,7 +1,6 @@
 <template>
  
- <div class ="container-signup">
-  
+ <div class ="container-signup">  
   
     <section class="vh-100 bg-image" style="background-color:  #706e6e;">
     
@@ -14,7 +13,7 @@
                <div><navHome/></div> 
               <h2 class="text-uppercase text-center mb-5">Créer votre compte</h2>
 
-              <form>
+              <form v-on:submit.prevent="signupAccount()" method ="post" >
                
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example1cg">Prénom</label>
@@ -38,21 +37,27 @@
                   <input v-model= "email"
                   type="email" 
                   id="form3Example3cg" class="form-control form-control-lg" 
-                  placeholder="Votre adresse email valide" required/>
+                  placeholder="Votre adresse email valide" required
+                  pattern="[a-z0-9]+@[a-z]+\.[a-z]{2,3}"/>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example4cg">Mot de passe</label>
                   <input v-model= "password"
                   type="password" id="form3Example4cg" class="form-control form-control-lg" 
-                  placeholder="min 6 : dont 1 maj, 1 minuscule, 2 chiffres" required/>
-                  
+                  placeholder="Votre mot de passe*" required
+                  pattern = " ^(?=.{5,}$)(?=(?:.*?[A-Z]){1})(?=.*?[a-z])(?=(?:.*?[0-9]){2}).*$"/>
+                  <p>*Minimum 5 caractéres dont 1 Majuscule, 1 minuscule, 2 chiffres</p>
                 </div>
                             
 
                 <div class="d-flex justify-content-center">
-                  <button type="button" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
-                  S'enregistrer</button>
+                  <button 
+                    @click.prevent = "signupAccount"
+                    type="button" 
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                    S'enregistrer
+                  </button>
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0"> Vous avez déja un compte ? 
@@ -69,30 +74,14 @@
   </div>
 </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+   
   <nav class= "navlogsign"><p>Vous avez déja un compte ? 
   <router-link to="/login">Connectez vous !</router-link></p></nav>  
          
 </div>     
-
-
-
-
                        
 </template>
+
 
 <script>
 import navHome from '@/components/navHome.vue'
@@ -101,10 +90,63 @@ export default {
   name: "signupUser",  
   components: {
   navHome 
-  }
+  },
+
+data(){
+    return{
+      inputSignup:{
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      },    
+    };
+  },
+  methods:{
+    signupAccount(){
+      let inputData ={
+        "firstName": this.inputSignup.firstName,
+        "lastName" : this.inputSignup.lastName,
+        "email": this.inputSignup.email,
+        "password": this.inputSignup.password
+      }
+      console.log(inputData)
+      let urlSignup = "http//localhost:3000/api/auth/signup"
+      let option = {
+        method : "POST",
+        body :JSON.stringify(inputData),
+        headers : {
+          "content-type" : 'application/json'
+        }
+      }
+      console.log(option)
+            fetch(urlSignup, option)
+                .then(res => res.json())
+                .then((res) => {                   
+                    localStorage.setItem("userId", res.userId);
+                    localStorage.setItem("token", res.token);
+                    console.log(localStorage)
+                    this.$router.push("/post");
+                    alert(" Bienvenue sur Groupomania");
+                    
+                })
+                .catch(error => console.log(error))
+        }
+    }
 }
+  
 </script>
 
 <style>
+.container-signup{
+  width: 100%;
+  height: 100%;
+}
+
+
+.btn-block{
+  background-color: #1d4570 !important;
+ 
+}
 
 </style>

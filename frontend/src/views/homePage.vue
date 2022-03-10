@@ -15,6 +15,7 @@
   class="a inscriptionLink" 
   >Se connecter</router-link>  
 </div>
+
   </div>
 </template>
 

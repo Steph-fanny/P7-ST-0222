@@ -1,6 +1,5 @@
-<template> 
-  <div class= "container-login">     
-   
+<template>
+  <div class= "container-login">
 <section class="vh-100" style="background-color: #706e6e;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -47,14 +46,13 @@
 
                   <div class="pt-1 mb-4">
                     <button @click.prevent="loginAccount"
-                    class="btn btn-dark btn-lg btn-block" type="button">Se connecter</button>
+                    class="btn btn-dark btn-lg btn-block" type="button">
+                    Se connecter</button>
                   </div>
-
+                                
                   <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
                   <p class="mb-5 pb-lg-2" style="color: #393f81;">Vous n'avez pas de compte ?<br>
                   <router-link to = "/signup">Rejoignez-nous !</router-link></p>
-                      
-                  
                 </form>
 
               </div>
@@ -63,24 +61,20 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </section>
 
-       <div><footerApp/></div> 
-  </div>                 
-                           
-       
+<div><footerApp/></div> 
+      
+  </div>
 </template>
-
-
 
 <script>
 import navHome from '@/components/navHome.vue'
 import footerApp from '@/components/footerApp.vue'
 
-
 export default {
-  name: 'loginUser',  
+name: 'loginUser',  
   components: {
   navHome,
   footerApp,
@@ -94,6 +88,7 @@ export default {
       },    
     };
   },
+
   methods:{
     loginAccount(){
       let loginData ={
@@ -127,15 +122,13 @@ export default {
     }
   }
 }
-             
 </script>
 
-<style lang= "css">
+<style lang ="css">
 .container-login{ 
   height:100%;
  
 }
-
 .login-tittle{
 margin: 1rem;
   text-align: center;
@@ -164,15 +157,12 @@ form-login {
  }
 
 .btn {
-  background-color: #8b0000 ;
-  border-color: #8b0000;
+  background-color:#1d4570 ;
   text-align: center;
   margin-top: 40px;
 }
 
-.form-group{
-  margin-top:15px;
-}
+
  
  .btn:hover {
     border-color: #006400;
@@ -195,6 +185,7 @@ a{
     margin-top:15px;
     text-align: center;
   }
+
 
 
 </style>
