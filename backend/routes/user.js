@@ -10,8 +10,8 @@
 
 const express = require("express");
 const router = require('express').Router();
-const userAuth = require ('../controllers/userAuth.ctr');
-const userController = require ('../controllers/userController.ctr');
+const userAuth = require ('../controllers/userAuth');
+const userController = require ('../controllers/userController');
 const passwordValidation = require("../middleware/passwordValidation");
 const auth = require ("../middleware/auth.Jwt");
 const authAdmin = require("../middleware/authUserAdmin");

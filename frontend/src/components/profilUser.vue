@@ -6,15 +6,28 @@
       <div class="col col-lg-6 mb-4 mb-lg-0">
         <div class="card mb-3" style="border-radius: .5rem;">
           <div class="row g-0">
-            <div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; background-color:#706e6e">
+            <div class="col-md-4 gradient-custom text-center text-white" 
+            style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; background-color:#0d0764">
+              
+              
               <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                src="../assets/icon-profil.png"
                 alt="Avatar"
                 class="img-fluid my-5"
-                style="width: 120px;"
-              />
-              <i class="far fa-edit mb-5"></i>
-              <p>Changer la photo de profil</p>                       
+                style="width: 120px;"/>
+                           
+                <label class="text-center label" for="image"
+                >Changer la photo de profil</label>          
+                  <input
+                    type="file" class="form-control"
+                      name="image" id="image"
+                      accept="image/*" ref="image"
+                      @change="filePictureToUpload()"
+                    />
+
+
+
+
                      
             </div>
             <div class="col-md-8">
@@ -25,19 +38,19 @@
                   <div class="col-6 mb-3">
                      
                     <h6>Prénom</h6>
-                    <p class="text-muted"></p>
+                    <p class="text-muted">{{ user.firstName }}</p>
                       </div>
                   
                   <div class="col-6 mb-3">
                     <h6>Nom</h6>
-                    <p class="text-muted">123 456 789</p>
+                    <p class="text-muted">{{ user.firstName }}</p>
                   </div>
                 </div>                
                
                 <div class="row pt-1">
                   <div class="col-6 mb-3">
                     <h6>Email</h6>
-                    <p class="text-muted">info@example.com</p>
+                    <p class="text-muted">{{ user.email}}</p>
                   </div>
                   <div class="col-6 mb-3">
                     <h6>Derniere connexion</h6>
@@ -65,20 +78,26 @@
 <script>
 export default {
 name: 'profilUser',
-data(){
- return {
-      user: {
-        id: localStorage.getItem("userId"),
-        isAdmin: localStorage.getItem("isAdmin"),
-        firtName: "",
-        lastName: "",
-        email: "",
-        imageUrl: "",
-      },
- }
-}
-};
 
+  data(){
+  return {
+        user: {
+          id: localStorage.getItem("userId"),
+          isAdmin: localStorage.getItem("isAdmin"),
+          firtName: "",
+          lastName: "",
+          email: "",
+          imageUrl: "",
+        },
+    }
+  },
+ methods: {
+    filePictureToUpload() {
+      this.image = this.$refs.image.files[0];
+      this.imageUrl = URL.createObjectURL(this.image);
+    }
+  }
+}
 </script>
 
 <style>

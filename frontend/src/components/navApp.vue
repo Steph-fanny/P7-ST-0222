@@ -1,6 +1,6 @@
 <template>
   <!-- Navbar -->
-<nav class="navbar navbar-expand-lg " style="background-color: #1d4570 !important;">
+<nav class="navbar navbar-expand-lg " style="background-color: #0d0764!important;">
   <!-- Container wrapper -->
   <div class= "container-fluid">
     <!-- Toggle button -->
@@ -21,7 +21,7 @@
       <!-- Navbar brand -->
       <a class="navbar-brand mt-2 mt-lg-0" href="#">
         <img
-          src="../assets/icon-left-font-monochrome-black.png"
+          src="../assets/icon-left-font.png"
           height="115"
           alt="logo groupomania"
           loading="lazy"
@@ -104,7 +104,10 @@ methods : {
 
 <style>
 .nav-link {
-    color : white !important;
+    color :white !important;
+}
+.dropdown-item{
+  color: white !important;
 }
 
 </style>

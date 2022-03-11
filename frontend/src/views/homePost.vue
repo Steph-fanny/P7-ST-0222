@@ -1,9 +1,10 @@
 <template>
 <div class = container-post>
     <div><navApp/></div>
-   
+
    <div><createPost/></div>
-    <!-- <div><postUser/></div> -->
+   
+    <div>/><addComment/></div>
   
     
 
@@ -19,7 +20,7 @@ import navApp from '@/components/navApp'
 // import postUser from '@/components/postUser'
 
 import createPost from '@/components/createPost'
-
+import addComment from '@/components/addComment'
 
 
 
@@ -29,8 +30,8 @@ name: 'homePost',
   components: {
   navApp,
   // postUser,
- 
-  createPost,
+ addComment,
+ createPost,
  
  
   

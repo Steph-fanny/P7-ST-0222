@@ -39,17 +39,21 @@ export default {
 .link {
   font-weight: bold;
   text-align: center;
-  color: #f1670b;
+  color: #FD2D01;
   font-size: 35px;  
   text-align: center;
   margin-top: 100px;
 }
-
+.home-pagelink{
+  color: #FD2D01!important;
+  font-weight: 800;
+  font-size:22px;
+}
 
 
 .homeTittle{
    text-align: center;
-   font-size : 35px;
+   font-size : 45px;
    color : #0d0764;
    margin-top : 35px;
 }

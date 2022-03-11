@@ -11,12 +11,12 @@
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
                <div><navHome/></div> 
-              <h2 class="text-uppercase text-center mb-5">Créer votre compte</h2>
+              <h2 class=" signup-subtitle text-uppercase text-center mb-5">Créer votre compte</h2>
 
               <form v-on:submit.prevent="signupAccount()" method ="post" >
                
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example1cg">Prénom</label>
+                  <label class="form-label signup-title" for="form3Example1cg">Prénom</label>
                   <input v-model= " inputSignup.firstName"
                   type="text" 
                   id="firstName" class="form-control form-control-lg"
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example1cg">Nom</label>
+                  <label class="form-label signup-title" for="form3Example1cg">Nom</label>
                   <input v-model= " inputSignup.lastName"
                   type="text" 
                   id="lastName" class="form-control form-control-lg"
@@ -33,7 +33,7 @@
 
 
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example3cg">Email</label>
+                  <label class="form-label signup-title" for="form3Example3cg">Email</label>
                   <input v-model= " inputSignup.email"
                   type="email" 
                   id="form3Example3cg" class="form-control form-control-lg" 
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example4cg">Mot de passe</label>
+                  <label class="form-label signup-title" for="form3Example4cg">Mot de passe</label>
                   <input v-model= " inputSignup.password"
                   type="password" id="form3Example4cg" class="form-control form-control-lg" 
                   placeholder="Votre mot de passe*" required
@@ -53,7 +53,7 @@
 
                 <div class="d-flex justify-content-center">
                   <button 
-                    @click.prevent = "signupAccount"
+                    @click.prevent = "signupAccount()"
                     type="button" 
                     class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                     S'enregistrer
@@ -61,8 +61,9 @@
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0"> Vous avez déja un compte ? 
-                <router-link to = "/login">Connectez vous !</router-link></p> 
-                 
+                <router-link to = "/login"
+                class="signup-title"
+                >Connectez vous !</router-link></p>                  
 
               </form>
 
@@ -103,17 +104,17 @@ data(){
   },
   methods:{
     signupAccount(){
-      let inputData ={
+      let inputDatas ={
         "firstName": this.inputSignup.firstName,
         "lastName" : this.inputSignup.lastName,
         "email": this.inputSignup.email,
         "password": this.inputSignup.password
       }
-      console.log(inputData)
-      let urlSignup = "http//localhost:3000/api/user/signup"
+      console.log(inputDatas)
+      let urlSignup = "http//localhost:8080/api/user/signup"
       let option = {
         method : "POST",
-        body :JSON.stringify(inputData),
+        body :JSON.stringify(inputDatas),
         headers : {
           "content-type" : 'application/json'
         }
@@ -142,10 +143,18 @@ data(){
   height: 100%;
 }
 
+.signup-subtitle{
+  color :#0d0764
+}
 
 .btn-block{
-  background-color: #1d4570 !important;
- 
+  background-color: #0d0764 !important; 
 }
+.signup-title{
+color: #FD2D01!important ;
+text-decoration: none !important;
+font-weight: 600;
+}
+
 
 </style>

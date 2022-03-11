@@ -21,6 +21,9 @@ export default{
   margin: 0;
   padding: 0;    
 }
-
+header{
+  margin:0;
+  padding:0;
+}
 
 </style>

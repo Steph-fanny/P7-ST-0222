@@ -16,8 +16,6 @@ const bodyParser = require ("body-parser");
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
 
-
-//Db
 const { sequelize } = require('./models/index2');
 const db = require("./models/index2");
 db.sequelize.sync();
@@ -41,7 +39,7 @@ app.use((req, res, next) => {
 });
 
 //importer les routes à l'application : user, route post et comment
-const userRoutes = require("./routes/user");
+const userRoutes = require('./routes/user');
 const postRoutes = require("./routes/post");
 const commentRoutes = require("./routes/comment");
 
@@ -54,13 +52,13 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.json());
 
 // route pour le frontend :chemin + nom router : lorsque reconcontre api/user=> routes 
+
 app.use("api/user", userRoutes);
 app.use("api/post", postRoutes);
 app.use("api/comment", commentRoutes);
 
 // //protection des en-têtes HTTP grâce à Helmet
 app.use(helmet());
-
 
 
 //exporter l'appli depuis les autres fichiers

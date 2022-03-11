@@ -8,28 +8,23 @@ const jwt = require("jsonwebtoken"); // token
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 // Nouveau utilisateur + save 
-module.exports.signup =  (req, res, next) => {
-    console.log("coucou");
-    // valider le format de l'email avec validator
-    // const isValidateEmail = { isEmail}.validate(req.body.email);
-    // if (!isValidateEmail) {
-    if (emailRegex.test(req.body.email)){
-    // res.status(400).json({message :"Le format de l'email est incorrect !"}); 
-    // }else {
-    // appeler bcrypt, hacher le MDP : algoritme: 10tours
-    bcrypt.hash(req.body.password, 10)
-    .then (hash => {
+module.exports.signup = (req, res, next) => {
+    console.log("coucou")
+      
+    if (!emailRegex.test(req.body.email)) {    
+        return res.status(400).json({ 'message': 'Email non valide' })
+        }
+        bcrypt.hash(req.body.password, 10)
+        .then (hash => {
         // création du nouvel user
-        const User= db.User
-        User.create({     
-            id: req.body.id,   
+            const signUser = db.User
+            signUser.create ({                
             firstName : req.body.firstName,
             lastName : req.body.lastName,        
             email: req.body.email,
             password : hash,
             IsAdmin : 0,            
-        })
-      
+        })      
             .then((user) => res.status(201).json({
                 userId:jwt.sign({
                     userId: user.id,                    
@@ -37,48 +32,48 @@ module.exports.signup =  (req, res, next) => {
                  `${process.env.SECRET_KEY}`, {
                     expiresIn: '24h'}
                 ),
-                message: 'utilisateur créer'                
+                message: 'utilisateur crée'                
                 }))
 
-            .catch(error => res.status(400).json ({error ,message: 'compte non crée!'}))             
+            .catch(error => res.status(400).json ({message: 'compte non crée!'}))             
     })
     .catch (error => res.status(500).json ({error}));
-    }
-}
+};
 
 
-exports.login = async (req, res, next) => {
-    // test si champ rempli
-    try {
+
+exports.login = (req, res, next) => {
+    const user = db.User
     // récupére les données de l'utilisateur
-    const user = await db.User.findOne ({
-        // récupére l'email de la requete (input)
-        where: {email : req.body.email},
-    })
+    user.findOne ({ where: {email : req.body.email}})
+    // récupére l'email de la requete (input)
+    .then(user => {
         // on vérifie que mail est dans la BDD
-        if(!user){
-            return res.status(400).json({message: 'utilisateur inconnu'});       
-            
-        } //MDP : comparer le MDP avec bcrypt:
+            if(!user){
+            return res.status(401).json({message: 'utilisateur inconnu'});       
+            } 
+        //MDP : comparer le MDP avec bcrypt:
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
             if(!valid){
                 return res.status(401).json ({message : 'mot de passe incorect !'});
-            }
+            }            
             res.status(200).json({
-                userId : user._id,
+                //si ok : reponse = objet json
+                userId : user.id,
                 token : jwt.sign(
-                    {userId: user._id},
+                    {userId: user.id},
                     'RANDOM_TOKEN_SECRET',
                     {expireIn: '24h'},
                     {message : "bonjour" + user.firstName + "!"},
-                )           
-            });
+                ),           
+            })
         })
-    } catch(error) {
-      return res.status(500).send({ error : "erreur serveur"});
-  }  
-}
+        .catch(error => res.status(500).json({ error }));
+    })
+
+    .catch(error => res.status(500).json({ error }));
+};
 
 exports.logout = (req, res,) => {     
 console.log(req.body);
