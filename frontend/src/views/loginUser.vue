@@ -111,7 +111,7 @@ name: 'loginUser',
             localStorage.setItem("userId", res.userId)
             localStorage.setItem("token", res.token)            
             console.log(localStorage)
-            this.$router.push("homePost");            
+            this.$router.push("postPage");            
             alert(" Vous etes connecté !");
           } else {
             alert(" Mot de passe ou adresse mail incorrect ! ");

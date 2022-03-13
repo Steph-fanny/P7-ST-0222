@@ -1,8 +1,9 @@
 <template>
+<div>
 <div><navApp/></div>
 
-<div><profilUser/></div>
- 
+<div><profil-user/></div>
+</div>
 
 </template>
 
@@ -11,11 +12,13 @@ import profilUser from "@/components/profilUser.vue";
 import navApp from "@/components/navApp.vue";
 
 
+
 export default {
   name: "accountUser",
   components: {
     navApp,
-    profilUser,
+    profilUser
+   
    
   },
 

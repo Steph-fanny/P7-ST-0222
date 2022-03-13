@@ -31,7 +31,6 @@
                   placeholder="Votre nom" required/>                  
                 </div>
 
-
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="form3Example3cg">Email</label>
                   <input v-model= " inputSignup.email"
@@ -53,7 +52,7 @@
 
                 <div class="d-flex justify-content-center">
                   <button 
-                    @click.prevent = "signupAccount()"
+                    @click.prevent ="signupAccount()"
                     type="button" 
                     class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                     S'enregistrer
@@ -126,7 +125,7 @@ data(){
                     localStorage.setItem("userId", res.userId);
                     localStorage.setItem("token", res.token);
                     console.log(localStorage)
-                    this.$router.push("homePost");
+                    this.$router.push("postPage");
                     alert(" Bienvenue sur Groupomania");
                     
                 })

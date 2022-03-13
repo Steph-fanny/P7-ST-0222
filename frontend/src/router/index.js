@@ -3,7 +3,8 @@ import homePage from '@/views/homePage.vue'
 import loginUser from '@/views/loginUser.vue'
 import signupUser from '@/views/signupUser.vue'
 import accountUser from '@/views/accountUser.vue'
-import homePost from '@/views/homePost.vue'
+import postPage from '@/views/postPage.vue'
+import commentPage from '@/views/commentPage.vue'
 
 const routes = [
   {
@@ -18,23 +19,30 @@ const routes = [
     name: 'login',
     component : loginUser    
   },
+
   {
     path: '/signup',
     name: 'signup',
     component : signupUser   
   },
   {
-    path: '/user/account',
+    path: '/account',
     name: 'accountUser',
     component : accountUser 
   },
 
   {
-    path: '/post',
-    name: 'homePost',
-    component : homePost  
+    path: '/posts',
+    name: 'postPage',
+    component : postPage  
   },
-  
+
+  {
+    path: '/comment',
+    name: 'commentPage',
+    component : commentPage
+  },
+
 ]
 
 const router = createRouter({

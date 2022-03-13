@@ -13,13 +13,13 @@ module.exports = app => {
   const commentCtrl = require("../controllers/comment.ctr");
 
   /*** créer un nouveau commentaire ***/
-  router.post = ("/:id", auth, commentCtrl.addComment);
+  router.post = ("/new", auth, commentCtrl.addComment);
 
   /*** afficher tous les commentaire ***/
   router.get = ("/", auth, commentCtrl.getAllComment);
 
    // *** supprimer un commentaire posté ***
-  router.delete = ("/delete/:id", auth, commentCtrl.deleteComment);
+  router.delete = ("/:id", auth, commentCtrl.deleteComment);
 
 
   app.use("/api/comment", router);
