@@ -4,7 +4,8 @@
 
    <div><createPost/></div>
    
-    <div>/><addComment/></div>
+   <div><affichagePost/></div>
+    <div><addComment/></div>
   
     
 
@@ -17,7 +18,8 @@
 
 <script>
 import navApp from '@/components/navApp'
-// import postUser from '@/components/postUser'
+import affichagePost from '@/components/affichagePost'
+
 
 import createPost from '@/components/createPost'
 import addComment from '@/components/addComment'
@@ -28,10 +30,10 @@ export default {
 name: 'homePost',  
 
   components: {
-  navApp,
-  // postUser,
- addComment,
+  navApp, 
  createPost,
+ addComment,
+ affichagePost
  
  
   

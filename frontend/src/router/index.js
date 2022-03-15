@@ -4,7 +4,7 @@ import loginUser from '@/views/loginUser.vue'
 import signupUser from '@/views/signupUser.vue'
 import accountUser from '@/views/accountUser.vue'
 import postPage from '@/views/postPage.vue'
-import commentPage from '@/views/commentPage.vue'
+
 
 const routes = [
   {
@@ -26,7 +26,7 @@ const routes = [
     component : signupUser   
   },
   {
-    path: '/account',
+    path: '/accounts',
     name: 'accountUser',
     component : accountUser 
   },
@@ -37,18 +37,14 @@ const routes = [
     component : postPage  
   },
 
-  {
-    path: '/comment',
-    name: 'commentPage',
-    component : commentPage
-  },
-
+  
 ]
 
 const router = createRouter({
   // option de create router : rajouter des # pour les liens
   history: createWebHashHistory(),
-  routes
+  routes,
+  base: process.env.BASE_URL,
 })
 
 export default router

@@ -7,6 +7,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Navbar brand -->
         <a class="navbar-brand mt-2 mt-lg-0" href="#">
+          
           <img
             src="../assets/icon-left-font.png"
             height="115"
@@ -32,7 +33,7 @@
           </li>  
   
           <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
-              <router-link to= "/post" 
+              <router-link to= "/posts" 
               class="nav-link"             
               title= "acceuil">
               Accueil
@@ -55,7 +56,7 @@
               
         <!-- Avatar -->
         <div class="dropdown">
-          <router-link to= "/user/account" 
+          <router-link to= "/accounts" 
             class="d-flex align-items-center"         
             id="navbarDropdownMenuAvatar"
             role="button"

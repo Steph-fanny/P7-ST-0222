@@ -110,7 +110,7 @@ data(){
         "password": this.inputSignup.password
       }
       console.log(inputDatas)
-      let urlSignup = "http//localhost:8080/api/user/signup"
+      let urlSignup = "http//localhost:3000/api/user/signup"
       let option = {
         method : "POST",
         body :JSON.stringify(inputDatas),

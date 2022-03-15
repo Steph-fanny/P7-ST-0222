@@ -13,7 +13,7 @@ module.exports = app => {
   const commentCtrl = require("../controllers/comment.ctr");
 
   /*** créer un nouveau commentaire ***/
-  router.post = ("/new", auth, commentCtrl.addComment);
+  router.post = ("/", auth, commentCtrl.addComment);
 
   /*** afficher tous les commentaire ***/
   router.get = ("/", auth, commentCtrl.getAllComment);

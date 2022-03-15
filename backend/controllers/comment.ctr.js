@@ -1,5 +1,5 @@
 /*importer les modeles */
-const db = require("../models/comment");
+
 const { Comment } = require('../models/comment');
 
 /**** creation d'un commentaire */

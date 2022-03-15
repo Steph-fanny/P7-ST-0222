@@ -17,7 +17,7 @@ module.exports = app => {
   const postCtrl = require("../controllers/post.ctr");
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post = ("/add",auth, multer, postCtrl.createPost);
+  router.post = ("/",auth, multer, postCtrl.createPost);
 
   /*** afficher tous les posts ***/
   router.get = ("/", auth ,postCtrl.getAllPost);

@@ -7,8 +7,8 @@
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
             <div class="col-md-6 col-lg-5 d-none d-md-block">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+              <img                
+                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
                 alt="login form"
                 class="img-fluid" style="border-radius: 1rem 0 0 1rem;"
               />
@@ -45,7 +45,7 @@
 
                   <div class="pt-1 mb-4">
                     <button @click.prevent="loginAccount()"
-                    class="btn btn-dark btn-lg btn-block" type="button">
+                    class="btn btn-dark btn-lg btn-block" type="submit">
                     Se connecter</button>
                   </div>
                                 
@@ -96,7 +96,7 @@ name: 'loginUser',
         "password": this.dataLogin.password
       }
       console.log(loginDatas)
-      let urlLogin = "http//localhost:8080/api/user/login"
+      let urlLogin = "http//localhost:3000/api/user/login"
       let option ={
         method : "POST",
         body :JSON.stringify(loginDatas),

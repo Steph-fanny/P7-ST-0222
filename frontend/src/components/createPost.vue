@@ -1,47 +1,44 @@
 <template>
 <div class="card">     
-    <div class="card gedf-card">        
-        <div class="card-header">            
-            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">  
-                <li class="nav-item">
-                    <a class="nav-link active publication-link" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make
-                    a publication</a>
-                </li>
-                <li class="nav-item ">
-                    <input
-                    type="file" class="form-control publication-link"
-                    name="image" id="image"
-                    ref="image" aria-describedby="image"                    
-                    @change="selectFile()" />       
-                </li>
-            </ul>
-        </div>
+    <div class="card gedf-card">       
         <div class="card-body">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="posts" role="tabpanel" 
-                    aria-labelledby="posts-tab">
-                    <div class="form-group">
-                        <label class="sr-only" for="message">post</label>
-                        <textarea class="form-control" id="message" rows="3" 
-                         placeholder="Que voulez-vous partager aujourd'hui?"
-                         v-model="inputMessage.title">
-                         </textarea>
-                    </div>
-                </div>                            
+            <div class="form-group">
+                <label for="content"></label>
+                <textarea type="text" 
+                id="content" name="content" rows="5" 
+                class="form-control" 
+                placeholder="Que voulez-vous partager aujourd'hui?"
+                required v-model="inputMessage.content"></textarea>
             </div>
-        <div class="btn-toolbar justify-content-between">
-            <div class="btn-group">
-                <button 
-                type="submit"
-                id="btnP" class="btn btn-primary"
-                @click.prevent="sendMessage"
-                >Publier</button>
-            </div>                            
+           
+
+            <div class="btn-toolbar justify-content-between">
+                <div class="btn-group">
+                    <button 
+                    type="submit"
+                    id="btnP" class="btn btn-primary"
+                    @click="sendMessage()"
+                    >Publier</button>    
+
+                     <button 
+                    type="submit"
+                    id="btnP" class="btn btn-primary"
+                    @click="annulerPost()"
+                    >Annuler</button>         
+                
+                    <input type="file"
+                    class="btn btn-primary"
+                    ref="file"
+                    id="avatar" name="avatar"
+                    accept="image/png, image/jpeg"/>
+                   
+                    
+                </div>     
+            </div>                                                
         </div>
     </div>
-</div>             
+</div> 
 
-</div>
 
 </template>
 
@@ -50,10 +47,12 @@ export default {
     name:'createPost',
     data() {
         return {
-            inputMessage: {                
+            userId: "",
+            inputMessage: { 
+                imageUrl:"" ,              
                 content: "",
             },
-            userId: ""
+           
         }
     },
     
@@ -71,7 +70,7 @@ export default {
                 "userId": this.userId
             }
             console.log(deliverMessage)
-            let url = "http://localhost:3000/api/post/new"
+            let url = "http://localhost:8080/api/post/new"
             let options = {
                 method: "POST",
                 body: JSON.stringify(deliverMessage),
@@ -91,7 +90,7 @@ export default {
                         alert("Message bien reçu ");
                     }
                 })
-                .then(this.$router.push("/postListPage"))
+                .then(this.$router.push("postListPage"))
                 .catch(error => console.log(error))
         }
     }
@@ -114,6 +113,7 @@ export default {
 }
 .btn {
     background-color: #0d0764 !important;
+    margin-right:5px;
 }
  @media (min-width: 992px) {
             .gedf-main {

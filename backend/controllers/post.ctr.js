@@ -1,7 +1,6 @@
 /*importer les modeles et package */
 // package fs : telechargement et suppression d'images//
 const fs = require ('fs');
-//modles
 const { Post } = require('../models/post');
 
 

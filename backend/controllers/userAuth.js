@@ -1,6 +1,7 @@
 /*importation modele user*/
 
-const db = require("../models/user");
+const db = require("../models/index2");
+const User = db.User;
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 
 // const { isEmail } = require('validator'); // bibliothéque validation
@@ -14,31 +15,40 @@ module.exports.signup = (req, res, next) => {
     if (!emailRegex.test(req.body.email)) {    
         return res.status(400).json({ 'message': 'Email non valide' })
         }
-        bcrypt.hash(req.body.password, 10)
-        .then (hash => {
-        // création du nouvel user
-            const signUser = db.User
-            signUser.create ({                
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,        
-            email: req.body.email,
-            password : hash,
-            IsAdmin : 0,            
-        })      
-            .then((user) => res.status(201).json({
-                userId:jwt.sign({
-                    userId: user.id,                    
-                },
-                 `${process.env.SECRET_KEY}`, {
-                    expiresIn: '24h'}
-                ),
-                message: 'utilisateur crée'                
-                }))
+    User.findOne({where: { email: req.body.email }}) 
+    //Vérification si un utilisateur corresponde déjà à l'email de la DB//
+        .then((user) => {
+            if (!user) {  
 
-            .catch(error => res.status(400).json ({message: 'compte non crée!'}))             
-    })
-    .catch (error => res.status(500).json ({error}));
-};
+            bcrypt.hash(req.body.password, 10)
+            .then (hash => {
+            // création du nouvel user
+                const signUser = User;
+                signUser.create ({                
+                firstName : req.body.firstName,
+                lastName : req.body.lastName,        
+                email: req.body.email,
+                password : hash,
+                isAdmin : 0,            
+                })      
+                .then((user) => res.status(201).json({
+                    userId:jwt.sign({
+                        userId: user.id,                    
+                    },
+                    `${process.env.SECRET_KEY}`, {
+                        expiresIn: '24h'}
+                    ),
+                    message: 'utilisateur crée'                
+                    }))
+
+                .catch(error => {console.log(error);
+                    res.status(400).json ({message: 'compte non crée!'})
+                 })            
+            })
+        }})    
+    .catch (error => res.status(500).json ({message :"utilisateur déja existant"}));
+}
+
 
 
 
