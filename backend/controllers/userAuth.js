@@ -9,8 +9,7 @@ const jwt = require("jsonwebtoken"); // token
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 // Nouveau utilisateur + save 
-module.exports.signup = (req, res, next) => {
-    console.log("coucou")
+module.exports.signup = (req, res, next) => {   
       
     if (!emailRegex.test(req.body.email)) {    
         return res.status(400).json({ 'message': 'Email non valide' })
@@ -29,15 +28,16 @@ module.exports.signup = (req, res, next) => {
                 lastName : req.body.lastName,        
                 email: req.body.email,
                 password : hash,
-                // isAdmin : 0,            
+                isAdmin : 0,            
                 })      
                 .then((user) => res.status(201).json({
-                    userId:jwt.sign({
+                    token: jwt.sign({
                         userId: user.id,                    
                     },
                     `${process.env.SECRET_KEY}`, {
                         expiresIn: '24h'}
                     ),
+                    userId: user.id,  
                     message: 'utilisateur crée'                
                     }))
 
@@ -53,6 +53,7 @@ module.exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
+    console.log("salut")
     const user = db.User
     // récupére les données de l'utilisateur
     user.findOne ({ where: {email : req.body.email}})
@@ -74,12 +75,16 @@ exports.login = (req, res, next) => {
                 token : jwt.sign(
                     {userId: user.id},
                     'RANDOM_TOKEN_SECRET',
-                    {expireIn: '24h'},
-                    {message : "bonjour" + user.firstName + "!"},
+                    {expiresIn: '24h'}
+                   
                 ),           
             })
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({ error })
+
+        });
     })
 
     .catch(error => res.status(500).json({ error }));

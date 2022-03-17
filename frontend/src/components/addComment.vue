@@ -2,7 +2,8 @@
     <div class="container mt-5">
         <div class="commentaire d-flex justify-content-center row">           
             <div class="bg-light p-2">
-                <div class="d-flex flex-row align-items-start">              
+                <div class="d-flex flex-row align-items-start">
+                                  
                     <img class="rounded-circle" 
                         src="../assets/photo-avatar-profil.png" width="40"> 
                          
@@ -35,87 +36,87 @@
 </template>
 
 <script>
-    import axios from "axios";
-    export default {
-        name: "addComment",
-        data() {
-            return {
-                userId: localStorage.getItem("userId"), 
-                token: localStorage.getItem("token"),               
-                postId: "",
-                content: "",
-                comment: {},
-                comments: [],
-            };
-        },
-    // mounted(){
-    //   //GET commentaire
-    //     let url = "http://localhost:3000/api/comments/" + this.messageId + "/display";
-    //     let options = {
-    //         method: "GET",
-    //         headers: {
-    //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
-    //         }
-    //     };
-    //     fetch(url, options)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             this.comments = data;
-    //             console.log(this.comments)
-    //         })
-    //         .catch(error => console.log(error))
-    // },
+//     import axios from "axios";
+//     export default {
+//         name: "addComment",
+//         data() {
+//             return {
+//                 userId: localStorage.getItem("userId"), 
+//                 token: localStorage.getItem("token"),               
+//                 postId: "",
+//                 content: "",
+//                 comment: {},
+//                 comments: [],
+//             };
+//         },
+//     // mounted(){
+//     //   //GET commentaire
+//     //     let url = "http://localhost:3000/api/comments/" + this.messageId + "/display";
+//     //     let options = {
+//     //         method: "GET",
+//     //         headers: {
+//     //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
+//     //         }
+//     //     };
+//     //     fetch(url, options)
+//     //         .then(response => response.json())
+//     //         .then(data => {
+//     //             console.log(data)
+//     //             this.comments = data;
+//     //             console.log(this.comments)
+//     //         })
+//     //         .catch(error => console.log(error))
+//     // },
     
-        methods : {
-            createComment() {            
-            //     let inputContent = {
-            //         "content": this.content,
-            //         "commentId": this.commentId
-            // }
-            axios
-            .post("http://localhost:3000/api/comment", {
-                userId: localStorage.getItem("userId"),
-                postId: this.$refs.comment.id,
-                content: this.$refs.content.value,
-            headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + this.token,
-            },
-            })
+//         methods : {
+//             createComment() {            
+//                 let inputContent = {
+//                     "content": this.content,
+//                 //     "commentId": this.commentId
+//             }
+//             axios
+//             .post("http://localhost:3000/api/comment", {
+//                 userId: localStorage.getItem("userId"),
+//                 postId: this.$refs.comment.id,
+//                 content: this.$refs.content.value,
+//             headers: {
+//             "Content-Type": "application/json",
+//             Authorization: "Bearer " + this.token,
+//             },
+//             })
 
 
 
 
-        //     let url = "http://localhost:3000/api/comment/new"
-        //     let options = {
-        //         method: "POST",
-        //         body: JSON.stringify(inputContent),
-        //         headers: {
-        //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
-        //             'Content-Type': 'application/json'
-        //         }
-        //     }
-        //     fetch(url, options)
-        //         .then(res => res.json())
-        //         .then((res) => {
-        //             console.log(res)
-        //             if (res.ok) {
-        //                 this.content = {}
-        //             } else {
-        //                 alert("Commentaire envoyé");
-        //             }
-        //         })
-        //         .then(window.location.reload())
-        //         .catch(error => console.log(error))
-        // }
-    },
-    }            
-};
+//         //     let url = "http://localhost:3000/api/comment/new"
+//         //     let options = {
+//         //         method: "POST",
+//         //         body: JSON.stringify(inputContent),
+//         //         headers: {
+//         //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
+//         //             'Content-Type': 'application/json'
+//         //         }
+//         //     }
+//         //     fetch(url, options)
+//         //         .then(res => res.json())
+//         //         .then((res) => {
+//         //             console.log(res)
+//         //             if (res.ok) {
+//         //                 this.content = {}
+//         //             } else {
+//         //                 alert("Commentaire envoyé");
+//         //             }
+//         //         })
+//         //         .then(window.location.reload())
+//         //         .catch(error => console.log(error))
+//         // }
+//     },
+//     }            
+// };
                     
 
 
-</script>
+// </script>
 
 <style>
 .commentaire{

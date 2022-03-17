@@ -56,12 +56,12 @@
               
         <!-- Avatar -->
         <div class="dropdown">
-          <router-link to= "/accounts" 
+          <router-link to= "/account/user" 
             class="d-flex align-items-center"         
             id="navbarDropdownMenuAvatar"
             role="button"
             data-mdb-toggle="dropdown"
-            aria-expanded="false"
+            aria-expanded="false"            
           >
             <img
               src="../assets/icon-profil.png"
@@ -69,6 +69,8 @@
               height="85"
               alt="Black and White Portrait of a Man"
               loading="lazy"
+              v-bind= "user"
+              @click="getOneUser()"
             />
           </router-link>
           
@@ -83,15 +85,53 @@
 
 export default {
   name: "navApp",
+
+  data(){
+    return {
+      user: {
+        id: localStorage.getItem("userId"),       
+        firstName: "",
+        lastName: "",
+        email: "",  
+        imageUrl: "",             
+      },
+      token: localStorage.getItem("token"),
+      userId: localStorage.getItem("userId"),
+      image: "",
+      
+    }
+  },
   
-methods : {
-    logout() {
+
+  methods : {   
+  getOneUser() {
+    console.log("bonjourBruce")
+      let url = "http://localhost:3000/api/user/accounts/${this.user.userId}"
+      let option = {
+        method: "GET",
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+        }
+      };
+      fetch(url, option)
+        .then(res => res.json())              
+        .then(data => {                
+          this.user.firstname = data.firstName
+          this.user.lastname = data.lastname;
+          this.user.email = data.email;
+          this.user.imageUrl = data.imageUrl;
+          this.user.createdAt = data.createdAt;          
+        })
+        .catch(error => console.log(error))
+      },
+
+  logout() {
         localStorage.clear();
         this.$router.push("/");
-    }
-}
-
+    },
+  }
 };
+
 </script>
 
 <style>

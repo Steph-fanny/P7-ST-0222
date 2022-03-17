@@ -7,50 +7,50 @@
           <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
+            <div class="card-body p-5 blocsignup">
                <div><navHome/></div> 
               <h2 class=" signup-subtitle text-uppercase text-center mb-5">Créer votre compte</h2>
 
-              <form>
+              <form @submit.prevent="dataSignup()" id="form-signup">
                
                 <div class="form-outline mb-4">
-                  <label class="form-label signup-title" for="form3Example1cg">Prénom</label>
-                  <input v-model= "inputSignup.firstName"
+                  <label class="form-label signup-title" for="firstName">Prénom</label>
+                  <input v-model= "firstName"
                   type="text" 
-                  id="firstName" class="form-control form-control-lg"
+                  id="firstName" name="firstName" class="form-control form-control-lg"
                   placeholder="Votre prénom" required/>                  
                 </div>
 
                 <div class="form-outline mb-4">
-                  <label class="form-label signup-title" for="form3Example1cg">Nom</label>
-                  <input v-model= "inputSignup.lastName"
+                  <label class="form-label signup-title" for="lastName">Nom</label>
+                  <input v-model= "lastName"
                   type="text" 
-                  id="lastName" class="form-control form-control-lg"
+                  id="lastName" name="firstName" class="form-control form-control-lg"
                   placeholder="Votre nom" required/>                  
                 </div>
 
                 <div class="form-outline mb-4">
-                  <label class="form-label signup-title" for="form3Example3cg">Email</label>
-                  <input v-model= "inputSignup.email"
+                  <label class="form-label signup-title" for="email">Email</label>
+                  <input v-model= "email"
                   type="email" 
-                  id="form3Example3cg" class="form-control form-control-lg" 
+                  id="email" name="email" class="form-control form-control-lg" 
                   placeholder="Votre adresse email valide" required
                   pattern="[a-z0-9]+@[a-z]+\.[a-z]{2,3}"/>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <label class="form-label signup-title" for="form3Example4cg">Mot de passe</label>
-                  <input v-model= "inputSignup.password"
-                  type="password" id="form3Example4cg" class="form-control form-control-lg" 
+                  <label class="form-label signup-title" for="password">Mot de passe</label>
+                  <input v-model= "password"
+                  type="password" id="password" name="password"
+                  class=" password form-control form-control-lg" 
                   placeholder="Votre mot de passe*" required
                   pattern = " ^(?=.{5,}$)(?=(?:.*?[A-Z]){1})(?=.*?[a-z])(?=(?:.*?[0-9]){2}).*$"/>
                   <p>*Minimum 5 caractéres dont 1 Majuscule, 1 minuscule, 2 chiffres</p>
                 </div>
                             
-
                 <div class="d-flex justify-content-center">
                   <button 
-                    @click.prevent ="signupAccount()"
+                    @click.prevent ="dataSignup()"
                     type="button" 
                     class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                     S'enregistrer
@@ -79,7 +79,6 @@
 
 <script>
 import navHome from '@/components/navHome.vue';
-import axios from "axios";
 
 export default {
   name: "signupUser",  
@@ -89,64 +88,45 @@ export default {
 
 data(){
     return{
-      inputSignup:{
         firstName: "",
         lastName: "",
         email: "",
         password: "",        
-      },          
+                
     };     
   },
 
 
   methods:{
-    signupAccount(){     
+    dataSignup(){     
       let inputDatas ={
-        "firstName": this.inputSignup.firstName,
-        "lastName" : this.inputSignup.lastName,
-        "email": this.inputSignup.email,
-        "password": this.inputSignup.password,
+        "firstName": this.firstName,
+        "lastName" : this.lastName,
+        "email": this.email,
+        "password": this.password,
       }
-        console.log(inputDatas)
-      axios
-        .post("http://localhost:3000/api/user/signup", {
-          firstName: document.getElementById("firstName").value,
-          lastName: document.getElementById("lastName").value,
-          email: document.getElementById("email").value,
-          password: document.getElementById("password").value,
-          })
-          .then((response) => {
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("userId", response.data.userId);          
-            this.$router.push("/posts");
-            alert(" Bienvenue sur Groupomania");
-          })
-          .catch((error => console.log(error))            
-          );
-
-
-
-      // let urlSignup = "http//localhost:3000/api/user/signup"
-      // let option = {
-      //   method : "POST",
-      //   body :JSON.stringify(inputDatas),
-      //   headers : {
-      //     "content-type" : 'application/json',
-         
-      //   }
-      // }
-      // console.log(option)
-      //       fetch(urlSignup, option)
-      //           .then(res => res.json())
-      //           .then((res) => {                   
-      //               localStorage.setItem("userId", res.userId);                                     
-      //               localStorage.setItem("token", res.token);
-      //               console.log(localStorage)
-      //               this.$router.push("/posts");
-      //               alert(" Bienvenue sur Groupomania");
+      console.log(inputDatas)
+      
+      let urlSignup = "http://localhost:3000/api/user/signup"
+      let option = {
+        method : "POST",
+        body :JSON.stringify(inputDatas),
+        headers : {
+          "content-type" : 'application/json',         
+        }
+      }
+      console.log(option)
+            fetch(urlSignup, option)
+                .then(res => res.json())
+                .then((res) => {                   
+                    localStorage.setItem("userId", res.userId);                                     
+                    localStorage.setItem("token", res.token);
+                    console.log(localStorage)
+                    this.$router.push("/posts");
+                    alert(" Bienvenue sur Groupomania");
                     
-      //           })
-      //           .catch(error => console.log(error))
+                })
+                .catch(error => console.log(error))
         }
     }
 }

@@ -21,9 +21,9 @@ module.exports = (req, resp, next) => {
         next();
     }
     // si erreur sur l'une des const => renvoie catch
-    } catch {
+    } catch {error =>
         res.status(401).json ({
             error : new Error('requete invalide')
-        });
+        });       
     }
 };

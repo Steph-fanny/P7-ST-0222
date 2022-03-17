@@ -3,9 +3,9 @@
     <div><navApp/></div>
 
    <div><createPost/></div>
-   
-   <div><affichagePost/></div>
-    <div><addComment/></div>
+      <div><affichagePost/></div>
+    <div><addComment2/></div>
+     <div><addComment/></div>
   
     
 
@@ -23,6 +23,7 @@ import affichagePost from '@/components/affichagePost'
 
 import createPost from '@/components/createPost'
 import addComment from '@/components/addComment'
+import addComment2 from '../components/addComment2.vue'
 
 
 
@@ -33,7 +34,8 @@ name: 'homePost',
   navApp, 
  createPost,
  addComment,
- affichagePost
+ affichagePost,
+  addComment2
  
  
   

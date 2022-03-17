@@ -21,21 +21,16 @@ exports.getAllUsers = (req, resp, next) => {
 
 // *****récupérer les info d'un utilisateur : profil par ex
 exports.getOneUser = (req, resp, next) => {
+  console.log("coucou")
     console.log(req.params)
     // on récupére les infos depuis la BDD*/  
     const User = db.User   
     User.findOne({where : { id : req.params.id}})    
-      .then((user) => res.status(200).json({
-      userId : user.userId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      imageUrl : user.imageUrl
-      }))
-
-      .catch(error => res.status(404).json({message: "utilisateur non trouvé" }));  
-    }
+      .then((user) => res.status(200).json(user))   
+      .catch(error => {console.log(error);
+          res.status(400).json({message: "utilisateur non trouvé" })
+    })
+  }
 
  
 // *******modifier  les infos d'un utilisateur : profil par ex

@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
-   
-  <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->  
+    
+    <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->  
   <!-- tableau de post-->
     <div class="card" 
       v-for= "post in posts.slice().reverse()" 

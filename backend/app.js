@@ -15,17 +15,21 @@ const express = require("express");
 const bodyParser = require ("body-parser");
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
+const cors = require("cors");
+
 
 const { sequelize } = require('./models/index2');
 const db = require("./models/index2");
 db.sequelize.sync();
 const app =  express();
- 
+ app.use(cors());
+
 //********************************sécurité ***********/
   // 1 er middleware exécuté par le server  : appliqué à toutes les réquetes
   //application accéde à l'api en sécurité
   //configuration des en-têtes CORS
 app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*")
   res.setHeader("Access-Control-Allow-Origin", "*" );
   res.setHeader(
     "Access-Control-Allow-Headers",

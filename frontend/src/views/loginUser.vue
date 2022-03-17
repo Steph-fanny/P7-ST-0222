@@ -1,5 +1,5 @@
 <template>
-  <div class= "container-login">
+  <div class= "container-login" id="content">
 <section class="vh-100" style="background-color: #706e6e;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -16,7 +16,7 @@
             <div class="col-md-6 col-lg-7 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
 
-                <form>
+                <form v-on:submit.prevent="loginAccount()">
                   <div class="logo-login"><navHome/></div>  
                   <!-- <div class="d-flex align-items-center mb-3 pb-1">                   
                     <span class="fw-bold mb-0"><navHome/></span>
@@ -25,7 +25,7 @@
                   <h5 class="fw-normal mb-3 pb-3 login-title" style="letter-spacing: 1px;">Votre compte</h5>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label login-form" for="form2Example17">Email</label>
+                    <label class="form-label login-form" for="email">Email</label>
                     <input v-model= "dataLogin.email"
                     type="email" 
                     id="email" 
@@ -34,10 +34,10 @@
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label login-form" for="form2Example27">Mot de passe</label>
+                    <label class="form-label login-form" for="password">Mot de passe</label>
                     <input v-model= "dataLogin.password"
                     type="password" 
-                    id="password" 
+                    id="password" name="password"
                     class="form-control form-control-lg" 
                     placeholder=" votre mot de passe" required>
                     
@@ -72,8 +72,7 @@
 <script>
 import navHome from '@/components/navHome.vue'
 import footerApp from '@/components/footerApp.vue'
-import axios from "axios"
-// import http from '@/http-common.js'
+
 
 export default {
 name: 'loginUser',  
@@ -98,45 +97,37 @@ name: 'loginUser',
         "email": this.dataLogin.email,
         "password": this.dataLogin.password
       }
-      console.log(loginDatas)
+      console.log(loginDatas)       
 
-         axios
-          .post("http://localhost:3000/api/user/login", loginDatas) 
-          .then((response) => 
-          { 
-            console.log(response)
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("userId", response.data.userId);           
-            this.$router.push("/posts");
+      let urlLogin = "http://localhost:3000/api/user/login"
+      let option ={
+        method : "POST",
+        body :JSON.stringify(loginDatas),
+        headers : { "content-type" : 'application/json',
+                    'Authorization': 'Bearer my-token',}
+      };
+      fetch (urlLogin, option)
+      .then(res => res.json())
+        .then((res) => {
+          console.log(res)
+          if (res.userId && res.token) {
+            localStorage.setItem("userId", res.userId)
+            localStorage.setItem("token", res.token)  
+            localStorage.setItem("isAdmin", res.isAdmin)          
+            console.log(localStorage)
+            this.$router.push("/posts");            
             alert(" Vous etes connecté !");
-          })
-          .catch(() => (this.error = "Mot de passe ou adresse mail incorrect !"));
-
-//       let urlLogin = "http//localhost:3000/api/user/login"
-//       let option ={
-//         method : "POST",
-//         body :JSON.stringify(loginDatas),
-//         headers : { "content-type" : 'application/json',
-//                     'Authorization': 'Bearer my-token',}
-//       };
-//       fetch (urlLogin, option)
-//       .then(res => res.json())
-//         .then((res) => {
-//           if (res.userId && res.token) {
-//             localStorage.setItem("userId", res.userId)
-//             localStorage.setItem("token", res.token)            
-//             console.log(localStorage)
-//             this.$router.push("/posts");            
-//             alert(" Vous etes connecté !");
-//           } else {
-//             alert(" Mot de passe ou adresse mail incorrect ! ");
-//             }
-//         })
-//         .catch(error => console.log(error))
+          } else {
+            alert(" Mot de passe ou adresse mail incorrect ! ");
+            }
+        })
+        .catch(error => console.log(error))
     }
-  },
-}
-</script>
+  }
+}  
+</script>  
+
+
 
 <style lang ="css">
 

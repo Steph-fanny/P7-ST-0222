@@ -3,6 +3,7 @@
 <div><navApp/></div>
 
 <div><profilUser/></div>
+
 </div>
 
 </template>
