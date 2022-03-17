@@ -1,7 +1,12 @@
 <template>
-<div>
- <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->
- <div class="card" :key="post.id" v-for="post in posts">
+  <div class="container-fluid">
+   
+  <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->  
+  <!-- tableau de post-->
+    <div class="card" 
+      v-for= "post in posts.slice().reverse()" 
+      :key= "post.id" :post= "post">
+                         
       <div
         class="card-header"
         v-for="user in users.filter((user) => {
@@ -25,46 +30,101 @@
         />
         <span class="card-title">{{ user.firstName }} {{ user.lastName }}</span>
       </div>
+      <p v-if="post.content !== 'null'" class="card-text">{{ post.content }}</p>
+      <div v-if="post.imageUrl">
+        <img
+          class="card-img"
+          :src="post.imageUrl"
+          alt="image de la publication"
+          title="image du post d'un utilisateur"
+        />
+      </div>
+      <span class="btn-end" v-if="user.id == post.userId">
+        <button
+          class=" btn btn-danger"
+          title="supprimer"
+          aria-label="bouton supprimer"
+          v-bind="post"
+          @click.prevent="deletePublication(post.id)"
+        >
+        </button>
 
-    
+        </span>
+        <button class="btn btn-primary" @click= "showComments = !showComments">
+          Commentaires
+        </button>
+        <div v-if="showComments">
+          <div v-if="comments">
+            <div
+              class="card-comment"
+              v-for="comment in comments.filter((comment) => {
+                return comment.postId == post.id;
+              })"
+              :key="comment.id"
+              >
+              <p
+                v-for="user in users.filter((user) => {
+                  return user.id == comment.userId;
+                })"
+                :key="user.id"
+                >
+                <img
+                  v-if="user.imageUrl == null"
+                  src="../assets/icon-profil.png"
+                  alt="photo de profil provisoire"
+                  title="photo de profil"
+                  class=" rouned-circle mr-1 avatar"
+                />
+                <img
+                  v-else
+                  :src="user.imageUrl"
+                  class="avatar"
+                  alt="profile picture"
+                  title="picture profile"
+                />
+                <span class="card-title"
+                  >{{ user.firstName }} {{ user.lastName }}</span
+                >
+              </p>
+              <p class="card-description comment">{{ comment.content }}</p>
+            <div v-if="comment.userId == user.id" id="btn-trash">
 
-
-    
-
-          <div class="blocactions">
-                <button v-if="message.userId == userId || isAdmin == true" 
-                type="button" @click="deleteMessage(message.id)" class="accountbutton">Supprimez </button>
-          </div>
-       
-        <addComment :messageId="message.id" :messageUserId="message.userId" />
-      </div>   
-   
-               
-             
-                
-      
-
+            <div>
+                <button 
+                type="button" 
+                aria-label="bouton supprimer un commentaire"
+                @click.prevent="deleteComment(comment.id)" 
+                class="accountbutton">Supprimez le commentaire </button>
+            </div>  
+            </div>  
+          </div>    
+        </div>
+    </div>                
+  </div>                      
 </div>
 </template>
 
 <script>
-import addComment from "@/components/addComment.vue";
+// import addComment from "@/components/addComment.vue";
+// import axios from "axios";
+
 
 export default {
 name: "affichagePost",
 components: {
-    addComment
+    // addComment,
+   
 },
 
     data() {
-        return {
-            firstname: "",
-            lastname: "",
-            jobtitle: "",
-            userId: "",
-            isAdmin: "",
-            messages: []
-        }
+      return {
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),          
+      post: {},
+      posts: [],
+      comment: {},
+      comments: [],
+      }
     },
     // mounted() {
     //     this.userId = JSON.parse(localStorage.getItem("userId"));

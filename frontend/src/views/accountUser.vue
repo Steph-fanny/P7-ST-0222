@@ -2,7 +2,7 @@
 <div>
 <div><navApp/></div>
 
-<div><profil-user/></div>
+<div><profilUser/></div>
 </div>
 
 </template>

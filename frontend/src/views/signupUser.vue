@@ -1,23 +1,21 @@
 <template>
  
- <div class ="container-signup">  
-  
-    <section class="vh-100 bg-image" style="background-color:  #706e6e;">
-    
-  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
+ <div class ="container-signup">    
+    <section class="vh-100 bg-image" style="background-color:  #706e6e;">    
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
                <div><navHome/></div> 
               <h2 class=" signup-subtitle text-uppercase text-center mb-5">Créer votre compte</h2>
 
-              <form v-on:submit.prevent="signupAccount()" method ="post" >
+              <form>
                
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="form3Example1cg">Prénom</label>
-                  <input v-model= " inputSignup.firstName"
+                  <input v-model= "inputSignup.firstName"
                   type="text" 
                   id="firstName" class="form-control form-control-lg"
                   placeholder="Votre prénom" required/>                  
@@ -25,7 +23,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="form3Example1cg">Nom</label>
-                  <input v-model= " inputSignup.lastName"
+                  <input v-model= "inputSignup.lastName"
                   type="text" 
                   id="lastName" class="form-control form-control-lg"
                   placeholder="Votre nom" required/>                  
@@ -33,7 +31,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="form3Example3cg">Email</label>
-                  <input v-model= " inputSignup.email"
+                  <input v-model= "inputSignup.email"
                   type="email" 
                   id="form3Example3cg" class="form-control form-control-lg" 
                   placeholder="Votre adresse email valide" required
@@ -42,7 +40,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="form3Example4cg">Mot de passe</label>
-                  <input v-model= " inputSignup.password"
+                  <input v-model= "inputSignup.password"
                   type="password" id="form3Example4cg" class="form-control form-control-lg" 
                   placeholder="Votre mot de passe*" required
                   pattern = " ^(?=.{5,}$)(?=(?:.*?[A-Z]){1})(?=.*?[a-z])(?=(?:.*?[0-9]){2}).*$"/>
@@ -73,9 +71,6 @@
     </div>
   </div>
 </section>
-
-   
- 
          
 </div>     
                        
@@ -83,7 +78,8 @@
 
 
 <script>
-import navHome from '@/components/navHome.vue'
+import navHome from '@/components/navHome.vue';
+import axios from "axios";
 
 export default {
   name: "signupUser",  
@@ -97,39 +93,60 @@ data(){
         firstName: "",
         lastName: "",
         email: "",
-        password: "",
-      },    
-    };
+        password: "",        
+      },          
+    };     
   },
+
+
   methods:{
-    signupAccount(){
+    signupAccount(){     
       let inputDatas ={
         "firstName": this.inputSignup.firstName,
         "lastName" : this.inputSignup.lastName,
         "email": this.inputSignup.email,
-        "password": this.inputSignup.password
+        "password": this.inputSignup.password,
       }
-      console.log(inputDatas)
-      let urlSignup = "http//localhost:3000/api/user/signup"
-      let option = {
-        method : "POST",
-        body :JSON.stringify(inputDatas),
-        headers : {
-          "content-type" : 'application/json'
-        }
-      }
-      console.log(option)
-            fetch(urlSignup, option)
-                .then(res => res.json())
-                .then((res) => {                   
-                    localStorage.setItem("userId", res.userId);
-                    localStorage.setItem("token", res.token);
-                    console.log(localStorage)
-                    this.$router.push("postPage");
-                    alert(" Bienvenue sur Groupomania");
+        console.log(inputDatas)
+      axios
+        .post("http://localhost:3000/api/user/signup", {
+          firstName: document.getElementById("firstName").value,
+          lastName: document.getElementById("lastName").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          })
+          .then((response) => {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userId", response.data.userId);          
+            this.$router.push("/posts");
+            alert(" Bienvenue sur Groupomania");
+          })
+          .catch((error => console.log(error))            
+          );
+
+
+
+      // let urlSignup = "http//localhost:3000/api/user/signup"
+      // let option = {
+      //   method : "POST",
+      //   body :JSON.stringify(inputDatas),
+      //   headers : {
+      //     "content-type" : 'application/json',
+         
+      //   }
+      // }
+      // console.log(option)
+      //       fetch(urlSignup, option)
+      //           .then(res => res.json())
+      //           .then((res) => {                   
+      //               localStorage.setItem("userId", res.userId);                                     
+      //               localStorage.setItem("token", res.token);
+      //               console.log(localStorage)
+      //               this.$router.push("/posts");
+      //               alert(" Bienvenue sur Groupomania");
                     
-                })
-                .catch(error => console.log(error))
+      //           })
+      //           .catch(error => console.log(error))
         }
     }
 }

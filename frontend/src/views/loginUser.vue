@@ -72,6 +72,8 @@
 <script>
 import navHome from '@/components/navHome.vue'
 import footerApp from '@/components/footerApp.vue'
+import axios from "axios"
+// import http from '@/http-common.js'
 
 export default {
 name: 'loginUser',  
@@ -80,13 +82,14 @@ name: 'loginUser',
   footerApp,
   },
 
-  data(){
-    return{
+  data() {
+    return {
       dataLogin:{
         email:"",
-        password:"",
-      }    
-    }
+        password:"",          
+      }, 
+      error: "",
+    }  
   },
 
   methods:{
@@ -96,30 +99,42 @@ name: 'loginUser',
         "password": this.dataLogin.password
       }
       console.log(loginDatas)
-      let urlLogin = "http//localhost:3000/api/user/login"
-      let option ={
-        method : "POST",
-        body :JSON.stringify(loginDatas),
-        headers : {
-          "content-type" : 'application/json'
-        }
-      }
-      fetch(urlLogin, option)
-      .then(res => res.json())
-        .then((res) => {
-          if (res.userId && res.token) {
-            localStorage.setItem("userId", res.userId)
-            localStorage.setItem("token", res.token)            
-            console.log(localStorage)
-            this.$router.push("postPage");            
+
+         axios
+          .post("http://localhost:3000/api/user/login", loginDatas) 
+          .then((response) => 
+          { 
+            console.log(response)
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userId", response.data.userId);           
+            this.$router.push("/posts");
             alert(" Vous etes connecté !");
-          } else {
-            alert(" Mot de passe ou adresse mail incorrect ! ");
-            }
-        })
-        .catch(error => console.log(error))
+          })
+          .catch(() => (this.error = "Mot de passe ou adresse mail incorrect !"));
+
+//       let urlLogin = "http//localhost:3000/api/user/login"
+//       let option ={
+//         method : "POST",
+//         body :JSON.stringify(loginDatas),
+//         headers : { "content-type" : 'application/json',
+//                     'Authorization': 'Bearer my-token',}
+//       };
+//       fetch (urlLogin, option)
+//       .then(res => res.json())
+//         .then((res) => {
+//           if (res.userId && res.token) {
+//             localStorage.setItem("userId", res.userId)
+//             localStorage.setItem("token", res.token)            
+//             console.log(localStorage)
+//             this.$router.push("/posts");            
+//             alert(" Vous etes connecté !");
+//           } else {
+//             alert(" Mot de passe ou adresse mail incorrect ! ");
+//             }
+//         })
+//         .catch(error => console.log(error))
     }
-  }
+  },
 }
 </script>
 

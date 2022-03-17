@@ -44,7 +44,7 @@ const router = createRouter({
   // option de create router : rajouter des # pour les liens
   history: createWebHashHistory(),
   routes,
-  base: process.env.BASE_URL,
+
 })
 
 export default router
