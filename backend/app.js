@@ -12,14 +12,15 @@
   7 : exportation de l'app */
 
 const express = require("express");
+const router = express.Router()
 const bodyParser = require ("body-parser");
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
 const cors = require("cors");
 
 
-const { sequelize } = require('./models/index2');
-const db = require("./models/index2");
+const { sequelize } = require('./models/index');
+const db = require("./models/index");
 db.sequelize.sync();
 const app =  express();
  app.use(cors());
@@ -45,7 +46,7 @@ app.use((req, res, next) => {
 //importer les routes à l'application : user, route post et comment
 const userRoutes = require('./routes/user');
 const postRoutes = require("./routes/post");
-const commentRoutes = require("./routes/comment");
+const commentRoutes = require("./routes/comment")
 
 // bodyparser : transformation du corps de la requete en objet js  : toutes les routes de l'appli
 app.use(bodyParser.json());
@@ -59,11 +60,10 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
-app.use("/api/comment", commentRoutes);
+app.use('/api/comment', commentRoutes); 
 
 // //protection des en-têtes HTTP grâce à Helmet
 app.use(helmet());
-
 
 //exporter l'appli depuis les autres fichiers
 module.exports = app;

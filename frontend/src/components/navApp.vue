@@ -89,7 +89,7 @@ export default {
   data(){
     return {
       user: {
-        id: localStorage.getItem("userId"),       
+        userId: localStorage.getItem("userId"),       
         firstName: "",
         lastName: "",
         email: "",  

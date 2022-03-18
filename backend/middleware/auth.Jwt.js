@@ -7,17 +7,21 @@ const jwt = require('jsonwebtoken')
 module.exports = (req, resp, next) => {
     try{
     /* récupèrer le userId de la requête  */
-    const userId = decodedToken.userId;
+    const userId = decodedToken.userId
+    req.decodedToken = decodedToken
+    console.log(userId)
     /*recupérer le token dans le header auth : split (tableau avec beared et token)*/
     const token = req.headers.authorization.split(' ')[1];
+    console.log(token)
     /*decoder le token*/
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
+   
 
     if(req.body.userId && req.body.userId !== userId){
         throw 'utilisateur invalide';
     }else{
-        // vérifier que c'est bien l'utilisateur "local"
-        // res.locals.idUser=userId,
+        //verifier que c'est bien l'utilisateur "local"
+        res.locals.idUser = userId
         next();
     }
     // si erreur sur l'une des const => renvoie catch

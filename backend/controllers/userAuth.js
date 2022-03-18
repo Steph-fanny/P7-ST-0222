@@ -1,6 +1,6 @@
 /*importation modele user*/
 
-const db = require("../models/index2");
+const db = require("../models/index");
 const User = db.User;
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 

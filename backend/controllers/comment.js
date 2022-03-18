@@ -1,6 +1,6 @@
 /*importer les modeles */
 
-const { Comment } = require('../models/comment');
+const Comment = require('../models/comment');
 
 /**** creation d'un commentaire */
 exports.createComment = (req, res, next) => {
@@ -15,7 +15,9 @@ exports.createComment = (req, res, next) => {
     };
     Comment.create(comment)
         .then(() => res.status(201).json({ message: "Réponse envoyée !" }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => {console.log(error);
+                res.status(400).json ({error})
+            })
 };
 
 
@@ -23,27 +25,34 @@ exports.createComment = (req, res, next) => {
 exports.getAllComment = (req, res, next) => {
     Comment.findAll({ where: { messageId: req.params.id }})
         .then((comments) => res.status(200).json(comments))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => {console.log(error);
+                res.status(400).json ({error})
+            })
 };
 
 // /*** afficher un commentaire ***/
 exports.getOneComment = (req, res, next) => {
     Comment.findOne({ where: { id: req.params.id } })
         .then((comment) => res.status(200).json({message: "commentaire affiché"}))
-        .catch(error => res.status(404).json({ error }));
+        .catch(error => {console.log(error);
+                res.status(400).json ({error})
+            })
 };
-
 
 
 // // ***supprimer un post
 exports.deleteComment  = (req, res, next) => {
     Comment.findOne({where: {Id: req.params.id }})      
-   .then((comment) => {
+        .then((comment) => {
             Comment.destroy({ where: { id: req.params.id } }) 
                 .then(() => res.status(200).json({ message: 'commentaire supprimée' }))
-                .catch(error => res.status(400).json({ error }));
+               .catch(error => {console.log(error);
+                res.status(400).json ({error})
+            })
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {console.log(error);
+                res.status(500).json ({error})
+        })
 };
 
 // // *** modifier un commentaire ***

@@ -106,7 +106,7 @@ export default {
   data(){
     return {
       user: {
-        id: localStorage.getItem("userId"),       
+        userId: localStorage.getItem("userId"),       
         firstName: "",
         lastName: "",
         email: "",  
@@ -123,7 +123,7 @@ export default {
 methods: {
  
   deleteUser() {
-        let url = "http://localhost:3000/api/user/accounts/${ this.userAccount.userId }"
+        let url = "http://localhost:3000/api/user/accounts/${ this.user.userId }"
               let option = {
                   method: "DELETE",
                   headers: {

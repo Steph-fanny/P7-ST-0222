@@ -28,14 +28,14 @@ import addComment2 from '../components/addComment2.vue'
 
 
 export default {
-name: 'homePost',  
+name: 'postPage',  
 
-  components: {
-  navApp, 
- createPost,
- addComment,
- affichagePost,
-  addComment2
+components: {
+    navApp, 
+  createPost,
+  addComment,
+  affichagePost,
+    addComment2
  
  
   

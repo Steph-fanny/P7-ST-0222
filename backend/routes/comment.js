@@ -4,23 +4,23 @@
 3.middleware pour autorisation jwt 
 4.controller pour crud comment*/
 
-
-module.exports = app => {
-
-  const router = express.Router();
-  const express = require("express");
-  const auth = require('../middleware/auth.Jwt'); 
-  const commentCtrl = require("../controllers/comment.ctr");
-
+ 
+const express = require('express')
+const router = express.Router()
+const auth = require('../middleware/auth.Jwt')
+const commentCtrl = require("../controllers/comment")
+    
   /*** créer un nouveau commentaire ***/
-  router.post = ("/", auth, commentCtrl.addComment);
+  router.post = ("/", auth, commentCtrl.createComment);
+
+  /*** afficher un commentaire ***/
+  router.get = ("/:id", auth, commentCtrl.getOneComment);
 
   /*** afficher tous les commentaire ***/
-  router.get = ("/", auth, commentCtrl.getAllComment);
+  router.get = ("/", auth,commentCtrl.getAllComment);
 
    // *** supprimer un commentaire posté ***
   router.delete = ("/:id", auth, commentCtrl.deleteComment);
 
+ module.exports = router;
 
-  app.use("/api/comment", router);
-}

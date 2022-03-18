@@ -8,8 +8,8 @@
 7.middleware pour authentification admin
 8. middleware multer pour la gestion des fichiers entrants*/
 
-const express = require("express");
-const router = require('express').Router();
+const express = require('express')
+const router = express.Router()
 const userAuth = require ('../controllers/userAuth');
 const userController = require ('../controllers/userController');
 const passwordValidation = require("../middleware/passwordValidation");
@@ -30,15 +30,13 @@ router.get("/logout",userAuth.logout);
 
 /****creation du CRUD user:  
    voir tous les utilisateurs */
-   router.get("/accounts",auth, userController.getAllUsers),
+   router.get("/accounts", auth, userController.getAllUsers),
    /*rechercher un utilisateur/ voir un profil */
-   router.get("/accounts/:id", auth, userController.getOneUser),
+   router.get("/:id", auth, userController.getOneUser),
    /*modifier un utilisateur*/
-   router.put("/accounts/:id", auth , multer, userController.updateUser);
+   router.put("/:id", auth , multer, userController.updateUser);
    /*supprimer un utilisateur*/
-   router.delete("/accounts/:id",auth, userController.deleteUser);
-
-
+   router.delete("/:id",auth, userController.deleteUser);
 
 
 module.exports = router;

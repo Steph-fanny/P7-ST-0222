@@ -9,39 +9,43 @@ const token = require ("../middleware/auth.Jwt");
 const fs = require("fs");
 
 
-//****récupérer tous les utilisateurs
-exports.getAllUsers = (req, resp, next) => {       
+
+// ****récupérer tous les utilisateurs
+exports.getAllUsers = (req, resp, next) => {     
     const User = db.User
     User.findAll()
       .then((users) => res.status(200).json(users))
       console.log(users)
-      .catch(error => res.status(404).json({ error }));    
+      .catch(error => 
+        {console.log(error);
+          res.status(400).json ({error})
+        })       
 }     
-
 
 // *****récupérer les info d'un utilisateur : profil par ex
 exports.getOneUser = (req, resp, next) => {
-  console.log("coucou")
-    console.log(req.params)
+  console.log("coucou")   
     // on récupére les infos depuis la BDD*/  
     const User = db.User   
     User.findOne({where : { id : req.params.id}})    
       .then((user) => res.status(200).json(user))   
-      .catch(error => {console.log(error);
+      .catch(error => 
+        {console.log(error);
           res.status(400).json({message: "utilisateur non trouvé" })
-    })
+        })
   }
 
  
 // *******modifier  les infos d'un utilisateur : profil par ex
-exports.updateUser = async (req, resp, next) => {   
+exports.updateUser = (req, resp, next) => {   
 const userObject = req.file ? {
         ...req.body.user,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : {
         ...req.body
     };
-    db.User.findOne({where: {id: req.params.id }})
+    const User = db.User  
+    User.findOne({where: {id: req.params.id }})
         .then((user) => {            
             user.update({
                     ...userObject

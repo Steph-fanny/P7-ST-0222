@@ -6,33 +6,30 @@
 5.middleware multer pour la gestion des fichiers entrants
 6.controller pour crud POSTS*/
 
-
-module.exports = app => {
-
-  const router = express.Router();
-  const express = require("express");
+  const express = require('express')
+  const router = express.Router()
   const auth = require("../middleware/auth.Jwt");
-  const authAdmin = require("../middleware/authUserAdmin");
+  // const authAdmin = require("../middleware/authUserAdmin");
   const multer = require("../middleware/multer.config"); 
-  const postCtrl = require("../controllers/post.ctr");
+  const postCtrl = require("../controllers/post");
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post = ("/",auth, multer, postCtrl.createPost);
+  router.post = ("/new",auth, multer, postCtrl.createPost);
 
   /*** afficher tous les posts ***/
-  router.get = ("/", auth ,postCtrl.getAllPost);
+  router.get = ("/", auth , postCtrl.getAllPost);
 
   /*** afficher un post ***/
   router.get = ("/:id", auth, postCtrl.getOnePost);
 
   // *** modifier un post ***
-  router.put = ("/:id", auth, multer, postCtrl.updatePost);
+  router.put = ("/:id", auth, multer, postCtrl.deletePost);
 
-  /*** supprimer un post  : admin ***/
-  router.delete = ("/:id",authAdmin,multer, postCtrl.deletePost);
+  // /*** supprimer un post  : admin ***/
+  // router.delete = ("/:id",authAdmin,multer, postCtrl.deletePost);
 
-  /**aimer un post **/
-  router.post = ("/:id/like", auth, postCtrl.likePost);
+  // /**aimer un post **/
+  // router.post = ("/:id/like", auth, postCtrl.likePost);
 
-  app.use("/api/post", router);
-}
+  
+  module.exports = router;

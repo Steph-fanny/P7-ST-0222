@@ -1,20 +1,16 @@
 <template>
-  <div class="container-fluid">
-    
+  <div class="container-fluid">    
     <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->  
   <!-- tableau de post-->
-    <div class="card" 
+    <div class="bloclist" 
       v-for= "post in posts.slice().reverse()" 
-      :key= "post.id" :post= "post">
+      :key= "post.id" >
                          
       <div
-        class="card-header"
-        v-for="user in users.filter((user) => {
-          return user.id == post.userId;
-        })"
-        :key="user.id"
-      >
-      <img
+        class="card-author">
+        <h3>{{ post.user.firstname }} {{ post.user.lastname }}</h3>
+      </div>
+      <!-- <img
           v-if="user.imageUrl == null"
           src="../assets/icon-profil.png"
           alt="photo de profil provisoire"
@@ -27,33 +23,42 @@
           class="avatar"
           alt="profile picture"
           title="picture profile"
-        />
-        <span class="card-title">{{ user.firstName }} {{ user.lastName }}</span>
+        /> -->
+      
+      <div class = "date-post">
+        <p>{{ post.createdAt }} </p>
       </div>
-      <p v-if="post.content !== 'null'" class="card-text">{{ post.content }}</p>
-      <div v-if="post.imageUrl">
+      <div class="bloc-contenu">
+        <p> {{ post.content }} </p>
+      </div>
+
+      <div class="bloc-btn">
+        <button v-if="post.userId == userId"
+          type="button"
+          class=" btn btn-danger"
+          title="supprimer"
+          aria-label="bouton supprimer"       
+          @click="deletePost(post.id)">
+          supprimer le post        
+        </button>
+        
+        <button class="btn btn-primary" @click="showComments = !showComments">
+          Commentaires
+        </button>
+      </div>
+    </div>  
+  </div>    
+      
+      <!-- <div v-if="post.imageUrl">
         <img
           class="card-img"
           :src="post.imageUrl"
           alt="image de la publication"
           title="image du post d'un utilisateur"
         />
-      </div>
-      <span class="btn-end" v-if="user.id == post.userId">
-        <button
-          class=" btn btn-danger"
-          title="supprimer"
-          aria-label="bouton supprimer"
-          v-bind="post"
-          @click.prevent="deletePublication(post.id)"
-        >
-        </button>
-
-        </span>
-        <button class="btn btn-primary" @click= "showComments = !showComments">
-          Commentaires
-        </button>
-        <div v-if="showComments">
+      </div> -->
+      
+        <!-- <div v-if="showComments">
           <div v-if="comments">
             <div
               class="card-comment"
@@ -101,7 +106,7 @@
         </div>
     </div>                
   </div>                      
-</div>
+</div> -->
 </template>
 
 <script>
@@ -118,53 +123,55 @@ components: {
 
     data() {
       return {
-      userId: localStorage.getItem("userId"),
-      token: localStorage.getItem("token"),          
-      post: {},
-      posts: [],
-      comment: {},
-      comments: [],
-      }
+        firstname: "",
+        lastname: "",
+        userId: localStorage.getItem("userId"),
+        token: localStorage.getItem("token"),          
+        post: {},
+        posts: [],
+        // comment: {},
+        // comments: [],
+        // }
+    }
+  },
+    mounted() {
+        this.userId = JSON.parse(localStorage.getItem("userId"));        
+        console.log(localStorage);
+        let url = "http://localhost:3000/api/post";
+        let options = {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            }
+        };
+        fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                this.posts = data;
+                console.log(this.posts)
+            })
+            .catch(error => console.log(error))
     },
-    // mounted() {
-    //     this.userId = JSON.parse(localStorage.getItem("userId"));
-    //     this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
-    //     console.log(localStorage);
-    //     let url = "http://localhost:3000/api/messages";
-    //     let options = {
-    //         method: "GET",
-    //         headers: {
-    //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
-    //         }
-    //     };
-    //     fetch(url, options)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             this.messages = data;
-    //             console.log(this.messages)
-    //         })
-    //         .catch(error => console.log(error))
-    // },
-    // methods: {
-    //     ///////////////////DELETE MESSAGE/////////////////////
-    //     deleteMessage(messageid) {
-    //         let url = `http://localhost:3000/api/messages/${ messageid }`;
-    //         let options = {
-    //             method: "DELETE",
-    //             headers: {
-    //                 'Authorization': 'Bearer ' + localStorage.getItem("token"),
-    //             }
-    //         };
-    //         fetch(url, options)
-    //             .then((response) => {
-    //                 console.log(response);
-    //                 alert("Suppression du message confirmé ! ");
-    //                 window.location.reload();
-    //             })
-    //             .catch(error => console.log(error))
-    //     },
-    // },
+    methods: {
+        ///DELETE MESSAGE//
+        deletePost(postid) {
+            let url = `http://localhost:3000/api/post/${ postid }`;
+            let options = {
+                method: "DELETE",
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                }
+            };
+            fetch(url, options)
+                .then((response) => {
+                    console.log(response);
+                    alert("Suppression du message confirmé ! ");
+                    window.location.reload();
+                })
+                .catch(error => console.log(error))
+        },
+    },
 }
 
 
