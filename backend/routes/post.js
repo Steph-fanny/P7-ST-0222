@@ -14,7 +14,7 @@
   const postCtrl = require("../controllers/post");
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post = ("/new",auth, multer, postCtrl.createPost);
+  router.post = ("/new", auth, multer, postCtrl.addPost);
 
   /*** afficher tous les posts ***/
   router.get = ("/", auth , postCtrl.getAllPost);
@@ -25,8 +25,8 @@
   // *** modifier un post ***
   router.put = ("/:id", auth, multer, postCtrl.deletePost);
 
-  // /*** supprimer un post  : admin ***/
-  // router.delete = ("/:id",authAdmin,multer, postCtrl.deletePost);
+  /*** supprimer un post  : admin ***/
+  router.delete = ("/:id",auth, multer, postCtrl.deletePost);
 
   // /**aimer un post **/
   // router.post = ("/:id/like", auth, postCtrl.likePost);

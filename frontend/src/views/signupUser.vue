@@ -122,7 +122,7 @@ data(){
                     localStorage.setItem("userId", res.userId);                                     
                     localStorage.setItem("token", res.token);
                     console.log(localStorage)
-                    this.$router.push("/posts");
+                    this.$router.push("/forum");
                     alert(" Bienvenue sur Groupomania");
                     
                 })

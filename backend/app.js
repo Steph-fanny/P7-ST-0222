@@ -12,17 +12,23 @@
   7 : exportation de l'app */
 
 const express = require("express");
-const router = express.Router()
 const bodyParser = require ("body-parser");
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
 const cors = require("cors");
 
+//importer les routes à l'application : user, route post et comment
+const userRoutes = require('./routes/user');
+const postRoutes = require("./routes/post");
+const commentRoutes = require("./routes/comment");
 
-const { sequelize } = require('./models/index');
-const db = require("./models/index");
-db.sequelize.sync();
 const app =  express();
+
+// const { sequelize } = require('./models/index');
+const db = require("./models/index");
+// creation de la BDD si elle n'existe pas
+db.sequelize.sync();
+
  app.use(cors());
 
 //********************************sécurité ***********/
@@ -30,7 +36,6 @@ const app =  express();
   //application accéde à l'api en sécurité
   //configuration des en-têtes CORS
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*")
   res.setHeader("Access-Control-Allow-Origin", "*" );
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -43,10 +48,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//importer les routes à l'application : user, route post et comment
-const userRoutes = require('./routes/user');
-const postRoutes = require("./routes/post");
-const commentRoutes = require("./routes/comment")
 
 // bodyparser : transformation du corps de la requete en objet js  : toutes les routes de l'appli
 app.use(bodyParser.json());

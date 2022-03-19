@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
   }           
   
   Comment.init({
-    userId: { type : DataTypes.INTEGER },
+    author: { type : DataTypes.STRING },
+    authorId: { type : DataTypes.INTEGER },
     postId: { type : DataTypes.INTEGER },  
     content: { type: DataTypes.TEXT, allowNull: false },
   }, 
@@ -20,15 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Comment',
   })
-
-
- Comment.afterCreate(async comment => {
-    const post = await comment.getPost()
-    const user = await comment.getUser()
-
-    if (user.id == post.userId) return    
-  })
-
+ 
 
   return Comment;
 };

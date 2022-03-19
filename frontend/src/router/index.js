@@ -1,10 +1,13 @@
+
 import { createRouter, createWebHashHistory } from 'vue-router'
+
 import homePage from '@/views/homePage.vue'
 import loginUser from '@/views/loginUser.vue'
 import signupUser from '@/views/signupUser.vue'
 import accountUser from '@/views/accountUser.vue'
-import postPage from '@/views/postPage.vue'
+import forumPage from '@/views/forumPage.vue'
 import listPostPage from '@/views/listPostPage.vue'
+
 
 
 const routes = [
@@ -33,9 +36,9 @@ const routes = [
   },
 
   {
-    path: '/posts',
-    name: 'postPage',
-    component : postPage  
+    path: '/forum',
+    name: 'forumPage',
+    component :forumPage 
   },
   {
     path: '/listPostPage',

@@ -18,7 +18,7 @@
         <!-- Left links -->      
           <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
             <router-link
-            to="/posts"
+            to="/forum"
             class="nav-link">
             Créer un post
             </router-link>
@@ -26,14 +26,14 @@
 
         <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
             <router-link
-            to="/posts"
+            to="/listPostPage"
             class="nav-link">
             Voir tous les posts
             </router-link>
           </li>  
   
           <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
-              <router-link to= "/posts" 
+              <router-link to= "/forum" 
               class="nav-link"             
               title= "acceuil">
               Accueil

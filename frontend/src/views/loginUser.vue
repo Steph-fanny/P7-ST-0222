@@ -115,7 +115,7 @@ name: 'loginUser',
             localStorage.setItem("token", res.token)  
             localStorage.setItem("isAdmin", res.isAdmin)          
             console.log(localStorage)
-            this.$router.push("/posts");            
+            this.$router.push("/forum");            
             alert(" Vous etes connecté !");
           } else {
             alert(" Mot de passe ou adresse mail incorrect ! ");

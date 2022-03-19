@@ -80,7 +80,7 @@
                 <button
                     class= "form-control btn btn-danger"
                     v-bind= "user"
-                    @click="deleteUser()">
+                    @click="deleteUser(id)">
                     Supprimer le compte
                   </button>             
               </div>            
@@ -116,6 +116,7 @@ export default {
       userId: localStorage.getItem("userId"),
       image: "",
       
+      
     }
   },
   
@@ -123,7 +124,7 @@ export default {
 methods: {
  
   deleteUser() {
-        let url = "http://localhost:3000/api/user/accounts/${ this.user.userId }"
+        let url = "http://localhost:3000/api/user/accounts/${this.user.userId }"
               let option = {
                   method: "DELETE",
                   headers: {

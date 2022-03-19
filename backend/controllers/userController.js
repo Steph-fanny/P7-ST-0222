@@ -4,18 +4,21 @@
 
 
 require("dotenv").config();
-const db = require("../models/user");
+const db = require("../models");
 const token = require ("../middleware/auth.Jwt");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
+const User = db.User;
+const Post =db.Post;
+const Comment= db.Comment
 
 
 
 // ****récupérer tous les utilisateurs
-exports.getAllUsers = (req, resp, next) => {     
-    const User = db.User
+exports.getAllUsers = (req, resp, next) => {   
     User.findAll()
       .then((users) => res.status(200).json(users))
-      console.log(users)
+        console.log(users)
       .catch(error => 
         {console.log(error);
           res.status(400).json ({error})
@@ -24,11 +27,18 @@ exports.getAllUsers = (req, resp, next) => {
 
 // *****récupérer les info d'un utilisateur : profil par ex
 exports.getOneUser = (req, resp, next) => {
-  console.log("coucou")   
-    // on récupére les infos depuis la BDD*/  
-    const User = db.User   
-    User.findOne({where : { id : req.params.id}})    
-      .then((user) => res.status(200).json(user))   
+  console.log("coucou")  
+    User.findOne(     
+      {where : { id : req.params.id}})    
+       .then(user => {
+        userId= user.id
+        firstName = user.userName
+        lastName = user.lastName
+        email = user.email
+        createdAt = user.createdAt
+        isAdmin = user.isAdmin
+    }) 
+                 
       .catch(error => 
         {console.log(error);
           res.status(400).json({message: "utilisateur non trouvé" })
@@ -44,7 +54,7 @@ const userObject = req.file ? {
     } : {
         ...req.body
     };
-    const User = db.User  
+    
     User.findOne({where: {id: req.params.id }})
         .then((user) => {            
             user.update({
@@ -58,7 +68,7 @@ const userObject = req.file ? {
            
 /*** suppression du profil ***/
 exports.deleteUser = (req, res, next) => {    
-    const User = db.User
+   
     User.findOne({ where: {id: req.params.id}})
       .then((user) =>{ 
       // s'il y a une photo => supprime de la bdd

@@ -72,6 +72,7 @@ exports.login = (req, res, next) => {
             res.status(200).json({
                 //si ok : reponse = objet json
                 userId : user.id,
+                email : user.email,
                 token : jwt.sign(
                     {userId: user.id},
                     'RANDOM_TOKEN_SECRET',

@@ -1,49 +1,61 @@
 <template>
-<div class = container-post>
-  <form>
-    <div><navApp/></div>
-    <div><createPost/></div>
+  <section>
+    <div class = container-post> 
+      <div><navApp/></div>
+      <div class="card gedf-card">
+      </div>
 
-
-    <div><affichagePost/></div>
+      <listPost/>
   
-  
-  </form>
-
-</div>  
-
-
-
+  </div>  
+  </section>
 </template>
 
 
 <script>
-import navApp from '@/components/navApp'
-import affichagePost from '@/components/affichagePost'
-import createPost from '@/components/createPost'
+  import navApp from '@/components/navApp'
+  import listPost from'@/components/listPost'
 
 
+  export default {
+    name: 'listPostPage',  
 
-
-export default {
-name: 'listPostPage',  
-
-  components: {
-  navApp, 
- createPost,
-
- affichagePost,
-
- 
- 
-  
-  
-  },
-  }
-
-
+      components: {
+        navApp, 
+        listPost    
+      }
+  }    
+    
 </script>
 
-<style>
+<style lang = "css">
+
+
+.bloclist {
+  width: 70%;
+  margin: auto;
+  margin-top: 25px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 30px; 
+  padding: 25px;
+}
+
+.gedf-card  {
+    margin:auto;   
+    width: 50%;
+    margin-top:50px;
+    flex-direction: row;
+    justify-content: center;
+}
+@media (min-width: 992px) {
+            .gedf-main {
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+            .gedf-card {
+                margin-bottom: 2.77rem;
+            }
+        }
 
 </style>
