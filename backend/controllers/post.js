@@ -8,7 +8,9 @@ const Comment = require ('../models/comment');
 
 // /*** créer un nouveau post (et sauvegarder) ***/
 exports.addPost = (req, res, next) => {
+     console.log("bonjour")
     User.findOne({
+       
         attributes: ['firstName'],
         where: { id: req.body.userId }
         })

@@ -85,17 +85,17 @@ export default {
             }      
             console.log(deliverPost)
 
-            //creer un nouveau post
-      const formData = new FormData();
-        formData.append("userId", parseInt(localStorage.getItem("userId")));
-        formData.append("image", this.image);     
-        formData.append("content", document.getElementById("content").value);
+    //         //creer un nouveau post
+    //   const formData = new FormData();
+    //     formData.append("userId", parseInt(localStorage.getItem("userId")));
+    //     formData.append("image", this.image);     
+    //     formData.append("content", document.getElementById("content").value);
 
-      console.log("test", formData.get("image"));
-      console.log("test", formData.get("content"));
-          // si message vide       
-        if (formData.get("content") == "") { this.error = "Message vide";
-        } else {
+    //   console.log("test", formData.get("image"));
+    //   console.log("test", formData.get("content"));
+    //       // si message vide       
+    //     if (formData.get("content") == "") { this.error = "Message vide";
+    //     } else {
             let url = "http://localhost:3000/api/post/new"
             let options = {
                 method: "POST",
@@ -104,6 +104,7 @@ export default {
                     'Content-Type': 'application/json'
                 }
             }
+           
             fetch(url, options)
                 .then(res => res.json())
                 .then((res) => {                
@@ -120,7 +121,7 @@ export default {
             }
         }
     }
-} 
+// } 
 
 
       

@@ -14,7 +14,7 @@
   const postCtrl = require("../controllers/post");
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post = ("/new", auth, multer, postCtrl.addPost);
+  router.post = ("/new", postCtrl.addPost);
 
   /*** afficher tous les posts ***/
   router.get = ("/", auth , postCtrl.getAllPost);
