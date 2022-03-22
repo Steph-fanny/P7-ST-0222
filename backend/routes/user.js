@@ -11,7 +11,6 @@
 const express = require('express')
 const router = express.Router()
 const userAuth = require ('../controllers/userAuth');
-const userController = require ('../controllers/userController');
 const passwordValidation = require("../middleware/passwordValidation");
 const auth = require ("../middleware/auth.Jwt");
 const authAdmin = require("../middleware/authUserAdmin");
@@ -30,13 +29,13 @@ router.get("/logout",userAuth.logout);
 
 /****creation du CRUD user:  
    voir tous les utilisateurs */
-   router.get("/accounts", auth, userController.getAllUsers),
-   /*rechercher un utilisateur/ voir un profil */
-   router.get("/:id", auth, userController.getOneUser),
-   /*modifier un utilisateur*/
-   router.put("/:id", auth , multer, userController.updateUser);
+   router.get("/accounts", userAuth.getAllUsers),
+   //*rechercher un utilisateur/ voir un profil */
+   router.get("/:id",  userAuth.getOneUser),
+    //*modifier un utilisateur*/
+   router.put("/:id",  multer, userAuth.updateUser);
    /*supprimer un utilisateur*/
-   router.delete("/:id",auth, userController.deleteUser);
+   router.delete("/:id", userAuth.deleteUser);
 
 
 module.exports = router;

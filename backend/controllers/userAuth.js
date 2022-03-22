@@ -2,8 +2,12 @@
 
 const db = require("../models/index");
 const User = db.User;
+const Post =db.Post;
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 
+const fs = require("fs");
+require("dotenv").config();
+
 // const { isEmail } = require('validator'); // bibliothéque validation
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -103,7 +107,78 @@ console.log(req.body);
 }
  
 
+// ****récupérer tous les utilisateurs
+exports.getAllUsers = (req, res, next) => {
+   console.log("bonjour tous les utilisateurs")
+    User.findAll({
+      attributes: ['id', 'firstName', 'lastName', 'email', 'imageUrl', 'isAdmin']
+    })
+      .then(users => res.status(200).json({ users}))       
+      .catch(error =>{
+        console.log(error);
+          res.status(400).json ({error})
+      }) 
+};
 
+
+// *****récupérer les info d'un utilisateur : profil par ex
+// Obtention d'un compte //
+exports.getOneUser = (req, res, next) => { 
+  User.findOne({ 
+    where: { id: req.params.id }})  
+      .then(user => res.status(200).json({ user }))
+      .catch(error =>{
+        console.log(error);
+        res.status(400).json({message: "utilisateur non trouvé" })
+      });
+}; 
+                 
+  
+ 
+// *******modifier  les infos d'un utilisateur : profil par ex : PUT
+exports.updateUser = (req, res, next) => { 
+  try {
+    const userObject = req.file
+      ? {
+          ...JSON.parse(req.body.user),
+          imageUrl: `${req.protocol}://${req.get('host')}/public/${
+            req.file.filename
+          }`
+        }
+      : { ...req.body }
+
+    console.log(userObject)
+    req.user.update(userObject).then(user => res.status(200).json({ user }))
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+};
+
+
+                  
+/*** suppression du profil ***/
+exports.deleteUser = (req, res, next) => {    
+  console.log("suppression compte user")
+  User.findOne({ where: {id: req.params.id}})
+    .then((user) => { 
+      // s'il y a une photo => supprime de la bdd
+        if (user.imageUrl!==null) {
+          const filename = user.imageUrl.split("/upload")[1];
+          fs.unlink(`upload/${filename}`, () => {
+          // on supprime le compte utilisateur  : fonction destroy
+            User.destroy({where: { id: req.params.id }})
+            .then (()=> res.status(200).json({ message: "Profil supprimé"}))
+            .catch(error =>{
+              console.log(error);
+              res.status(400).json({message: "utilisateur non trouvé" })
+            });                  
+          })
+        }
+      })
+    .catch(error => res.status(500).json({error}));   
+    }
+
+ 
     
 
 

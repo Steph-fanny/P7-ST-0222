@@ -6,23 +6,26 @@
  
 const express = require('express')
 const router = express.Router()
-const auth = require('../middleware/auth.Jwt')
+const auth = require("../middleware/auth.Jwt");
+// const authAdmin = require("../middleware/authUserAdmin");
+const multer = require("../middleware/multer.config"); 
 const commentCtrl = require("../controllers/comment")
+
     
-  /*** créer un nouveau commentaire ***/
-  router.post = ("/", auth, commentCtrl.addComment);
+  /*** créer un nouveau commentaire ***/ 
+  router.post("/",auth, multer ,commentCtrl.addComment);
 
   /*** afficher un commentaire ***/
-  router.get = ("/:id", auth, commentCtrl.getOneComment);
+  router.get("/:id", auth, commentCtrl.getOneComment);
 
   /*** afficher tous les commentaire ***/
-  router.get = ("/", auth,commentCtrl.getAllComment);
+  router.get("/", auth,commentCtrl.getAllComment);
   
    /*** modifier un commentaire ***/
-  router.put = ("/:id", auth,commentCtrl.updateComment);
+  router.put("/:id", auth,commentCtrl.updateComment);
 
    // *** supprimer un commentaire posté ***
-  router.delete = ("/:id", auth, commentCtrl.deleteComment);
+  router.delete("/:id", auth, commentCtrl.deleteComment);
 
  module.exports = router;
 

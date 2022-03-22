@@ -14,19 +14,19 @@
   const postCtrl = require("../controllers/post");
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post = ("/new", postCtrl.addPost);
+  router.post("/new",multer ,postCtrl.createPost);
 
   /*** afficher tous les posts ***/
-  router.get = ("/", auth , postCtrl.getAllPost);
+  router.get("/",postCtrl.getAllPost);
 
   /*** afficher un post ***/
-  router.get = ("/:id", auth, postCtrl.getOnePost);
+  router.get ("/:id",  postCtrl.getOnePost);
 
   // *** modifier un post ***
-  router.put = ("/:id", auth, multer, postCtrl.deletePost);
+  router.put("/:id", multer, postCtrl.deletePost);
 
   /*** supprimer un post  : admin ***/
-  router.delete = ("/:id",auth, multer, postCtrl.deletePost);
+  // router.delete ("/:id",auth, multer, postCtrl.deletePost);
 
   // /**aimer un post **/
   // router.post = ("/:id/like", auth, postCtrl.likePost);

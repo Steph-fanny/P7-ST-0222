@@ -60,16 +60,23 @@
 export default {
     name:'addPost',    
     data() {
-        return {
+        return {                                        
+            content:"" ,   
+            imageUrl:""  ,                    
+            image:"",    
             token: localStorage.getItem("token"),
-            userId:localStorage.getItem("userId"), 
-            imageUrl:""  ,         
-            content:"" ,                    
-            image:"",              
-               
-        }       
+            userId:"",
+           
+        }
     },
-   
+
+    mounted() {
+            this.userId = JSON.parse(localStorage.getItem("userId"));
+            console.log(this.userId)
+        },
+
+
+
     methods: {                    
         selectFile() {
             this.image = this.$refs.image.files[0];
@@ -80,12 +87,13 @@ export default {
         addPost() {
             let deliverPost = {   
                 "userId" : this.userId,
+                "username":this.username,
                 "image" : this.image,         
                 "content": this.content,                
             }      
             console.log(deliverPost)
 
-    //         //creer un nouveau post
+            //creer un nouveau post
     //   const formData = new FormData();
     //     formData.append("userId", parseInt(localStorage.getItem("userId")));
     //     formData.append("image", this.image);     
@@ -100,7 +108,8 @@ export default {
             let options = {
                 method: "POST",
                 body: JSON.stringify(deliverPost),
-                headers: {                    
+                headers: {    
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),                
                     'Content-Type': 'application/json'
                 }
             }
@@ -111,7 +120,7 @@ export default {
                     console.log(res)
                     if (res.ok) {
                         window.location.reload();
-                        this.inputPost = {} // Retour à 0 des inputs //
+                        this.Post = {} // Retour à 0 des inputs //
                     } else {
                         alert("Post bien reçu ");
                     }

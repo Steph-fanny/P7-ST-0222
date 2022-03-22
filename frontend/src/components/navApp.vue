@@ -104,17 +104,23 @@ export default {
   
 
   methods : {   
-  getOneUser() {
-    console.log("bonjourBruce")
-      let url = "http://localhost:3000/api/user/accounts/${this.user.userId}"
-      let option = {
+    getOneUser() {
+      console.log("Bienvenue Bruce")
+      let url = `http://localhost:3000/api/user/${ this.user.userId }`;
+      let options = {
         method: "GET",
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem("token"),
         }
       };
-      fetch(url, option)
-        .then(res => res.json())              
+      fetch(url, options)
+        .then(res => res.json()) 
+        // .then((response) => {
+          
+        //   this.user = response.data.user;
+        //   console.log(response.data.user)
+        //   this.image = response.data.image;
+        // })           
         .then(data => {                
           this.user.firstname = data.firstName
           this.user.lastname = data.lastname;
@@ -122,6 +128,7 @@ export default {
           this.user.imageUrl = data.imageUrl;
           this.user.createdAt = data.createdAt;          
         })
+       
         .catch(error => console.log(error))
       },
 

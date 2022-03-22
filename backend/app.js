@@ -12,7 +12,8 @@
   7 : exportation de l'app */
 
 const express = require("express");
-const bodyParser = require ("body-parser");
+const app =  express();
+const bodyParser = require('body-parser')
 const path = require(`path`); // donne accés systéme de fichier images
 const helmet = require('helmet'); // sécuriser les entêtes
 const cors = require("cors");
@@ -22,12 +23,11 @@ const userRoutes = require('./routes/user');
 const postRoutes = require("./routes/post");
 const commentRoutes = require("./routes/comment");
 
-const app =  express();
-
 // const { sequelize } = require('./models/index');
 const db = require("./models/index");
 // creation de la BDD si elle n'existe pas
-db.sequelize.sync();
+db.sequelize.sync()
+// db.sequelize.sync({ force: true });
 
  app.use(cors());
 
@@ -61,7 +61,7 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
-app.use('/api/comment', commentRoutes); 
+app.use('/api/comment',commentRoutes); 
 
 // //protection des en-têtes HTTP grâce à Helmet
 app.use(helmet());

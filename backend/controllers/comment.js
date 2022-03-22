@@ -1,10 +1,9 @@
 /*importer les modeles */
-
-const Comment = require('../models/comment');
+const db = require("../models/index");
+const User = db.User;
+const Comment = db.Comment;
+const Post = db.Post;
 const fs = require('fs');
-const db = require('../models');
-const User= require('../models/user');
-const Post = require('../models/post');
 
 
 /**** creation d'un commentaire */
@@ -32,23 +31,23 @@ exports.addComment = (req, res, next) => {
         }) 
 }  
 
-// // /*** afficher tous les commentaires ***/
-// exports.getAllComment = (req, res, next) => {
-//     Comment.findAll({ where: { messageId: req.params.id }})
-//         .then((comments) => res.status(200).json(comments))
-//         .catch(error => {console.log(error);
-//                 res.status(400).json ({error})
-//             })
-// };
+// /*** afficher tous les commentaires ***/
+exports.getAllComment = (req, res, next) => {
+    Comment.findAll({ where: { messageId: req.params.id }})
+        .then((comments) => res.status(200).json(comments))
+        .catch(error => {console.log(error);
+                res.status(400).json ({error})
+            })
+};
 
-// // /*** afficher un commentaire ***/
-// exports.getOneComment = (req, res, next) => {
-//     Comment.findOne({ where: { id: req.params.id } })
-//         .then((comment) => res.status(200).json({message: "commentaire affiché"}))
-//         .catch(error => {console.log(error);
-//                 res.status(400).json ({error})
-//             })
-// };
+// /*** afficher un commentaire ***/
+exports.getOneComment = (req, res, next) => {
+    Comment.findOne({ where: { id: req.params.id } })
+        .then((comment) => res.status(200).json({message: "commentaire affiché"}))
+        .catch(error => {console.log(error);
+                res.status(400).json ({error})
+            })
+};
 
 
 // // ***supprimer un commentaire

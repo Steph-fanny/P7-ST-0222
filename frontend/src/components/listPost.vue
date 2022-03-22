@@ -3,7 +3,7 @@
     <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->  
   <!-- tableau de post-->
     <div class="bloclist" 
-      v-for= "post in posts.slice().reverse()" 
+      v-for= "post in posts.slice().reverse() || []" 
       :key= "post.id" >
                          
       <div
@@ -82,7 +82,7 @@ components: {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                this.posts = data;
+                this.posts = data.post;
                 console.log(this.posts)
             })
             .catch(error => console.log(error))

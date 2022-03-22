@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
         /*** récupération du token dans le header de la requête d'autorisation et la récupération aprés l'espace du deuxieme élément du tableau qui est le token ***/
         const token = req.headers.authorization.split(' ')[1];
         /*** vérification et décodage du token avec la clé de sécurité ***/
-        const decodedToken = jwt.verify(token, `${process.env.SECRET_KEY}`);
+        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
         /*** décodage du isAdmin ***/
         const isAdmin = decodedToken.isAdmin;
         if (isAdmin !== true) {
