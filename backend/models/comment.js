@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     userId: { type : DataTypes.INTEGER },
     postId: { type : DataTypes.INTEGER },  
     content: { type: DataTypes.TEXT, allowNull: false },
+    createdAt : {type : DataTypes.DATE, allowNull : false }
   }, 
   {
     sequelize,
     modelName: 'Comment',
+     timestamps: true
   })
  
 

@@ -10,6 +10,8 @@
   "author": "ST",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.3",
+    "async-es": "^3.2.3",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",

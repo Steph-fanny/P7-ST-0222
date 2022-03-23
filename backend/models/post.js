@@ -12,17 +12,19 @@ module.exports = (sequelize, DataTypes) => {
   }
 
     Post.init({
-        userId: { type : DataTypes.INTEGER },  
-        firstName: { type: DataTypes.STRING, allowNull : false },  
-        content:{ type: DataTypes.TEXT },
+        userId: { type : DataTypes.INTEGER },            
+        content:{ type: DataTypes.TEXT, allowNull : false  },
         imageUrl: { type: DataTypes.STRING },
+        likesCount: {type: DataTypes.INTEGER },
+        
     },  
     {
       sequelize,    
       modelName: 'Post',
+      timestamps: true,
     });
     
-     
+     return Post;
          
 }   
 

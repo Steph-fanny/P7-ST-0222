@@ -11,7 +11,7 @@
             <div class="col-md-4 gradient-custom text-center text-white" 
               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; background-color:#0d0764">
                 
-                <div v-bind="user" class ="profile-user">  
+                
                   <form
                     id="form"
                     enctype="multipart/form-data"
@@ -61,6 +61,7 @@
 
                   </div>
                 </form>
+            </div>
                                    
 
                     <!-- <img
@@ -94,7 +95,7 @@
             </div>     -->
 
          
-            <div v-bind="user" class="col-md-8">             
+
               <div class="card-body p-4">
                 <h6>Informations</h6>
                 <hr class="mt-0 mb-4">
@@ -129,10 +130,10 @@
               </div>            
             </div>
 
-          </div>
+         
         </div>
-      </div>   
-  </div>
+      
+
       </div>
     </div>
 </section>

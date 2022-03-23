@@ -17,10 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     password: { type:DataTypes.STRING, allowNull : false },
     imageUrl: { type:DataTypes.STRING, allowNull: true, },
     isAdmin: { type:DataTypes.BOOLEAN, allowNull : false },
+    
   }, 
   {
     sequelize,
-    modelName: 'User',
+    modelName: 'User'
+   
     });
     
     return User;

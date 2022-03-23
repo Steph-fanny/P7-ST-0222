@@ -6,6 +6,7 @@ const Post = db.Post;
 const fs = require('fs');
 
 
+
 /**** creation d'un commentaire */
 exports.addComment = (req, res, next) => {
     if (!req.body.content) {

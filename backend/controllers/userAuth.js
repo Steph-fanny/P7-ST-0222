@@ -16,7 +16,7 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0
 module.exports.signup = (req, res, next) => {   
       
     if (!emailRegex.test(req.body.email)) {    
-        return res.status(400).json({ 'message': 'Email non valide' })
+        return res.status(400).json({message: 'Email non valide' })
         }
     User.findOne({where: { email: req.body.email }}) 
     //Vérification si un utilisateur corresponde déjà à l'email de la DB//

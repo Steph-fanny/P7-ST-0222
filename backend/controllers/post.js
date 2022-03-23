@@ -6,88 +6,65 @@ const User = db.User;
 const Post= db.Post;
 const Comment = require ('../models/comment');
 
+const CONTENT_LIMIT = 4;
+//vérifier nombre de caractere <
 
 
-// // Création d'un message //
-// exports.addPost = (req, res, next) => {
-//     const post = {
-//        userId: req.body.userId,  
-//         firstName: req.body.firstName,        
-//         content: req.body.content,
-//         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-//         }
-     
-    
-//     // const post =await Post.create({
 
-//     // })
-//     Post.create(post)
-//         .then(() => res.status(201).json({ message: "Message envoyé!" }))
-//         .catch(error => res.status(400).json({ error }));
-// }  
-
-module.exports = {
-
-  //*** créer un nouveau post (et sauvegarder) ***/
-  async createPost(req, res, next) {
-    console.log("creation de post")
-    if (!req.body.content) {
-        res.status(400).send({
-            message: " message ne peut pas être vide !" });
-    return
+// Création d'un message //
+exports.createPost = (req, res, next) => {
+  // récupérer les paramétres envoyés dans la requete
+    const post = {
+      userId: req.body.userId,             
+      content: req.body.content,
     }
-      const post ={
-        userId: req.body.userId, 
-        firstName:req.body.firstName,             
-        content: req.body.content,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-      };
-      try{      
-      await Post.create(post)        
-        res.status(200).json({
-            "message": "Post Created"
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }  
-},
-                           
+    console.log(post)
+    // vérification: si 1 des paramétre obligatoire est null   
+    if (req.body.content == null){
+      return res.status(400).json({message: 'le contenu ne peut pas être vide'});
+    } 
+    if (req.body.content.lenght<= CONTENT_LIMIT){
+       return res.status(400).json({message: 'le contenu doit etre plus eleve'});
+    } 
+    // enregistrement dans bdd
+    Post.create({
+      userId: req.body.userId,                    
+      content:req.body.content,
+      imageUrl: null,
+      likeCount:0,
+    })
+
+    .then(() => res.status(201).json({ message: "Message envoyé!" }))
+    .catch(error => res.status(400).json({message: 'Vous ne pouvez pas publier un post' }))
+}  
+                     
 
 /*** afficher tous les posts */
-async getAllPost(req, res, next){
+exports.getAllPost = (req, res, next) => {
   console.log("bonjour tous les posts")
-  try{
-    const posts = await Post.findAll()   
-        res.status(200).json(posts);           
-    } catch (error) {
-        res.status(400).send(error)
-      }  
-    },
-    
-
-    
-    
-
-
-
+  Post.findAll({ 
+    attributes:["userId", "content", "imageUrl",]   
+  })
+    .then(users => res.status(200).json({ users}))       
+    .catch(error =>{
+      console.log(error);
+      res.status(400).json ({error})
+      })           
+ };
 
 //*****Afficher un post  : get
-async getOnePost(req, res, next) {
-  try{
-    const post = await Post.findAll({
-      where: { id: req.params.id, userId: req.user.id },
-     include: [{ model: db.User }]
-    })  
-    res.status(200).json(post[0]);
-    }catch (error){
-        res.status(400).json({message: error.message});
-        }
-      },
+exports.getOnePost = (req, res, next) =>{
+  Post.findOne({
+    attributes:["userId", "content", "imageUrl",],
+    where: { id: req.params.id },
+  })    
+  .then(post => res.status(200).json({ post }))
+  .catch(error => res.status(404).json({error}))
+}
 
   
-
 // *** supprimer un post  et les commentaires qui sont liés***/
-async deletePost (req, res, next) {
+exports.deletePost = async (req, res, next) =>{
    try{       
        
     // Post.findOne({ where: { id: req.body.id }})
@@ -115,7 +92,7 @@ async deletePost (req, res, next) {
 
 
 
-async modifyPost (req, res, next) {
+exports.modifyPost = async (req, res, next) =>{
   try{
     const {userId, content,imageUrl} = req.body;    
 
@@ -137,7 +114,7 @@ async modifyPost (req, res, next) {
     }  
 
   }
-}
+
 
 
 

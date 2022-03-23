@@ -12,7 +12,7 @@ const express = require('express')
 const router = express.Router()
 const userAuth = require ('../controllers/userAuth');
 const passwordValidation = require("../middleware/passwordValidation");
-const auth = require ("../middleware/auth.Jwt");
+const auth = require ("../middleware/authJwt");
 const authAdmin = require("../middleware/authUserAdmin");
 const multer =require ("../middleware/multer.config");
 
