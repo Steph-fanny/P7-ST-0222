@@ -35,25 +35,16 @@ exports.addComment = (req, res, next) => {
     .catch(error => res.status(400).json({message: 'Vous ne pouvez pas publier un post' }))
 }  
            
-
-
-
-
-
 // /*** afficher tous les commentaires ***/
 exports.getAllComment = (req, res, next) => {
-    Comment.findAll({ 
-        where: { postId: req.body.postId },
-        attributes:["id","postId", "content","userId"]  
-    })
+    Comment.findAll()
         .then((comments) => res.status(200).json(comments))
         .catch(error => {console.log(error);
                 res.status(400).json ({error})
-            })
+        })
 };
 
    
-
 // /*** afficher un commentaire ***/
 exports.getOneComment = (req, res, next) => {
     Comment.findOne({ 
@@ -66,60 +57,38 @@ exports.getOneComment = (req, res, next) => {
             })
 };
    
-
 // // ***supprimer un commentaire
-exports.deleteComment  = (req, res, next) => {
-    User.findOne({
-        attributes: ['isAdmin'], 
-        where: { id: req.body.userId }
-    })
-    .then(user=>{   
-        Comment.findOne({
-            where: {Id: req.params.id },
-            attributes: ['authorId']         
-        })              
-            .then((comment) => {
-                 if (req.body.userId == comment.authorId || user.isAdmin == '1' ) {
-                    Comment.destroy({ where: { id: req.params.id } }) 
-                        .then(() => res.status(200).json({ message: 'commentaire supprimée' }))
-                        .catch(error => {console.log(error);
-                            res.status(400).json ({error})
-                        })
-                }else {res.status(401).json({ message: 'vous n/avez pas l/autorisation '})}
-
-            })      
-    })         
-    .catch(error => {console.log(error);
-        res.status(500).json ({error})
-    })
-};
+exports.deleteComment  = (req, res, next) => { 
+    Comment.findOne({
+        where: {Id: req.params.id },             
+    })              
+    Comment.destroy({ where: { id: req.params.id } }) 
+            .then(() => res.status(200).json({ message: 'commentaire supprimée' }))
+            .catch (error => res.status(400).json({error}))
+               
+}      
+   
 
 
-// *** modifier un commentaire : auteur du commentaire ***
-exports.updateComment = (req, res, next) => {
-    User.findOne({        
-        where: { id: req.body.userId }
-    })
-    .then(user=>{   
-        Comment.findOne({
-            where: {Id: req.params.id },
-            attributes: ['authorId']       
-        })                          
-        .then((comment) => {
-            if (req.body.userId == comment.authorId ) {
-                const newComment = { comment: req.body.comment };
-                    Comment.update(
-                        newComment,
-                        { where: { id: req.params.id }}
-                    ) 
-                    .then(() => res.status(200).json({ message: 'commentaire modifié' }))
-                    .catch(error => {console.log(error);
-                            res.status(400).json ({error})
-                })
-                }else {res.status(401).json({ message: 'vous n/avez pas l/autorisation '})}
-            })      
-        })         
-    .catch(error => {console.log(error);
-        res.status(500).json ({error})
-    })
-};
+
+
+
+
+
+
+
+// // *** modifier un commentaire : auteur du commentaire ***
+// exports.updateComment = (req, res, next) => {
+    
+//     Comment.findOne({          
+//         where: { id: req.params.id},
+       
+//     }) 
+   
+//         Comment.update({  
+//             where: { id: req.params.id } })         
+                       
+//      .then(() => res.status(200).json({ comment }))
+//     .catch(error => res.status(400).json({ error}))
+        
+// }

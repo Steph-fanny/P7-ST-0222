@@ -21,11 +21,11 @@ const commentCtrl = require("../controllers/comment")
   /*** afficher tous les commentaire ***/
   router.get("/", commentCtrl.getAllComment);
   
-   /*** modifier un commentaire ***/
-  router.put("/:id",commentCtrl.updateComment);
+  //  /*** modifier un commentaire ***/
+  // router.put("/:id",commentCtrl.updateComment);
 
    // *** supprimer un commentaire posté ***
-  router.delete("/:id", auth, commentCtrl.deleteComment);
+  router.delete("/:id", commentCtrl.deleteComment);
 
  module.exports = router;
 
