@@ -22,8 +22,8 @@
   /*** afficher un post ***/
   router.get ("/:id",  postCtrl.getOnePost);
 
-  // // *** modifier un post ***
-  // router.put("/:id", multer, postCtrl.modifyPost);
+  // *** modifier un post ***
+  router.put("/:id", multer, postCtrl.modifyPost);
 
   /*** supprimer un post  : admin ***/
   router.delete ("/:id", multer, postCtrl.deletePost);

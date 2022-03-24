@@ -10,43 +10,56 @@ const CONTENT_LIMIT = 4;
 //vérifier nombre de caractere <
 
 
-
 // Création d'un post //
 exports.createPost = (req, res, next) => {
-  // récupérer les paramétres envoyés dans la requete
-    const post = {
-      userId: req.body.userId, 
-      postId:req.params.postId,            
+  // récupérer les paramétres envoyés dans la requete 
+  const postObjet = { 
+      userId: req.body.userId,                
       content: req.body.content,
-    }
-    console.log(post)
-    // vérification: si 1 des paramétre obligatoire est null   
-    if (req.body.content == null){
-      return res.status(400).json({message: 'le contenu ne peut pas être vide'});
-    } 
-    if (req.body.content.lenght<= CONTENT_LIMIT){
-       return res.status(400).json({message: 'le contenu doit etre plus eleve'});
-    } 
-    // enregistrement dans bdd
-    Post.create({    
-      userId: req.body.userId,                    
-      content:req.body.content,
-      imageUrl: null,
-      likeCount:0,
+  }
+  console.log(postObjet)
+  // vérification: si 1 des paramétre obligatoire est null   
+  if (req.body.content == null){
+    return res.status(400).json({message: 'le contenu ne peut pas être vide'});
+  } 
+  if (req.body.content.lenght<= CONTENT_LIMIT){
+    return res.status(400).json({message: 'le contenu doit etre plus eleve'});
+  } 
+  // enregistrement dans bdd : si présence d'un fichier ou non
+  if (req.file) {
+    Post.create({ 
+      ...postObjet,
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename }`,
+  })
+    .then(() => res.status(201).json({message: 'post créé !'}))
+    .catch((error) => res.status(400).json({message: 'Vous ne pouvez pas publier un post'}))
+  } else {
+
+    Post.create({
+    ...postObjet,
+    imageUrl: null,
     })
+    .then(() => res.status(201).json({ message: 'post créé !'}))
+    .catch((error) => res.status(400).json({message: 'Vous ne pouvez pas publier un post'}))
+    }
+}
+   
+//   const post = new Post({    
+//     ...postObjet, // va copier les champs du body de la request : toutes les infos
+//     // récupérer l'url compléte de l'image,
+//     //1 er: http ou https (protocol) + host du serveur : racine + nom fichier
+//     imageUrl: `${req.protocol}://${req.get("host")}/images/${
+//       req.file.filename }`,
+//   });
 
-    .then(() => res.status(201).json({ message: "Message envoyé!" }))
-    .catch(error => res.status(400).json({message: 'Vous ne pouvez pas publier un post' }))
-}  
-                     
-
-/*** afficher tous les posts */
-exports.getAllPost = (req, res, next) => {
-  console.log("bonjour tous les posts")
-  Post.findAll({ 
+          
+/*** afficher tous les posts et les commentaires liés */
+exports.getAllPost = (req, res, next) => {  
+  Post.findAll({   
     attributes:["id", "userId", "content", "imageUrl",]   
   })
-    .then(users => res.status(200).json({ users}))       
+    .then(posts => res.status(200).json({ posts}))       
     .catch(error =>{
       console.log(error);
       res.status(400).json ({error})
@@ -66,57 +79,42 @@ exports.getOnePost = (req, res, next) =>{
   
 // *** supprimer un post  et les commentaires qui sont liés***/
 exports.deletePost = (req, res, next) => {
-  Post.findOne({ where: { id: req.params.id }})
-    .then((post) => {
-      if(post.userId === res.locals.idUser){                
-             const filename = post.imageUrl.split(`/images/`)[1];
-                // fonction de fs : unlink (suppression)
-                fs.unlink(`images/${filename}`,() => {
-                // suppression de la base de donnée
-
-        Post.destroy({ where: { id: req.params.id } })                  
-            .then(() => res.status(201).json("post supprime"))
-            .catch (error =>
-                      res.status(400).json({error}))
-      })  
-    }         
-  })  
-   .catch(error => res.status(500).json({ error }));        
+  Post.findOne({ where: { id: req.params.id }})  
+  
+  Post.destroy({ where: { id: req.params.id } })                  
+    .then(() => res.status(201).json("post supprime"))
+    .catch (error => res.status(400).json({error}))
+        
 }
 
 
+//*** modifier un post ****/
+exports.modifyPost = (req, res, next) =>{
+  Post.findOne({ 
+    where: { id: req.params.id,},  
+    include: db.User
+    }) 
+
+    const postObject = req.file ? {
+      ...req.body.post,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : {
+      ...req.body
+    };
+
+   Post.update({
+      ...postObject
+      }, {where: { id: req.params.id }
+    })
+    .then(() => res.status(200).json({ postObject }))
+    .catch(error => res.status(400).json({ error}))
+ 
+} 
+
+ 
+ 
 
 
-
-// exports.modifyPost = (req, res, next) =>{
-//    //soit on change l'image si une nouvelle soit on modifie juste le corps de la requête
-//  const postObject = req.file
-//     ? {
-//         ...JSON.parse(req.body.post),
-//         imageUrl: `${req.protocol}://${req.get('host')}/image/${
-//           req.file.filename
-//         }`
-//       }
-//     : { ...req.body };
-
-// //1er argument:  quelle sauce on veut modifier, 2 eme: récupère les infos du body pour les attribuer au même id
-//   Post.findOne({   
-//     where: { id: req.params.id, userId: req.user.id },
-//     include: db.User
-//   }) 
-//   .then(post => {
-//     if (!post) {
-//       res.status(400).json({ error: "Vous n'avez pas l'autorisation de mofifier le post" })
-//     } else {
-//       post.update(postObject)
-//         .then(post => res.status(200).json({ post }))
-//     }
-//   })
-// }
-
-
-
-  
                    
 
 
