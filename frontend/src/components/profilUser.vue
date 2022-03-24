@@ -159,14 +159,13 @@ export default {
         imageUrl: "", 
         creatAt:"",            
       },
-        token: localStorage.getItem("token"),
-        userId: localStorage.getItem("userId"),
+        token: localStorage.getItem("token"),       
         image: "",      
     }
   },
   
   async created() {
-    let url = `http://localhost:3000/api/user/${ this.userId }`;
+    let url = `http://localhost:3000/api/user/${this.userId }`;
     let options = {
       method: "GET",
       headers: {

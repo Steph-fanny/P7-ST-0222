@@ -11,11 +11,12 @@ const CONTENT_LIMIT = 4;
 
 
 
-// Création d'un message //
+// Création d'un post //
 exports.createPost = (req, res, next) => {
   // récupérer les paramétres envoyés dans la requete
     const post = {
-      userId: req.body.userId,             
+      userId: req.body.userId, 
+      postId:req.params.postId,            
       content: req.body.content,
     }
     console.log(post)
@@ -27,7 +28,7 @@ exports.createPost = (req, res, next) => {
        return res.status(400).json({message: 'le contenu doit etre plus eleve'});
     } 
     // enregistrement dans bdd
-    Post.create({
+    Post.create({    
       userId: req.body.userId,                    
       content:req.body.content,
       imageUrl: null,
@@ -43,7 +44,7 @@ exports.createPost = (req, res, next) => {
 exports.getAllPost = (req, res, next) => {
   console.log("bonjour tous les posts")
   Post.findAll({ 
-    attributes:["userId", "content", "imageUrl",]   
+    attributes:["id", "userId", "content", "imageUrl",]   
   })
     .then(users => res.status(200).json({ users}))       
     .catch(error =>{
@@ -64,57 +65,54 @@ exports.getOnePost = (req, res, next) =>{
 
   
 // *** supprimer un post  et les commentaires qui sont liés***/
-exports.deletePost = async (req, res, next) =>{
-   try{       
-       
-    // Post.findOne({ where: { id: req.body.id }})
-    //     .then((post) => {
-    //         if(post.userId === res.locals.idUser){                
-    //             const filename = sauce.imageUrl.split(`/images/`)[1];
-    //             // fonction de fs : unlink (suppression)
-    //             fs.unlink(`images/${filename}`,() => {
-    //             // suppression de la base de donnée
+exports.deletePost = (req, res, next) => {
+  Post.findOne({ where: { id: req.params.id }})
+    .then((post) => {
+      if(post.userId === res.locals.idUser){                
+             const filename = post.imageUrl.split(`/images/`)[1];
+                // fonction de fs : unlink (suppression)
+                fs.unlink(`images/${filename}`,() => {
+                // suppression de la base de donnée
 
-                  const post= await Post.destroy({ where: { id: req.params.id } })                  
-                  res.status(201).json("post supprime")
-                  } catch (error){
-                  res.status(400).send(error);
-                  }  
-                },
-              
-
-    //     }),
-    //   }
-    // }
+        Post.destroy({ where: { id: req.params.id } })                  
+            .then(() => res.status(201).json("post supprime"))
+            .catch (error =>
+                      res.status(400).json({error}))
+      })  
+    }         
+  })  
+   .catch(error => res.status(500).json({ error }));        
+}
 
 
 
 
 
+// exports.modifyPost = (req, res, next) =>{
+//    //soit on change l'image si une nouvelle soit on modifie juste le corps de la requête
+//  const postObject = req.file
+//     ? {
+//         ...JSON.parse(req.body.post),
+//         imageUrl: `${req.protocol}://${req.get('host')}/image/${
+//           req.file.filename
+//         }`
+//       }
+//     : { ...req.body };
 
-exports.modifyPost = async (req, res, next) =>{
-  try{
-    const {userId, content,imageUrl} = req.body;    
-
-    const post = await Post.update({
-    where: { id: req.params.id, userId: req.user.id },
-    include: db.User
-    });
-
-    // if(!post){
-    //   return res.status(400).json("post non trouvé")
-    // }
-      post.userId = userId;
-      post.content = content;
-      post.imageUrl = imageUrl;
-
-     res.json({"message": "post updated"});
-    } catch (error) {
-        res.json({ message: error.message });
-    }  
-
-  }
-
+// //1er argument:  quelle sauce on veut modifier, 2 eme: récupère les infos du body pour les attribuer au même id
+//   Post.findOne({   
+//     where: { id: req.params.id, userId: req.user.id },
+//     include: db.User
+//   }) 
+//   .then(post => {
+//     if (!post) {
+//       res.status(400).json({ error: "Vous n'avez pas l'autorisation de mofifier le post" })
+//     } else {
+//       post.update(postObject)
+//         .then(post => res.status(200).json({ post }))
+//     }
+//   })
+// }
 
 
 
@@ -131,19 +129,4 @@ exports.modifyPost = async (req, res, next) =>{
 
 // };
 
-// exports.getOnePost = (req, res, next) => { 
-//    const id = req.params.id;
-//   Post.findbyPk(id)     
-//       .then(data => {
-//           if (data) {res.send(data);
-//           } else {
-//             res.status(404).send({ message: `Cannot find Tutorial with id=${id}.`
-//             });
-//           }
-//         })
-//       .catch(err => {res.status(500).send({
-//           message: "Error retrieving Tutorial with id=" + id
-//         });
-//       });
-// }
 

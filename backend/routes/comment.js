@@ -13,16 +13,16 @@ const commentCtrl = require("../controllers/comment")
 
     
   /*** créer un nouveau commentaire ***/ 
-  router.post("/",auth, multer ,commentCtrl.addComment);
+  router.post("/", multer ,commentCtrl.addComment);
 
   /*** afficher un commentaire ***/
-  router.get("/:id", auth, commentCtrl.getOneComment);
+  router.get("/:id", commentCtrl.getOneComment);
 
   /*** afficher tous les commentaire ***/
-  router.get("/", auth,commentCtrl.getAllComment);
+  router.get("/", commentCtrl.getAllComment);
   
    /*** modifier un commentaire ***/
-  router.put("/:id", auth,commentCtrl.updateComment);
+  router.put("/:id",commentCtrl.updateComment);
 
    // *** supprimer un commentaire posté ***
   router.delete("/:id", auth, commentCtrl.deleteComment);

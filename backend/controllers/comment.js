@@ -4,52 +4,68 @@ const User = db.User;
 const Comment = db.Comment;
 const Post = db.Post;
 const fs = require('fs');
-
+const CONTENT_LIMIT = 2;
 
 
 /**** creation d'un commentaire */
 exports.addComment = (req, res, next) => {
-    if (!req.body.content) {
-            res.status(400).send({message: "impossible de publier un commentaire vide !"
-            });
+    // récupérer les paramétres envoyés dans la requete
+    const comment = {                    
+        postId: req.body.postId,       
+        content: req.body.content,
+        userId: req.body.userId,   
     }
-        User.findOne({
-            attributes: ['firstName'], 
-            where: { id: req.body.userId }
-        })
-        .then(user=>{        
-            const newComment = {
-                author:user.firstName,
-                authorId:req.body.userId,               
-                postId: req.params.id,       
-                content: req.body.content
-            };
-        Comment.create(newComment)
-            .then(() => res.status(201).json({ message: "Commentaire crée !" }))
-            .catch(error => {console.log(error);
-                    res.status(500).json ({error})
-                })
-        }) 
+        console.log(comment)
+     // vérification: si 1 des paramétre obligatoire est null   
+    if (req.body.content == null){
+      return res.status(400).json({message: 'le contenu ne peut pas être vide'});
+    } 
+    if (req.body.content.lenght<= CONTENT_LIMIT){
+       return res.status(400).json({message: 'le contenu doit etre plus eleve'});
+    } 
+
+    // enregistrement dans bdd
+    Comment.create({            
+        postId: req.body.postId,                 
+        content:req.body.content,
+        userId: req.body.userId,
+        createAt: 0
+   })
+    .then(() => res.status(201).json({ message: "Message envoyé!" }))
+    .catch(error => res.status(400).json({message: 'Vous ne pouvez pas publier un post' }))
 }  
+           
+
+
+
+
 
 // /*** afficher tous les commentaires ***/
 exports.getAllComment = (req, res, next) => {
-    Comment.findAll({ where: { messageId: req.params.id }})
+    Comment.findAll({ 
+        where: { postId: req.body.postId },
+        attributes:["id","postId", "content","userId"]  
+    })
         .then((comments) => res.status(200).json(comments))
         .catch(error => {console.log(error);
                 res.status(400).json ({error})
             })
 };
 
+   
+
 // /*** afficher un commentaire ***/
 exports.getOneComment = (req, res, next) => {
-    Comment.findOne({ where: { id: req.params.id } })
-        .then((comment) => res.status(200).json({message: "commentaire affiché"}))
+    Comment.findOne({ 
+        where: { id: req.params.id },
+        attributes:["id","postId", "content","userId"]  
+     })
+        .then((comment) => res.status(200).json({comment}))
         .catch(error => {console.log(error);
                 res.status(400).json ({error})
             })
 };
-
+   
 
 // // ***supprimer un commentaire
 exports.deleteComment  = (req, res, next) => {

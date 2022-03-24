@@ -22,11 +22,11 @@
   /*** afficher un post ***/
   router.get ("/:id",  postCtrl.getOnePost);
 
-  // *** modifier un post ***
-  router.put("/:id", multer, postCtrl.deletePost);
+  // // *** modifier un post ***
+  // router.put("/:id", multer, postCtrl.modifyPost);
 
   /*** supprimer un post  : admin ***/
-  // router.delete ("/:id",auth, multer, postCtrl.deletePost);
+  router.delete ("/:id", multer, postCtrl.deletePost);
 
   // /**aimer un post **/
   // router.post = ("/:id/like", auth, postCtrl.likePost);
