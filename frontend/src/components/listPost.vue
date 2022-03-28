@@ -4,7 +4,8 @@
   <!-- tableau de post-->
     <div class="bloclist" 
       v-for= "post in posts.slice().reverse() || []" 
-      :key= "post.id" >
+      :key= "post.id"
+       >
                          
       <div
         class="card-author">
@@ -67,6 +68,10 @@ components: {
         }
     },
   
+ 
+
+
+
     mounted() {
         this.userId = JSON.parse(localStorage.getItem("userId"));        
         console.log(localStorage);

@@ -12,15 +12,16 @@
   // const authAdmin = require("../middleware/authUserAdmin");
   const multer = require("../middleware/multer.config"); 
   const postCtrl = require("../controllers/post");
+ 
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post("/new", multer, postCtrl.createPost);
+  router.post("/new",multer, postCtrl.createPost);
 
   /*** afficher tous les posts ***/
   router.get("/",postCtrl.getAllPost);
 
   /*** afficher un post ***/
-  router.get ("/:id",  postCtrl.getOnePost);
+  router.get ("/:id", postCtrl.getOnePost);
 
   // *** modifier un post ***
   router.put("/:id", multer, postCtrl.modifyPost);

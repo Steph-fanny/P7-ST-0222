@@ -69,6 +69,15 @@ export default {
            
         }
     },
+//      data:{
+//     post: [
+//       content:"" ,   
+//         imageUrl:""  ,  
+
+//     ]
+//   }
+
+
 
     mounted() {
             this.userId = JSON.parse(localStorage.getItem("userId"));

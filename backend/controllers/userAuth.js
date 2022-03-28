@@ -8,6 +8,13 @@ const jwt = require("jsonwebtoken"); // token
 const fs = require("fs");
 require("dotenv").config();
 
+const newToken = user => {
+  token = jwt.sign({ userId: user.id }, 'RANDOM_TOKEN_SECRET', {
+    expiresIn: '24h'
+  })
+  return { user, token }
+}
+
 // const { isEmail } = require('validator'); // bibliothéque validation
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -20,31 +27,21 @@ module.exports.signup = (req, res, next) => {
         }
     User.findOne({where: { email: req.body.email }}) 
     //Vérification si un utilisateur corresponde déjà à l'email de la DB//
-        .then((user) => {
-            if (!user) {  
+      .then((user) => {
+        if (!user) {  
 
-            bcrypt.hash(req.body.password, 10)
-            .then (hash => {
-            // création du nouvel user
-                const signUser = User;
-                signUser.create ({                
+         bcrypt.hash(req.body.password, 10)
+          .then (hash => {
+          // création du nouvel user
+            const signUser = User;
+              signUser.create ({                
                 firstName : req.body.firstName,
                 lastName : req.body.lastName,        
                 email: req.body.email,
                 password : hash,
                 isAdmin : 0,            
                 })      
-                .then((user) => res.status(201).json({
-                    token: jwt.sign({
-                        userId: user.id,                    
-                    },
-                    `${process.env.SECRET_KEY}`, {
-                        expiresIn: '24h'}
-                    ),
-                    userId: user.id,  
-                    message: 'utilisateur crée'                
-                    }))
-
+                .then((user) => res.status(201).json(newToken(user)))              
                 .catch(error => {console.log(error);
                     res.status(400).json ({message: 'compte non crée!'})
                  })            
@@ -52,8 +49,6 @@ module.exports.signup = (req, res, next) => {
         }})    
     .catch (error => res.status(500).json ({message :"utilisateur déja existant"}));
 }
-
-
 
 
 exports.login = (req, res, next) => {
@@ -71,10 +66,10 @@ exports.login = (req, res, next) => {
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
             if(!valid){
-                return res.status(401).json ({message : 'mot de passe incorect !'});
+           return res.status(401).json ({message : 'mot de passe incorect !'});
             }            
             res.status(200).json({
-                //si ok : reponse = objet json
+                //si ok :renvoi token 
                 userId : user.id,
                 email : user.email,
                 token : jwt.sign(
