@@ -1,11 +1,5 @@
 <template>
- <div class="container-fluid gedf-wrapper">    
-    <!-- On récupére les posts : boucle avec vfor -->  
-  <!-- tableau de post-->
-  <div v-for= "post in posts" 
-    :key= "post.id"
-    class="bloclist" 
-    >
+<div class="container-fluid gedf-wrapper">       
     <div class="post-card">                                  
         <div class="card gedf-card">
             <div class="card-header container-info">                
@@ -62,14 +56,10 @@
             </div>    
         </div>                                  
     </div>
-  </div>  
 </div>    
-
-
-
-
 </template>
-   
+
+
 <script>
 export default {
     name: 'listPost',  
@@ -88,8 +78,8 @@ export default {
         },
         
     mounted() {
-        this.userId = localStorage.getItem("userId");  
-        this.isAdmin = localStorage.getItem("isAdmin");      
+        this.userId = JSON.parse(localStorage.getItem("userId"));  
+        this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));      
         console.log(localStorage);
 
         let url = "http://localhost:3000/api/post/";
@@ -241,3 +231,5 @@ width: 100%;
 
 
     </style>
+
+

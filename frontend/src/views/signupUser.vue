@@ -15,7 +15,7 @@
                
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="firstName">Prénom</label>
-                  <input v-model= "firstName"
+                  <input v-model= "input.firstName"
                   type="text" 
                   id="firstName" name="firstName" class="form-control form-control-lg"
                   placeholder="Votre prénom" required/>                  
@@ -23,15 +23,15 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="lastName">Nom</label>
-                  <input v-model= "lastName"
+                  <input v-model= "input.lastName"
                   type="text" 
-                  id="lastName" name="firstName" class="form-control form-control-lg"
+                  id="lastName" name="lastName" class="form-control form-control-lg"
                   placeholder="Votre nom" required/>                  
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="email">Email</label>
-                  <input v-model= "email"
+                  <input v-model= "input.email"
                   type="email" 
                   id="email" name="email" class="form-control form-control-lg" 
                   placeholder="Votre adresse email valide" required
@@ -40,7 +40,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="password">Mot de passe</label>
-                  <input v-model= "password"
+                  <input v-model= "input.password"
                   type="password" id="password" name="password"
                   class=" password form-control form-control-lg" 
                   placeholder="Votre mot de passe*" required
@@ -88,11 +88,12 @@ export default {
 
 data(){
     return{
+      input:{
         firstName: "",
         lastName: "",
         email: "",
         password: "",        
-                
+      }          
     };     
   },
 
@@ -100,10 +101,10 @@ data(){
   methods:{
     dataSignup(){     
       let inputDatas ={
-        "firstName": this.firstName,
-        "lastName" : this.lastName,
-        "email": this.email,
-        "password": this.password,
+        "firstName": this.input.firstName,
+        "lastName" : this.input.lastName,
+        "email": this.input.email,
+        "password": this.input.password,
       }
       console.log(inputDatas)
       
@@ -117,8 +118,10 @@ data(){
       }
       console.log(option)
             fetch(urlSignup, option)
-                .then(res => res.json())
-                .then((res) => {                   
+                .then(function(res) {
+                res.json()
+                })
+                .then(function(res) {                   
                     localStorage.setItem("userId", res.userId);                                     
                     localStorage.setItem("token", res.token);
                     console.log(localStorage)

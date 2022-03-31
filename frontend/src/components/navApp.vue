@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Navbar brand -->
         <a class="navbar-brand mt-2 mt-lg-0" href="#">
-          
+        <!--image pas defaut -->  
           <img
             src="../assets/icon-left-font.png"
             height="115"
@@ -32,13 +32,13 @@
             </router-link>
           </li>  
   
-          <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
               <router-link to= "/forum" 
               class="nav-link"             
               title= "acceuil">
               Accueil
               </router-link>    
-          </li>       
+          </li>        -->
           
       <!-- Left links -->
       </div>
@@ -46,13 +46,30 @@
 
       <!-- Right elements -->
       <div class="d-flex align-items-center">
-          <li class= "dropdown-item">
-              <router-link to= "/" 
-              @click= "logout"  
-              title= "deconnexion">
-              Deconnexion
-              </router-link>            
-            </li>
+          <li  @click="logout"  class= "dropdown-item ">            
+           <!-- deconnexion -->
+        <div class="dropdown">
+          <router-link to= "/" 
+            class="d-flex align-items-center"         
+            id="navbarDropdownMenuAvatar"
+            role="button"
+            data-mdb-toggle="dropdown"
+            aria-expanded="false"            
+          >
+            <img
+              src="../assets/kisspng-abmeldung-button-icon-shut-cliparts-5a89cae38f35c7.1285697615189798115866.png"
+              height="45"
+              alt="deconnexion"
+              
+              v-bind= "user"
+              
+            />
+          </router-link>
+          
+        </div>                            
+                         
+
+          </li>
               
         <!-- Avatar -->
         <div class="dropdown">
@@ -70,10 +87,10 @@
               alt="Black and White Portrait of a Man"
               loading="lazy"
               v-bind= "user"
-              @click="getOneUser()"
+              
             />
           </router-link>
-          
+                    
         </div>
       </div>
       
@@ -86,52 +103,10 @@
 export default {
   name: "navApp",
 
-  data(){
-    return {
-      user: {
-        userId: localStorage.getItem("userId"),       
-        firstName: "",
-        lastName: "",
-        email: "",  
-        imageUrl: "",             
-      },
-      token: localStorage.getItem("token"),
-      userId: localStorage.getItem("userId"),
-      image: "",
-      
-    }
-  },
-  
+ 
 
   methods : {   
-    getOneUser() {
-      console.log("Bienvenue Bruce")
-      let url = `http://localhost:3000/api/user/${ this.user.userId }`;
-      let options = {
-        method: "GET",
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem("token"),
-        }
-      };
-      fetch(url, options)
-        .then(res => res.json()) 
-        // .then((response) => {
-          
-        //   this.user = response.data.user;
-        //   console.log(response.data.user)
-        //   this.image = response.data.image;
-        // })           
-        .then(data => {                
-          this.user.firstname = data.firstName
-          this.user.lastname = data.lastname;
-          this.user.email = data.email;
-          this.user.imageUrl = data.imageUrl;
-          this.user.createdAt = data.createdAt;          
-        })
-       
-        .catch(error => console.log(error))
-      },
-
+    
   logout() {
         localStorage.clear();
         this.$router.push("/");

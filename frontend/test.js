@@ -183,3 +183,5 @@ commentaire
 //     },
 
 
+//  <script src="/path/to/vue.js"></script>
+//     <script src="/path/to/vuex.js"></script>

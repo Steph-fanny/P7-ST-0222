@@ -26,7 +26,7 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label login-form" for="email">Email</label>
-                    <input v-model= "dataLogin.email"
+                    <input v-model= "input.email"
                     type="email" 
                     id="email" 
                     class="form-control form-control-lg"
@@ -35,7 +35,7 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label login-form" for="password">Mot de passe</label>
-                    <input v-model= "dataLogin.password"
+                    <input v-model= "input.password"
                     type="password" 
                     id="password" name="password"
                     class="form-control form-control-lg" 
@@ -83,19 +83,18 @@ name: 'loginUser',
 
   data() {
     return {
-      dataLogin:{
+      input:{
         email:"",
         password:"",          
-      }, 
-      error: "",
+      },      
     }  
   },
 
   methods:{
     loginAccount(){
       let loginDatas ={
-        "email": this.dataLogin.email,
-        "password": this.dataLogin.password
+        "email": this.input.email,
+        "password": this.input.password
       }
       console.log(loginDatas)       
 
