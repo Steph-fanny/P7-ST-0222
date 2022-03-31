@@ -1,41 +1,43 @@
 <template>
     <div class="container-fluid">    
-    <!-- On récupére les posts des plus récents aux plus anciens: boucle avec vfor -->  
+    <!-- On récupére les posts : boucle avec vfor -->  
   <!-- tableau de post-->
-    <div class="bloclist" 
-      v-for= "post in posts.slice().reverse() || []" 
+    <div 
+      v-for= "post in posts" 
       :key= "post.id"
+      class="bloclist" 
        >
-                         
-      <div
-        class="card-author">
-        <h3>{{ post.user.firstname }} {{ post.user.lastname }}</h3>
-      </div>
-            
-      <div class = "date-post">
-        <p>{{ post.createdAt }} </p>
-      </div>
-      <div class="bloc-contenu">
-        <p> {{ post.content }} </p>
-      </div>
 
-      <div class="bloc-btn">
-        <button v-if="post.userId == userId"
-          type="button"
-          class=" btn btn-danger"
-          title="supprimer"
-          aria-label="bouton supprimer"       
-          @click="deletePost(post.id)">
-          supprimer le post        
-        </button>
-        
-        <button class="btn btn-primary" @click="showComments">
-          Voir les commentaires
-        </button>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="mr-2">
+        <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+      </div>
+      <div class="ml-2">
+      <div class="h5 m-0">{{ user.firstname }} {{ user.lastname }}</div>  
+      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div> 
+    </div>                                        
+                       
+    <div class="card-body">     
+      <p class="card-text">{{ post.content }}</p>
+      <img v-bind:src ="post.imageUrl" alt=""> 
+    </div>
 
-      <!-- <div><addComment/></div> -->
-      <!-- <addComment: commentId= "comment.id" :commentuserId="comment.userId"/> -->
-     
+    
+    <div class="card-footer">
+      <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+      <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+          <!-- <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a> -->
+      <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>Like</button> 
+      <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>Comment</button> 
+      <button v-if="post.userId == userId"
+            type="button"
+            class=" btn btn-danger"
+            title="supprimer"
+            aria-label="bouton supprimer"       
+            @click.prevent="deletePost(post.id)">
+            supprimer le post        
+          </button>        
+        </div>                            
 
       </div>
     </div>  
@@ -61,9 +63,10 @@ components: {
 
  data() {
       return {
-        firstname: "",
-        lastname: "",
-        userId: localStorage.getItem("userId"),           
+        firstName: "",
+        lastName: "",
+        userId: localStorage.getItem("userId"), 
+        imageUrl:"",          
         posts: [],
         }
     },
@@ -76,7 +79,7 @@ components: {
         this.userId = JSON.parse(localStorage.getItem("userId"));        
         console.log(localStorage);
 
-        let url = "http://localhost:3000/api/post";
+        let url = "http://localhost:3000/api/post/";
         let options = {
             method: "GET",
             headers: {
@@ -84,14 +87,17 @@ components: {
             }
         };
         fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                this.posts = data.post;
-                console.log(this.posts)
-            })
+         .then(function(res) {   
+          return res.json();
+        })
+          .then(function(data) {        
+          
+
+            console.log(data)
             .catch(error => console.log(error))
+          })
     },
+
     methods: {
         ///DELETE MESSAGE//
         deletePost(postid) {
@@ -131,6 +137,30 @@ width: 100%;
   padding: 25px;
 }
 
+body {
+            background-color: #eeeeee;
+        }
 
+        
+
+        .gedf-wrapper {
+            margin-top: 0.97rem;
+        }
+
+        @media (min-width: 992px) {
+            .gedf-main {
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+            .gedf-card {
+                margin-bottom: 2.77rem;
+            }
+        }
+
+        /**Reset Bootstrap*/
+        .dropdown-toggle::after {
+            content: none;
+            display: none;
+        }
 
 </style>
