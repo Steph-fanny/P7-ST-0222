@@ -86,7 +86,7 @@
               height="85"
               alt="Black and White Portrait of a Man"
               loading="lazy"
-              v-bind= "user"
+             
               
             />
           </router-link>

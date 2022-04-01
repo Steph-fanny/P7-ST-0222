@@ -104,7 +104,7 @@ export default {
                 res.json();
             })
             .then(function(data) {  
-                this.posts=data;                       
+                this.posts = data.posts;                       
                 console.log(this.posts)                
             })
             .catch(error => console.log(error))

@@ -68,7 +68,8 @@ export default {
             imageUrl:""  ,                    
             image:"",    
             token: localStorage.getItem("token"),
-            userId: ""           
+            userId: ""   
+                
         }
     },
 
@@ -87,8 +88,7 @@ export default {
         /*** Créer un nouveau post ***/
         addPost() {
             let deliverPost = {   
-                "userId" : this.userId,
-                "username":this.username,
+                "userId" : this.userId,              
                 "image" : this.image,         
                 "content": this.content,                
             }      

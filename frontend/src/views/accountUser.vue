@@ -1,7 +1,6 @@
 <template>
 <div>
 <div><navApp/></div>
-
 <div><profilUser/></div>
 
 </div>
@@ -18,10 +17,11 @@ export default {
   name: "accountUser",
   components: {
     navApp,
-    profilUser
-   
-   
+    profilUser 
   },
+
+
+  
 
 }
 </script>

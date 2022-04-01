@@ -13,7 +13,7 @@
               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; background-color:#0d0764">
                 
                 <!--formulaire -->
-                <form action= ""
+                <form action= "" method="post"
                   id="form"
                   enctype="multipart/form-data"
                   @submit.prevent="updatePicture"
@@ -31,19 +31,15 @@
                   <input
                     type="file" class="form-control" id="file" name="file"
                     accept="image/*" ref="image" 
-                    @change="pictureToUpload"         
-                  />
-
-
-
-
-                    <div class="card-body mx-auto">
+                    @change="onFileSelected"         
+                  />                    
+                  <div class="card-body mx-auto">
                       <button
                         type="submit"
                         class="form-control btn btn-primary btn-confirm"
                         name="pictureUpdate"
                         id="pictureUpdate"
-                        @click.prevent="updatePicture"
+                        @click="updatePicture"
                       > Confirmer
                       </button> 
                     </div>
@@ -67,7 +63,7 @@
                       </div>                  
                   <div class="col-6 mb-3">
                     <h6>Nom</h6>
-                    <p class="text-muted"> {{user.lastName }}</p>
+                    <p class="text-muted"> {{ user.lastName }}</p>
                   </div>
                 </div>                
                
@@ -116,16 +112,18 @@ export default {
 
   data(){   
     return {        
-      user:{ 
+     user:{
         userId: localStorage.getItem("userId"),       
         firstName: " steph ",
         lastName: "",
         email: "" ,
         imageUrl: "", 
-        creatAt:"",            
-      },     
-       
-    }
+        image:"",
+        creatAt: "",                    
+      },  
+       image:"",  
+    }   
+    
   },
 
   mounted(){  
@@ -140,86 +138,121 @@ export default {
       };
 
       fetch(url, options)      
-       
         .then (function (response){
-         response.json()
+         return response.json()
         })
                  
-        .then(function(data) {      
-          console.table(data)  
-          // this.user.firstName = data.firstName; 
-          // console.log(data.firstName)           
-          // this.user.lastName = data.lastName;
-          //  console.log(data.lastName)      
-          // this.user.email = data.email;            
-          // this.user.creatAt = data.creatAt;  
-                  
+        .then(function(data) {   
+          console.table(data) 
+          console.log(data.user.lastName) 
+          console.log(data.user.email)  
+         
+         
         })  
         .catch(error => console.log(error))         
-       
-        
-  },   
-
+  },    
+           
   methods: {
 
-
-    filePictureToUpload() {
-      this.image = this.$refs.image.files[0];
+    onFileSelected (event) {   
+      console.log(event)  
+      // image a uploader
+      this.image = event.target.files[0];
       this.imageUrl = URL.createObjectURL(this.image)
     },
 
-  getOneUser() {
-             
-            let url = `http://localhost:3000/api/auth/${ this.user.userId }`;
-            let options = {
-                method: "GET",
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                }
-            };
-            fetch(url, options)
-            .then (function (res){console.log(res)})
-              //  .then(res => res.json())
-                .then(function(data) {      
-          console.table(data)  
-          this.user.firstName = data.firstName; 
-          console.log(data.firstName)           
-          this.user.lastName = data.lastName;
-           console.log(data.lastName)      
-          this.user.email = data.email;            
-          this.user.creatAt = data.creatAt;  
+    async updatePicture() {
+      //créer element à envoyer au server et ajouter le fichier choisi à formData
+      const fd = new FormData();           
+      // fd.append("userId, this.user.userId");
+      fd.append("image", this.image, this.image.name);
+      // fd.append("imageUrl", this.imageUrl);
+      console.log(this.image);
+   
+   
+      let updateProfile = {   
+                "userId" : this.userId,              
+                "image" : this.imageUrl,        
+                               
+            }      
+            console.log(updateProfile)  
+
+
+
+      let url = `http://localhost:3000/api/user/${this.user.userId }`;
+      let options = {
+          method: "PUT",
+           body: JSON.stringify(updateProfile),
+          headers: {           
+          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          } 
+          }
+        
+      fetch(url, options)
+      .then (function (response){        
+          return console.log(response.json())
+        })
+        .then(function(data) {  
+                 
+          this.image= data.user.imageUrl
+          console.log(data.user)
+          alert('The file has been uploaded successfully.')
+        })
+    },  
+
+
+
+
+
+    getOneUser() {             
+      let url = `http://localhost:3000/api/auth/${this.user.userId }`;
+      let options = {
+        method: "GET",
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+        }
+      };
+
+      fetch(url, options)
+        .then (function (response){
+         return response.json()
+        })
+        .then(function(data) {   
+          console.table(data)       
+          this.user.firstName = data.user.firstName; 
+            console.log(data.user.firstName)           
+          this.user.lastName = data.user.lastName;
+           console.log(data.user.lastName)      
+          this.user.email = data.user.email;            
+          this.user.creatAt = data.user.creatAt;  
                   
         })  
                 .catch(error => console.log(error))
         },
                
      
-    
-   
-
-
-   
-
-  deleteUser(){
+      deleteUser(){
         let url = "http://localhost:3000/api/user/${this.user.userId }"
-              let option = {
-                  method: "DELETE",
-                  headers: {
-                      'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                  }
-              };
+        console.log(this.user.userId)
+          let option = {
+            method: "DELETE",
+            headers: {
+             'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            }
+          };
         fetch(url, option)
-                  .then(function(response) {
-                      console.log(response);
-                      localStorage.clear();
-                      alert("Compte supprimé !");
-                  })
-                  .then(this.$router.push("/"))
-                  //retour page accueil
-                  .catch(error => console.log(error))
+          .then(function(response) {
+            console.log(response);
+            localStorage.clear();
+            alert("Compte supprimé !");
+          })
+          //retour page accueil
+          .then(this.$router.push("/"))            
+          .catch(error => console.log(error))
       } 
    
-} 
+  }
+ 
 }
 
 
