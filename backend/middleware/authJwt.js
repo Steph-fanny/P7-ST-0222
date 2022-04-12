@@ -13,10 +13,13 @@ l'utilisateur est authentifier avant d'autoriser l'envoi des requetes*/
 */
 const jwt = require('jsonwebtoken'); // On a besoin du package jwt //
 const db = require("../models/index");
-const User = db.User;
+const User= db.User
+
 
 
 module.exports = (req, res, next) => { // On exporte un middleware //
+   //tester si l'utilisateur est connecté  
+
     try {
         console.log(req.headers)
         const token = req.headers.authorization.split(' ')[1]; // [bear + N°]

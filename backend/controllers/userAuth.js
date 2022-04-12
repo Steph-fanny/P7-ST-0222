@@ -25,16 +25,17 @@ module.exports.signup = (req, res, next) => {
     if (!emailRegex.test(req.body.email)) {    
         return res.status(400).json({message: 'Email non valide' })
         }
+    // trouver un utilisateur par email    
     User.findOne({where: { email: req.body.email }}) 
     //Vérification si un utilisateur corresponde déjà à l'email de la DB//
-      .then((user) => {
+      .then(user => {
         if (!user) {  
 
          bcrypt.hash(req.body.password, 10)
           .then (hash => {
           // création du nouvel user
-            const signUser = User;
-              signUser.create ({                
+            
+              User.create ({                
                 firstName : req.body.firstName,
                 lastName : req.body.lastName,        
                 email: req.body.email,
@@ -53,9 +54,9 @@ module.exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     console.log("salut")
-    const user = db.User
+    const User = db.User
     // récupére les données de l'utilisateur
-    user.findOne ({ where: {email : req.body.email}})
+    User.findOne ({ where: {email : req.body.email}})
     // récupére l'email de la requete (input)
     .then(user => {
         // on vérifie que mail est dans la BDD
@@ -131,25 +132,30 @@ exports.getOneUser = (req, res, next) => {
   
  
 // *******modifier  les infos d'un utilisateur : profil par ex : PUT
-exports.updateUser = (req, res, next) => { 
-  try {
-    const userObject = req.file
-      ? {
-          ...JSON.parse(req.body.user),
-          imageUrl: `${req.protocol}://${req.get('host')}/public/${
-            req.file.filename
-          }`
-        }
-      : { ...req.body }
+exports.updateUserProfil = (req, res, next) => {  
+
+    const userObject = req.file?{          
+      ...req.body.user,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`            
+      } : { 
+        ...req.body }
 
     console.log(userObject)
-    req.user.update(userObject).then(user => res.status(200).json({ user }))
-  } catch (error) {
-    res.status(400).json({ error })
-  }
-};
 
+  User.findOne({ 
+    where: { id: req.params.id,},  
+  })  
+  User.update({
+   ...userObject
+  }, {where: { id: req.params.id }
+  })
 
+  .then(() => res.status(200).json({ postObject }))
+  .catch(error => res.status(400).json({ error}))
+ 
+} 
+
+    
                   
 /*** suppression du profil ***/
 exports.deleteUser = (req, res, next) => {    
@@ -160,6 +166,7 @@ exports.deleteUser = (req, res, next) => {
         if (user.imageUrl!==null) {
           const filename = user.imageUrl.split("/upload")[1];
           fs.unlink(`upload/${filename}`, () => {
+
           // on supprime le compte utilisateur  : fonction destroy
             User.destroy({where: { id: req.params.id }})
             .then (()=> res.status(200).json({ message: "Profil supprimé"}))
@@ -170,10 +177,15 @@ exports.deleteUser = (req, res, next) => {
           })
         }
       })
-    .catch(error => res.status(500).json({error}));   
-    }
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({error})
+    });   
+  }
 
- 
+   
+        
+
     
 
 

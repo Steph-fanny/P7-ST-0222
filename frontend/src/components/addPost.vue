@@ -66,8 +66,7 @@ export default {
         return {                                                
             content:"" ,   
             imageUrl:""  ,                    
-            image:"",    
-            token: localStorage.getItem("token"),
+            image:"",  
             userId: ""   
                 
         }
@@ -106,9 +105,9 @@ export default {
            
             fetch(url, options)
                 .then(res => res.json())
-                .then((res) => {                
-                    console.log(res)
-                    if (res.ok) {
+                .then((post) => {                
+                    console.log(post)
+                    if (post.ok) {
                         window.location.reload();
                         this.Post = {} // Retour à 0 des inputs //
                     } else {

@@ -31,4 +31,4 @@ const storage = multer.diskStorage({
     }
 });
 /*exporter multer avec objet storage et fichier unique (single)*/
-module.exports = multer ({storage : storage}).single('images');
+module.exports = multer ({storage : storage}).single('image');

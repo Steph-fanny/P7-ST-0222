@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
         /*** décodage du isAdmin ***/
         const isAdmin = decodedToken.isAdmin;
         if (isAdmin !== true) {
-            throw 'interdit aux non admins';
+            throw 'interdit aux non admin';
 
         } else {
             next();

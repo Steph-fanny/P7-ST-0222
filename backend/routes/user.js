@@ -14,7 +14,8 @@ const userAuth = require ('../controllers/userAuth');
 const passwordValidation = require("../middleware/passwordValidation");
 const auth = require ("../middleware/authJwt");
 const authAdmin = require("../middleware/authUserAdmin");
-const multer =require ("../middleware/multer.config");
+const multer =require ("../middleware/multer");
+
 
 
 /******** création des routes d'auth */
@@ -31,9 +32,9 @@ router.get("/logout",userAuth.logout);
    voir tous les utilisateurs */
    router.get("/accounts", userAuth.getAllUsers),
    //*rechercher un utilisateur/ voir un profil */
-   router.get("/:id",  userAuth.getOneUser),
+   router.get("/:id", userAuth.getOneUser),
     //*modifier un utilisateur*/
-   router.put("/:id",  multer, userAuth.updateUser);
+   router.put("/:id", multer, userAuth.updateUserProfil);
    /*supprimer un utilisateur*/
    router.delete("/:id", userAuth.deleteUser);
 

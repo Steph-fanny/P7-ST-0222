@@ -13,7 +13,7 @@
                     <img class="rounded-circle" src="../assets/photo-avatar-profil.png" width="50" alt="photo-profil-avatar" >
                 </div>
                 <div class="ml-2 info-post">
-                    <div class="h5 m-0"> {{ user.firstname }} {{ user.lastname }} </div>
+                    <div class="h5 m-0"> {{ user.firstName }} {{ user.lastName }} </div>
                     <div class="text-muted h7 mb-2 time-post"> <i class="fa fa-clock-o"></i>10 min ago</div>
                 </div>                      
             </div>                           
@@ -92,7 +92,7 @@ export default {
         this.isAdmin = localStorage.getItem("isAdmin");      
         console.log(localStorage);
 
-        let url = "http://localhost:3000/api/post/";
+        let url = "http://localhost:3000/api/post";
         let options = {
             method: "GET",
             headers: {
@@ -104,28 +104,29 @@ export default {
                 res.json();
             })
             .then(function(data) {  
-                this.posts = data.posts;                       
-                console.log(this.posts)                
+                this.posts = data;                       
+                console.log(this.post)                
             })
             .catch(error => console.log(error))
     },
-
-    //supprimer le message//
-    deletePost(postid) {
-            let url = `http://localhost:3000/api/post/${ postid }`
-            let options = {
-                method: "DELETE",
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                }
-            };
-            fetch(url, options)
-                .then(function(res) { 
-                    console.log(res);
-                    alert("Suppression du message confirmé ! ");
-                    window.location.reload();
-                })
-                .catch(error => console.log(error))
+    methods:{
+        //supprimer le message//
+        deletePost(postid) {
+                let url = `http://localhost:3000/api/post/${ postid }`
+                let options = {
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                    }
+                };
+                fetch(url, options)
+                    .then(function(res) { 
+                        console.log(res);
+                        alert("Suppression du message confirmé ! ");
+                        window.location.reload();
+                    })
+                    .catch(error => console.log(error))
+        }
     },
 }
 

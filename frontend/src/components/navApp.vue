@@ -59,9 +59,8 @@
             <img
               src="../assets/kisspng-abmeldung-button-icon-shut-cliparts-5a89cae38f35c7.1285697615189798115866.png"
               height="45"
-              alt="deconnexion"
-              
-              v-bind= "user"
+              alt="deconnexion"              
+            
               
             />
           </router-link>
