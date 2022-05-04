@@ -100,12 +100,15 @@ export default {
             }
         };
         fetch(url, options)
-            .then(function(res) {   
+            .then(function(res) {  
+                console.log(res) 
                 res.json();
             })
+             .catch(error => console.log(error))
             .then(function(data) {  
+                console.log(data)
                 this.posts = data;                       
-                console.log(this.post)                
+                console.log(this.posts)                
             })
             .catch(error => console.log(error))
     },
