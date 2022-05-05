@@ -49,7 +49,7 @@
           <li  @click="logout"  class= "dropdown-item ">            
            <!-- deconnexion -->
         <div class="dropdown">
-          <router-link to= "/" 
+          <router-link to= "/account/user" 
             class="d-flex align-items-center"         
             id="navbarDropdownMenuAvatar"
             role="button"

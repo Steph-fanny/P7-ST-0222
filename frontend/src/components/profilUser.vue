@@ -1,7 +1,7 @@
 <template>
   <div class = "container-profil" >
    
-   <div><p class="title">Bonjour :{{ user.firstName}}</p></div>
+   <div><p class="title"> Bonjour {{ user.firstName }} {{user.lastName}} </p></div>
 
      <section class="vh-100" style="background-color: #f4f5f7;"> 
       <!-- <div class="container py-5 h-100">  -->
@@ -13,17 +13,26 @@
               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; background-color:#0d0764">
                 
                 <!--formulaire -->
-                <form action= "" method="POST"
+                <form 
                   id="form"
                   enctype="multipart/form-data"
                   @submit.prevent="updatePicture"
                   className ="upload-pic">
 
                   <img
+                    v-if="user.imageUrl == null"
                     src="../assets/photo-avatar-profil.png"
                     alt="photo de profil provisoire" id="avatar-profil"
                     class="img-fluid my-5"
-                    style="width: 120px;"/>    
+                    style="width: 120px;"/>  
+                    
+                  <img
+                    v-else
+                    src="user.imageUrl"
+                    alt="photo de profil " id="avatar-profil"
+                    class="img-fluid my-5"
+                    style="width: 120px;"/>   
+                    
 
                   <label class="text-center label" for="file">       
                     Changer la photo de profil
@@ -59,22 +68,22 @@
                 <div class="row pt-1">
                   <div class="col-6 mb-3">                                        
                     <h6>Prénom</h6>
-                    <p class="text-muted"> {{user.firstName }} </p>
+                    <p class="info-profil"> {{user.firstName }} </p>
                       </div>                  
                   <div class="col-6 mb-3">
                     <h6>Nom</h6>
-                    <p class="text-muted"> {{user.lastName }}</p>
+                    <p class="info-profil"> {{user.lastName }}</p>
                   </div>
                 </div>                
                
                 <div class="row pt-1">
                   <div class="col-6 mb-3">
                     <h6>Email</h6>
-                    <p class="text-muted"> {{ user.email }} </p>
+                    <p class="info-profil"> {{ user.email }} </p>
                   </div>
                   <div class="col-6 mb-3">
                     <h6>Date d'inscription</h6>
-                    <p class="text-muted">{{ user.createdAt }} </p>
+                    <p class="info-profil">{{ user.createdAt }} </p>
                   </div>
                 </div>
 
@@ -119,7 +128,7 @@ export default {
     return {  
     user:{       
       id: localStorage.getItem("userId"),       
-      firstName: " steph ",
+      firstName: " ",
       lastName: "",
       email: "" ,
       imageUrl: "", 
@@ -133,7 +142,7 @@ export default {
 
  
 
-  mounted (){    
+  async mounted (){    
     const url = `http://localhost:3000/api/user/${ this.user.id }`;
     console.log(this.user.id)
     const options = {
@@ -143,44 +152,25 @@ export default {
           }
       };
 
-    //  const response = await fetch(url, options);
-    //  const data = await response.json();
+    this.user = await fetch(url, options)
+    .then((res) => {
+      res.json().then((data) => {
+        // console.log(data)
+        console.table(data)
+        this.user = data.user;
+        console.log(this.user);
+        this.image = data.image;
+        console.log(this.image);
+        return data;
+      })
+    })
+  },
 
-    // console.log(data)
-    // console.table(data);
-        
-     
-     fetch(url, options)      
-        .then (function (response){   
-           return response.json()           
-        })
-                        
-        .then(function(data) {   
-          console.table(data) 
-          console.log(data)
-
-          // this.user.firstName = data.user.firstName;
-          // console.log(data.user.firstName)
-          this.user.lastName = data.user.lastName;
-          console.log(data.user.lastName)
-          // this.user.email = data.user.email;
-          // console.log(data.user.email);
-          // this.user.creatAt = data.user.createdAt;
-          // console.log(data.user.creatAt);
-
-
-        // "user.lastName": data.user.lastName,
-        // "email": data.user.email,
-        // "createdAt": data.user.createdAt,
-        })
-        .catch(error => console.log(error))  
-      },                 
-       
-                
+                     
      
            
   methods: {
-    getOneUser() {             
+    async getOneUser() {             
       let url = `http://localhost:3000/api/user/${this.user.id }`;
       let options = {
         method: "GET",
@@ -189,24 +179,15 @@ export default {
         }
       };
 
-      fetch(url, options)
-        .then (function (response){
-         return response.json()
-        })
-        .then(function(data) {   
-          console.table(data)       
-          this.user.firstName = data.user.firstName; 
-            console.log(data.user.firstName)           
-          this.user.lastName = data.user.lastName;
-           console.log(data.user.lastName)      
-          this.user.email = data.user.email;            
-          this.user.creatAt = data.user.creatAt;  
-                  
-        })  
-                .catch(error => console.log(error))
-        },
+      return await fetch(url, options).then(function (res) {
+        res.json().then(function (data) {
+          console.log(data);
+          return data;
+        });
+      });
+    },
+      
 
-    
     onFileSelected (event) {   
       console.log(event)  
       // image a uploader
@@ -218,40 +199,37 @@ export default {
       //créer element à envoyer au server et ajouter le fichier choisi à formData
       const fd = new FormData();           
       // fd.append("userId, this.user.userId");
-      fd.append("image", this.image, this.image.name);
-      // fd.append("imageUrl", this.imageUrl);
+      fd.append("image", this.image);
+      fd.append("imageUrl", this.imageUrl);
       console.log(this.image);
    
    
-      let updateProfile = {   
-                "userId" : this.userId,              
-                "image" : this.imageUrl,        
-                               
-            }      
-            console.log(updateProfile)  
+      // let updateProfile = {   
+      //           "userId" : this.userId,              
+      //           "image" : this.imageUrl,       
+      // }      
+      // console.log(updateProfile)  
 
-
-
-      let url = `http://localhost:3000/api/user/${this.user.id }`;
+      let url = `http://localhost:3000/api/user/${this.user.id}`
       let options = {
           method: "PUT",
-           body: JSON.stringify(updateProfile),
+          //  body: JSON.stringify(updateProfile),
           headers: {           
           'Authorization': 'Bearer ' + localStorage.getItem("token"),
           } 
           }
         
-      fetch(url, options)
-      .then (function (response){        
-          return console.log(response.json())
+      return await fetch(url, options,)
+      .then(function (res) {        
+        this.image = res.image
+        console.log(this.image);       
+        // alert('The file has been uploaded successfully.')
+        // return res;
         })
-        .then(function(data) {  
+      // })
+    },
                  
-          this.image= data.user.imageUrl
-          console.log(data.user)
-          alert('The file has been uploaded successfully.')
-        })
-    },  
+         
 
                  
      
@@ -273,10 +251,8 @@ export default {
           //retour page accueil
           .then(this.$router.push("/"))            
           .catch(error => console.log(error))
-      } 
-   
-  }
- 
+      }    
+  } 
 }
 
 
@@ -286,12 +262,15 @@ export default {
 </script>
 
 <style lang='css'>
-.tittle{
-  color:black;
+.title{
+  color:#FD2D01 !important;
+  font-size : 26px;
+  text-align:center;
 }
 
-.text-muted{
+.info-profil{
   color:#FD2D01 !important;
+  font-size : 14px;
 }
 .container-profil{
   width: 100%;

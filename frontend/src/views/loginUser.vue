@@ -17,7 +17,7 @@
               <div class="card-body p-4 p-lg-5 text-black">
 
                 <form v-on:submit.prevent="loginAccount()">
-                  <div class="logo-login"><navHome/></div>  
+                  <div class="logo-login"><logoHome/></div>  
                   <!-- <div class="d-flex align-items-center mb-3 pb-1">                   
                     <span class="fw-bold mb-0"><navHome/></span>
                   </div> -->
@@ -70,14 +70,14 @@
 </template>
 
 <script>
-import navHome from '@/components/navHome.vue'
+import logoHome from '@/components/logoHome.vue'
 import footerApp from '@/components/footerApp.vue'
 
 
 export default {
 name: 'loginUser',  
   components: {
-  navHome,
+  logoHome,
   footerApp,
   },
 

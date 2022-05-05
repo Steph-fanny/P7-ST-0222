@@ -1,145 +1,171 @@
 <template>
- <div class="container-fluid gedf-wrapper">    
-    <!-- On récupére les posts : boucle avec vfor -->  
-  <!-- tableau de post-->
-  <div v-for= "post in posts" 
-    :key= "post.id"
-    class="bloclist" 
-    >
-    <div class="post-card">                                  
+  <div class="container-fluid gedf-wrapper">
+    <!-- On récupére les posts : boucle avec vfor -->
+    <!-- tableau de post-->
+    <div v-for="post in posts" :key="post.id" class="bloclist">
+      <!-- {{ post[0] }} -->
+      <div class="post-card">
         <div class="card gedf-card">
-            <div class="card-header container-info">                
-                <div class="mr-2 ">
-                    <img class="rounded-circle" src="../assets/photo-avatar-profil.png" width="50" alt="photo-profil-avatar" >
-                </div>
-                <div class="ml-2 info-post">
-                    <div class="h5 m-0"> {{ user.firstName }} {{ user.lastName }} </div>
-                    <div class="text-muted h7 mb-2 time-post"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                </div>                      
-            </div>                           
-                 
-            <div class="card-body">                       
-                <p class="card-text">{{ post.content }}</p>
-                <img v-bind:src ="post.imageUrl" alt=""> 
+          <div class="card-header container-info">
+            <div class="mr-2">
+              <img
+                class="rounded-circle"
+                src="../assets/photo-avatar-profil.png"
+                width="50"
+                alt="photo-profil-avatar"
+              />
+            </div>
+            <div class="ml-2 info-post">
+              <div class="h5 m-0">{{ firstName }} {{lastName }}</div>
+              <div class="text-muted h7 mb-2 time-post">
+                <i class="fa fa-clock-o"></i>10 min ago
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <p class="card-text">{{ post[0].content }}</p>
+            <img v-bind:src="post[0].imageUrl" alt="" />
+          </div>
+
+          <div class="card-footer d-flex flex-row fs-12">
+            <div class="like p-2 cursor">
+              <i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span>
+            </div>
+            <!-- <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                    <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div> -->
+            <button
+              v-if="post[0].userId == userId"
+              type="button"
+              class="btn btn-danger"
+              title="supprimer"
+              aria-label="bouton supprimer"
+              @click.prevent="deletePost(post[0].id)"
+            >
+              supprimer le post
+            </button>
+          </div>
+
+          <div class="card-comment">
+            <div class="comment-info">
+              <span class="comment-avatar float-left">
+                <a href=""
+                  ><img
+                    class="rounded-circle"
+                    src="../assets/photo-avatar-profil.png"
+                    width="40"
+                    alt="photo-profil-avatar"
+                /></a>
+              </span>
+              <div class="form-group">
+                <label for="content"></label>
+                <textarea
+                  type="text"
+                  id="content"
+                  name="content"
+                  rows="2"
+                  cols="50"
+                  class="form-control"
+                  placeholder="Ecriver votre commentaire"
+                  required
+                ></textarea>
+              </div>
             </div>
 
-            <div class="card-footer d-flex flex-row fs-12">
-                <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span></div>
-                    <!-- <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
-                    <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div> -->
-                <button v-if="post.userId == userId"
-                type="button"
-                class=" btn btn-danger"
-                title="supprimer"
-                aria-label="bouton supprimer"       
-                @click.prevent="deletePost(post.id)">
-                supprimer le post        
-                </button>       
-            </div> 
-        
-            <div class = "card-comment">
-                <div class ="comment-info">
-                    <span class="comment-avatar float-left">
-                        <a href=""><img class="rounded-circle"  src="../assets/photo-avatar-profil.png" width="40"  alt="photo-profil-avatar"></a>
-                    </span>
-                    <div class= "form-group">            
-                        <label for="content"></label>
-                            <textarea type="text" 
-                            id="content" name="content" rows="2" cols="50" 
-                            class="form-control" 
-                            placeholder="Ecriver votre commentaire" 
-                            required ></textarea>
-                    </div>
-                </div>
-                
-                <div class="mt-2 text-right">
-                        <button class="send btn btn-primary btn-sm shadow-none bnt-send " 
-                            type="submit" title="commentaire"
-                            aria-label="créer un commentaire"
-                            >Publier
-                        </button>   
-                </div>             
-            </div>    
-        </div>                                  
+            <div class="mt-2 text-right">
+              <button
+                class="send btn btn-primary btn-sm shadow-none bnt-send"
+                type="submit"
+                title="commentaire"
+                aria-label="créer un commentaire"
+              >
+                Publier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>  
-</div>    
-
-
-
-
+  </div>
 </template>
    
 <script>
 export default {
-    name: 'listPost',  
+  name: "listPost",
 
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+      userId: "",
+      imageUrl: "",
+      image:"",
+      isAdmin: "",
+      post:[],
+      posts: [],
+    };
+  },
 
+  async mounted() {
+    this.userId = localStorage.getItem("userId");
+    this.isAdmin = localStorage.getItem("isAdmin");
+    console.log(localStorage);
 
-    data() {
-        return {
-            firstName: "",
-            lastName: "",
-            userId: "",
-            imageUrl:"",    
-            isAdmin:"",      
-            posts: [],
-            }
+    // console.log("test");
+    let url = "http://localhost:3000/api/post";
+    let options = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    };
+    this.posts = await fetch(url, options).then((res) => {
+      res.json().then((data) => {
+        console.log(data);
+        this.posts = data;
+        console.log(this.posts);
+        return data;
+      });
+    });
+  },
+  methods: {
+    async getPosts() {
+      console.log("test");
+      let url = "http://localhost:3000/api/post";
+      let options = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
-        
-    mounted() {
-        this.userId = localStorage.getItem("userId");  
-        this.isAdmin = localStorage.getItem("isAdmin");      
-        console.log(localStorage);
-
-        let url = "http://localhost:3000/api/post";
-        let options = {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem("token"),
-            }
-        };
-        fetch(url, options)
-            .then(function(res) {  
-                console.log(res) 
-                res.json();
-            })
-             .catch(error => console.log(error))
-            .then(function(data) {  
-                console.log(data)
-                this.posts = data;                       
-                console.log(this.posts)                
-            })
-            .catch(error => console.log(error))
+      };
+      return await fetch(url, options).then(function (res) {
+        res.json().then(function (data) {
+          console.log(data);
+          return data;
+        });
+      });
     },
-    methods:{
-        //supprimer le message//
-        deletePost(postid) {
-                let url = `http://localhost:3000/api/post/${ postid }`
-                let options = {
-                    method: "DELETE",
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                    }
-                };
-                fetch(url, options)
-                    .then(function(res) { 
-                        console.log(res);
-                        alert("Suppression du message confirmé ! ");
-                        window.location.reload();
-                    })
-                    .catch(error => console.log(error))
-        }
+
+    //supprimer le message//
+    deletePost(postid) {
+      let url = `http://localhost:3000/api/post/${postid}`;
+      let options = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      fetch(url, options)
+        .then(function (res) {
+          console.log(res);
+          alert("Suppression du message confirmé ! ");
+          window.location.reload();
+        })
+        .catch((error) => console.log(error));
     },
-}
-
-
-
+  },
+};
 </script>
-
-  
-  
-
 
 
 

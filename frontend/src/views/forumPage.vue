@@ -1,4 +1,5 @@
 <template>
+
 <div class = container-post>
   <div><navApp/></div>
   <div><addPost/></div>

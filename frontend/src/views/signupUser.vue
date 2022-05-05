@@ -8,7 +8,7 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5 blocsignup">
-               <div><navHome/></div> 
+               <div><logoHome/></div> 
               <h2 class=" signup-subtitle text-uppercase text-center mb-5">Créer votre compte</h2>
 
               <form @submit.prevent="dataSignup()" id="form-signup">
@@ -78,12 +78,12 @@
 
 
 <script>
-import navHome from '@/components/navHome.vue';
+import logoHome from '@/components/logoHome.vue';
 
 export default {
   name: "signupUser",  
   components: {
-  navHome 
+  logoHome 
   },
 
 data(){
