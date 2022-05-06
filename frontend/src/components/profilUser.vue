@@ -123,6 +123,15 @@
 
 export default {
   name: "profilUser",
+  // computed : {
+  //   user(){
+  //     return this.$store.state.users;
+  //   }
+  // }
+  props:{
+    value : Image
+  },
+  
 
   data(){   
     return {  
@@ -170,6 +179,7 @@ export default {
      
            
   methods: {
+
     async getOneUser() {             
       let url = `http://localhost:3000/api/user/${this.user.id }`;
       let options = {
@@ -195,12 +205,14 @@ export default {
       this.imageUrl = URL.createObjectURL(this.image)
     },
 
+
     async updatePicture() {
+      this.$refs.image.click();
       //créer element à envoyer au server et ajouter le fichier choisi à formData
-      const fd = new FormData();           
-      // fd.append("userId, this.user.userId");
-      fd.append("image", this.image);
-      fd.append("imageUrl", this.imageUrl);
+      // const fd = new FormData();           
+      // // fd.append("userId, this.user.userId");
+      // fd.append("image", this.image);
+      // fd.append("imageUrl", this.imageUrl);
       console.log(this.image);
    
    

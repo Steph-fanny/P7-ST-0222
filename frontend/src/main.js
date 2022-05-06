@@ -9,6 +9,8 @@ import "bootstrap"
 
 
 
-createApp(App).use(router, store).mount('#app')
+
+
+createApp(App).use(store).use(router).mount('#app')
 
 
