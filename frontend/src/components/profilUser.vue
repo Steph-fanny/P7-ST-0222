@@ -16,31 +16,32 @@
                 <form 
                   id="form"
                   enctype="multipart/form-data"
-                  @submit.prevent="updatePicture"
+                  @submit="updatePicture()"
                   className ="upload-pic">
 
-                  <img
-                    v-if="user.imageUrl == null"
-                    src="../assets/photo-avatar-profil.png"
-                    alt="photo de profil provisoire" id="avatar-profil"
-                    class="img-fluid my-5"
-                    style="width: 120px;"/>  
+                    <img
+                      v-if="user.imageUrl == null"
+                      src="../assets/photo-avatar-profil.png"
+                      alt="photo de profil provisoire" id="avatar-profil"
+                      class="img-fluid my-5"
+                      style="width: 120px;"
+                    /> 
                     
-                  <img
-                    v-else
-                    src="user.imageUrl"
-                    alt="photo de profil " id="avatar-profil"
-                    class="img-fluid my-5"
-                    style="width: 120px;"/>   
+                    <img
+                      v-else
+                      :src="user.imageUrl"
+                      alt="photo de profil " id="avatar-profil"
+                      class="img-fluid my-5"
+                      style="width: 120px;"
+                    />    
                     
-
                   <label class="text-center label" for="file">       
                     Changer la photo de profil
-                  </label>                                                              
+                  </label>                                                               
                   <input
-                    type="file" class="form-control" id="file" name="image"
-                    accept="image/*" ref="image" 
-                    @change="onFileSelected"         
+                    type="file" class="form-control" id="file" name="file"
+                    accept="file/*" ref="file" 
+                    @change="changePicture"         
                   />                    
                   <div class="card-body mx-auto">
                       <button
@@ -48,19 +49,16 @@
                         class="form-control btn btn-primary btn-confirm"
                         name="pictureUpdate"
                         id="pictureUpdate"
-                        @click="updatePicture"
-                      > Confirmer
+                        @click="updatePicture()"
+                      > confirmer
                       </button> 
                     </div>
-                  </form>   
-                                                                        
-            </div>    
+                  </form>    
+                                                                    
+            </div>                             
+                            
+              <div v-bind="user" class="col-md-8" >   
 
-                         
-                   
-         
-              <div v-bind="user" class="col-md-8" 
-            >
               <div class="card-body p-4">
                 <h6>Informations</h6>
                 <hr class="mt-0 mb-4">
@@ -113,29 +111,23 @@
 
 
 <script >
-// import { response } from "express";
-
-
-
 
 
 
 
 export default {
   name: "profilUser",
-  // computed : {
-  //   user(){
-  //     return this.$store.state.users;
-  //   }
-  // }
+ 
   props:{
-    value : Image
+    value : File
   },
   
 
   data(){   
-    return {  
-    user:{       
+    return {   
+    //  src: null, 
+    //  file:null,    
+     user:{       
       id: localStorage.getItem("userId"),       
       firstName: " ",
       lastName: "",
@@ -143,8 +135,8 @@ export default {
       imageUrl: "", 
       image:"",
       creatAt: "",                    
-    },  
-      image:"",  
+    }, 
+       
     }   
     
   },
@@ -168,102 +160,109 @@ export default {
         console.table(data)
         this.user = data.user;
         console.log(this.user);
-        this.image = data.image;
-        console.log(this.image);
+        // this.file = res.data.file;
+        // console.log(this.file);
         return data;
       })
     })
   },
-
-                     
      
-           
+     
   methods: {
 
-    async getOneUser() {             
-      let url = `http://localhost:3000/api/user/${this.user.id }`;
-      let options = {
-        method: "GET",
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem("token"),
-        }
-      };
+    // ********changer la photo de profil*******
+    changePicture() {   
+      // this.file = e.target.files[0];  
+      // this.imageUrl= URL.createObjectURL(e.target.file[0])
+      this.file = this.$refs.file.files[0];
+      this.imageUrl = URL.createObjectURL(this.file);
+      },
+               
+    
 
-      return await fetch(url, options).then(function (res) {
+    async updatePicture() {     
+      // this.$refs.file.click();
+      // créer element à envoyer au server et ajouter le fichier choisi à formData
+      const formData = new FormData(); 
+      //clef/ valeur
+      formData.append("userId", this.user.Id);
+      formData.append("file", this.file);
+      formData.append("imageUrl", this.imageUrl);  
+    
+      let url = `http://localhost:3000/api/user/${this.user.id}`
+      let options = {
+        method: "PUT",
+        //  body: JSON.stringify(updateProfile),
+        headers: {           
+        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+        } 
+      }
+        
+      return await fetch(url, options)
+      .then(function (res) {
         res.json().then(function (data) {
           console.log(data);
           return data;
         });
       });
-    },
-      
-
-    onFileSelected (event) {   
-      console.log(event)  
-      // image a uploader
-      this.image = event.target.files[0];
-      this.imageUrl = URL.createObjectURL(this.image)
-    },
-
-
-    async updatePicture() {
-      this.$refs.image.click();
-      //créer element à envoyer au server et ajouter le fichier choisi à formData
-      // const fd = new FormData();           
-      // // fd.append("userId, this.user.userId");
-      // fd.append("image", this.image);
-      // fd.append("imageUrl", this.imageUrl);
-      console.log(this.image);
-   
-   
-      // let updateProfile = {   
-      //           "userId" : this.userId,              
-      //           "image" : this.imageUrl,       
-      // }      
-      // console.log(updateProfile)  
-
-      let url = `http://localhost:3000/api/user/${this.user.id}`
-      let options = {
-          method: "PUT",
-          //  body: JSON.stringify(updateProfile),
-          headers: {           
-          'Authorization': 'Bearer ' + localStorage.getItem("token"),
-          } 
-          }
+     
         
-      return await fetch(url, options,)
-      .then(function (res) {        
-        this.image = res.image
-        console.log(this.image);       
+        // this.file = res.data.file
+        // console.log(this.file);       
         // alert('The file has been uploaded successfully.')
         // return res;
-        })
-      // })
-    },
+        
+      },
+
+
+    
+  async getOneUser() {             
+        let url = `http://localhost:3000/api/user/${this.user.id }`;
+        let options = {
+          method: "GET",
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          }
+        };
+
+        return await fetch(url, options).then(function (res) {
+          res.json().then(function (data) {
+            console.log(data);           
+            return data;
+          });
+        });
+      },
+      
+       
+     
                  
          
 
                  
      
-      deleteUser(){
-        let url = "http://localhost:3000/api/user/${this.user.id }"
-        console.log(this.user.id)
-          let option = {
-            method: "DELETE",
-            headers: {
-             'Authorization': 'Bearer ' + localStorage.getItem("token"),
-            }
-          };
-        fetch(url, option)
-          .then(function(response) {
-            console.log(response);
-            localStorage.clear();
-            alert("Compte supprimé !");
-          })
-          //retour page accueil
-          .then(this.$router.push("/"))            
-          .catch(error => console.log(error))
-      }    
+      // deleteUser(){
+      //   let url = "http://localhost:3000/api/user/${this.user.id }"
+      //   console.log(this.user.id)
+      //     let option = {
+      //       method: "DELETE",
+      //       headers: {
+      //        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+      //       }
+      //     };
+      //   fetch(url, option)
+      //     .then(function(response) {
+      //       console.log(response);
+      //       localStorage.clear();
+      //       alert("Compte supprimé !");
+      //     })
+      //     //retour page accueil
+      //     .then(this.$router.push("/"))            
+      //     .catch(error => console.log(error))
+      // }    
+
+
+
+
   } 
 }
 
