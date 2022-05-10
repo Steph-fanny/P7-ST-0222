@@ -30,6 +30,13 @@
             <div v-for="comment in comments" :key="comment.id" class="blocComment" >                        
                 <p> {{ comment.content }} </p>           
             </div>
+            <div>
+            <button class="send btn btn-primary btn-sm shadow-none " 
+                type="submit" title="effacer le commentaire"
+                aria-label="créer un commentaire"
+                @click="deleteComment(comment.postId,comment.Id)">Effacer
+            </button>                 
+            </div>
         </div>
     </div>            
  

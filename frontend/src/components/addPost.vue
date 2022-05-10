@@ -25,7 +25,7 @@
                         type="submit"
                         id="btn-post"
                         class="btn btn-primary "                        
-                        @click.prevent="addPost"
+                        @click="addPost"
                         >Publier</button>    
                    
                         <label for="image" class="form-control-label upload-File" style="margin-top:50px"
@@ -33,7 +33,7 @@
                         <input 
                         type="file"
                         class="btn btn-primary"
-                        ref="image"
+                        ref="file"
                         id="image" name="image"
                         accept="image/png, image/jpeg, gif"
                         aria-describedby="image"                       
@@ -66,7 +66,7 @@ export default {
         return {                                                
             content:"" ,   
             imageUrl:""  ,                    
-            image:"",  
+            file:"",  
             userId: ""   
                 
         }
@@ -80,7 +80,7 @@ export default {
     methods: {                    
         selectFile() {
             // ref à l'image dans l'input
-            this.image = this.$refs.image.files[0];
+            this.file = this.$refs.file.files[0];
             this.imageUrl = URL.createObjectURL(this.image);
         },
 

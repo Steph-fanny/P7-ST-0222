@@ -2,23 +2,34 @@
   <div class="container-fluid gedf-wrapper">
     <!-- On récupére les posts : boucle avec vfor -->
     <!-- tableau de post-->
-    <div v-for="post in posts" :key="post.id" class="bloclist">
-      <!-- {{ post[0] }} -->
+    <div v-for="post in posts" v-bind:key="post.id" class="bloclist">
+    <!-- {{ post[0] }} -->
       <div class="post-card">
         <div class="card gedf-card">
           <div class="card-header container-info">
             <div class="mr-2">
               <img
-                class="rounded-circle"
-                src="../assets/photo-avatar-profil.png"
-                width="50"
-                alt="photo-profil-avatar"
-              />
+                v-if="user.imageUrl == null"
+                  src="../assets/photo-avatar-profil.png"
+                  alt="photo de profil provisoire" id="avatar-profil"
+                  class="rounded-circle"
+                  style="width: 50px;"
+              /> 
+                    
+              <img
+                v-else
+                  :src="user.imageUrl"
+                  alt="photo de profil " id="avatar-profil"
+                   class="rounded-circle"
+                  style="width: 50px;"
+                />    
+
+              
             </div>
             <div class="ml-2 info-post">
-              <div class="h5 m-0">{{ firstName }} {{lastName }}</div>
+              <div class="h5 m-0">{{ user.firstName }} {{user.lastName }}</div>
               <div class="text-muted h7 mb-2 time-post">
-                <i class="fa fa-clock-o"></i>10 min ago
+                <i class="fa fa-clock-o"></i> {{ post[0].createdAt }}
               </div>
             </div>
           </div>
@@ -28,19 +39,19 @@
             <img v-bind:src="post[0].imageUrl" alt="" />
           </div>
 
-          <div class="card-footer d-flex flex-row fs-12">
+          <!-- <div class="card-footer d-flex flex-row fs-12">
             <div class="like p-2 cursor">
-              <i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span>
-            </div>
+              <i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span>-->
+            <div> 
             <!-- <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
                     <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div> -->
             <button
-              v-if="post[0].userId == userId"
+              v-if="post.userId == userId"
               type="button"
               class="btn btn-danger"
               title="supprimer"
               aria-label="bouton supprimer"
-              @click.prevent="deletePost(post[0].id)"
+              @click="deletePost(post[0].id)"
             >
               supprimer le post
             </button>
@@ -95,12 +106,16 @@ export default {
 
   data() {
     return {
-      firstName: "",
+      user:{       
+      id: localStorage.getItem("userId"),   
+      userId: "",    
+      firstName: " ",
       lastName: "",
-      userId: "",
-      imageUrl: "",
-      image:"",
+      email: "" ,
+      imageUrl: "", 
+      image:"", 
       isAdmin: "",
+      },
       post:[],
       posts: [],
     };
@@ -120,7 +135,9 @@ export default {
       },
     };
     this.posts = await fetch(url, options).then((res) => {
-      res.json().then((data) => {
+      // traduction en json)
+        res.json()
+      .then((data) => {
         console.log(data);
         this.posts = data;
         console.log(this.posts);

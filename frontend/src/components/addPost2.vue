@@ -7,7 +7,7 @@
                     <img class="rounded-circle" src="../assets/photo-avatar-profil.png" width="50" alt="photo-profil-avatar" >
                 </div>
                 <div class="ml-2 info-post">
-                    <div class="h5 m-0"> {{ user.firstname }} {{ user.lastname }} </div>
+                    <div class="h5 m-0"> {{ firstname }} {{ lastname }} </div>
                     <div class="text-muted h7 mb-2 time-post"> <i class="fa fa-clock-o"></i>10 min ago</div>
                 </div>                      
             </div>                           

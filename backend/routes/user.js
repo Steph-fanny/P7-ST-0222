@@ -15,6 +15,7 @@ const passwordValidation = require("../middleware/passwordValidation");
 const auth = require ("../middleware/authJwt");
 const authAdmin = require("../middleware/authUserAdmin");
 const multer =require ("../middleware/multer");
+const authJwt = require('../middleware/authJwt');
 
 
 
@@ -24,7 +25,7 @@ const multer =require ("../middleware/multer");
 //avant création verification MDP : middleware passwordValidation
 router.post("/signup",passwordValidation, userAuth.signup);
 /*connexion d'un utilisateur*/
-router.post("/login", userAuth.login);
+router.post("/login",userAuth.login);
 /* se deconnecter*/
 router.get("/logout",userAuth.logout);
 

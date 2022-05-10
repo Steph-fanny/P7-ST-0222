@@ -26,7 +26,7 @@ module.exports.signup = (req, res, next) => {
         return res.status(400).json({message: 'Email non valide' })
         }
     // trouver un utilisateur par email    
-    User.findOne({where: { email: req.body.email }}) 
+    db.User.findOne({where: { email: req.body.email }}) 
     //Vérification si un utilisateur corresponde déjà à l'email de la DB//
       .then(user => {
         if (!user) {  
@@ -35,7 +35,7 @@ module.exports.signup = (req, res, next) => {
           .then (hash => {
           // création du nouvel user
             
-              User.create ({                
+              db.User.create ({                
                 firstName : req.body.firstName,
                 lastName : req.body.lastName,        
                 email: req.body.email,

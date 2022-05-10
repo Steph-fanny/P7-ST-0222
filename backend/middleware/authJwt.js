@@ -23,8 +23,10 @@ module.exports = (req, res, next) => { // On exporte un middleware //
     try {
         console.log(req.headers)
         const token = req.headers.authorization.split(' ')[1]; // [bear + N°]
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET', {expireIn:'24h'});
+        // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET', {expireIn:'24h'});
+        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
         const userId = decodedToken.userId;
+        req.auth = { userId };
         if(req.body.userId && req.body.userId != userId){
             throw 'Mauvais ID utilisateur !'
         }
