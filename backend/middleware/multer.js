@@ -6,10 +6,14 @@ const multer = require ('multer');
 
 /*définir le format des images*/
 const MIME_TYPES = {
-    'image/jpg': 'jpg',
-    'image/jpeg': 'jpg',
-    'image/png': 'png',
-    'image/gif': 'gif',    
+    'file/jpg': 'jpg',
+    'file/jpeg': 'jpg',
+    'file/png': 'png',
+    'file/gif': 'gif', 
+    'file/bmp': 'bmp', 
+    'file/gif': 'gif',  
+    'file/webp': 'webp',
+    
 };
 
 /*definir ou enregistrer les fichiers entrants  sur le disque (diskstorage)*/
@@ -17,7 +21,7 @@ const storage = multer.diskStorage({
     /*ou les enregister*/
     destination : (req, file, callback) => {
         /*nom du dossier*/
-        callback(null, 'images');
+        callback(null,'images');
     },
     /*comment les nommer*/
     filename : (req, file, callback) => {
@@ -31,4 +35,4 @@ const storage = multer.diskStorage({
     }
 });
 /*exporter multer avec objet storage et fichier unique (single)*/
-module.exports = multer ({storage : storage}).single('image');
+module.exports = multer ({storage : storage}).single('file');

@@ -5,6 +5,7 @@
             <div class ="card-top">                                  
             </div>  
             <form 
+                id="formElem"
                 class="container text-center form-group"
                 @submit.prevent="addPost"
                 enctype="multipart/form-data"
@@ -17,7 +18,8 @@
                         id="content" name="content" rows="3" cols="15"
                         class="form-control" 
                         placeholder="Que voulez-vous partager aujourd'hui?" 
-                        required v-model="content"></textarea>
+                        required 
+                        v-model="content"></textarea>
                 </div>           
                 <div class="btn-toolbar justify-content-between align-items-center" >
                     <div class="btn-group  mx-auto">
@@ -28,20 +30,21 @@
                         @click="addPost"
                         >Publier</button>    
                    
-                        <label for="image" class="form-control-label upload-File" style="margin-top:50px"
-                        >Choisir une image</label>                        
-                        <input 
-                        type="file"
-                        class="btn btn-primary"
-                        ref="file"
-                        id="image" name="image"
-                        accept="image/png, image/jpeg, gif"
-                        aria-describedby="image"                       
-                        @change="selectFile"/>
 
+                        <label for="file"
+                            class="form-control-label upload-File" 
+                            style="margin-top:50px">
+                            Choisir une image
+                        </label>                                                                                                
+                        <input
+                        type="file" 
+                        class="btn btn-primary" 
+                        id="file" name="file"
+                        accept="file/*" ref="file" 
+                        aria-describedby="image" 
+                        @change="selectFile()"         
+                        />                         
                        
-
-
                         <!-- <button 
                         type="submit"
                         id="btnP" class="btn btn-primary"
@@ -55,7 +58,6 @@
     </div>
 </div> 
 
-
 </template>
 
 <script>
@@ -63,9 +65,9 @@
 export default {
     name:'addPost',    
     data() {
-        return {                                                
-            content:"" ,   
-            imageUrl:""  ,                    
+        return {   
+            token: localStorage.getItem("token"),                                             
+            content:"" ,                         
             file:"",  
             userId: ""   
                 
@@ -77,50 +79,73 @@ export default {
             console.log(this.userId)
     },
 
+
+
     methods: {                    
         selectFile() {
-            // ref à l'image dans l'input
+            // ref à l'image dans l'input                      
             this.file = this.$refs.file.files[0];
-            this.imageUrl = URL.createObjectURL(this.image);
+            this.imageUrl = URL.createObjectURL(this.file);      
         },
-
+            
+      
         /*** Créer un nouveau post ***/
-        addPost() {
-            let deliverPost = {   
-                "userId" : this.userId,              
-                "image" : this.image,         
-                "content": this.content,                
-            }      
-            console.log(deliverPost)
+        async addPost() {                      
+            // creation objet formData)         
+
+            let formData = new FormData()
+                formData.append("file", this.file);
+                formData.append("content",this.content);
+              
+            // let deliverPost = {                     
+            //     "userId" : this.userId,              
+            //     "file" : this.file,         
+            //     "content": this.content,               
+            // }     
+            // console.log(deliverPost)
      
             let url = "http://localhost:3000/api/post/new"
             let options = {
                 method: "POST",
-                body: JSON.stringify(deliverPost),
+                // body:JSON.stringify(deliverPost),    
+                body: formData,         
                 headers: {    
                     'Authorization': 'Bearer ' + localStorage.getItem("token"),                
-                    'Content-Type': 'application/json'
+                //     // 'Content-Type': 'application/json'
+                    // 'Content-Type': 'multipart/form-data',
+
                 }
             }
-           
-            fetch(url, options)
-                .then(res => res.json())
-                .then((post) => {                
-                    console.log(post)
-                    if (post.ok) {
-                        window.location.reload();
-                        this.Post = {} // Retour à 0 des inputs //
-                    } else {
-                        alert("Post bien reçu ");
-                    }
-                })
-                .then(this.$router.push("/listPostPage"))
-                .catch(error => console.log(error))
-            }
-        }
+            
+       let res = await fetch(url, options)
+       console.log(res)
+    //    .then((data) => {
+    //     console.log(data);
+        // let data = await res.json();
+        // alert (data.message)
+            // .then(res => res.json())    
+            // .then((post) => {    
+                
+                     
+            
+        // if (data.ok) {
+        //     window.location.reload();
+        //     this.Post = {} // Retour à 0 des inputs //
+        // } else {
+        //     alert("Post bien reçu ");
+        // }
+        // })
+        // .then(this.$router.push("/listPostPage"))
+        // .catch(error => console.log(error))
+            
+        
     }
-// } 
+} 
+}
 
+//   let res = await fetch(url, options)
+//         let result = await res.json();
+//         alert (result.message)
 
       
           

@@ -2,8 +2,8 @@
   <div class="container-fluid gedf-wrapper">
     <!-- On récupére les posts : boucle avec vfor -->
     <!-- tableau de post-->
-    <div v-for="post in posts" v-bind:key="post.id" class="bloclist">
-    <!-- {{ post[0] }} -->
+    <div v-for="post in posts.posts" v-bind:key="post.id" class="bloclist">
+    <!-- {{ posts }} -->
       <div class="post-card">
         <div class="card gedf-card">
           <div class="card-header container-info">
@@ -29,33 +29,35 @@
             <div class="ml-2 info-post">
               <div class="h5 m-0">{{ user.firstName }} {{user.lastName }}</div>
               <div class="text-muted h7 mb-2 time-post">
-                <i class="fa fa-clock-o"></i> {{ post[0].createdAt }}
+                <i class="fa fa-clock-o"></i> {{ post.createdAt }}
               </div>
             </div>
           </div>
 
+          <!--info du post-->
           <div class="card-body">
-            <p class="card-text">{{ post[0].content }}</p>
-            <img v-bind:src="post[0].imageUrl" alt="" />
-          </div>
-
-          <!-- <div class="card-footer d-flex flex-row fs-12">
-            <div class="like p-2 cursor">
-              <i class="fa fa-thumbs-o-up"></i><span class="ml-1">Like</span>-->
-            <div> 
-            <!-- <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
-                    <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div> -->
-            <button
-              v-if="post.userId == userId"
+            <p v-if ="post.content!== 'null'" class="card-text">{{ post.content }}</p>
+            <div v-if = "post.imageUrl">
+              <img class=" imagePost" 
+              v-bind:src="post.imageUrl" alt="image du post" 
+              />
+            </div>             
+            <div class ="btn-deletePost" v-if="post.userId == user.id">             
+            <button             
               type="button"
               class="btn btn-danger"
               title="supprimer"
               aria-label="bouton supprimer"
-              @click="deletePost(post[0].id)"
+              @click="deletePost(post.id)"
             >
               supprimer le post
             </button>
+            </div>
+
           </div>
+
+         
+            
 
           <div class="card-comment">
             <div class="comment-info">
@@ -101,25 +103,54 @@
 </template>
    
 <script>
+// import { mapState } from "vuex";
+
 export default {
   name: "listPost",
 
   data() {
-    return {
-      user:{       
-      id: localStorage.getItem("userId"),   
-      userId: "",    
-      firstName: " ",
-      lastName: "",
-      email: "" ,
-      imageUrl: "", 
-      image:"", 
-      isAdmin: "",
+    return {        
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),  
+      users:[],
+      user: {
+        id: localStorage.getItem("userId"),
+        isAdmin: localStorage.getItem("isAdmin"),
       },
       post:[],
       posts: [],
     };
   },
+
+  // computed:{
+  //   ...mapState(["user"])
+  // },
+
+async created (){    
+    const url = `http://localhost:3000/api/user/${ this.user.id }`;
+    console.log(this.user.id)
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          }
+      };
+
+    await fetch(url, options).then((res) => {
+      res.json().then((data) => {       
+        console.table(data)
+        console.log(data)
+        this.user = data.user;        
+        console.log(this.user);      
+        // return data;
+      });
+    });
+  },
+
+
+
+
+
 
   async mounted() {
     this.userId = localStorage.getItem("userId");
@@ -211,7 +242,11 @@ body{
     align-items: flex-end;
 
 }       
+.imagePost{
+  width : 300px;
+  height : 200px;
 
+}
 .card-comment{
     display: flex;
     flex-direction: column;

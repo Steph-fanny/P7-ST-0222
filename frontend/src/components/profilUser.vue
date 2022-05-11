@@ -6,7 +6,7 @@
      <section class="vh-100" style="background-color: #f4f5f7;"> 
       <!-- <div class="container py-5 h-100">  -->
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-lg-6 mb-4 mb-lg-0">
+        <div class="col col-lg-8 mb-4 mb-lg-0">
         <div class="card mb-3" style="border-radius: .5rem;">
           <div class="row g-0">
             <div class="col-md-4 gradient-custom text-center text-white" 
@@ -24,7 +24,7 @@
                       src="../assets/photo-avatar-profil.png"
                       alt="photo de profil provisoire" id="avatar-profil"
                       class="img-fluid my-5"
-                      style="width: 120px;"
+                      style="width: 115px;"
                     /> 
                     
                     <img
@@ -32,7 +32,7 @@
                       :src="user.imageUrl"
                       alt="photo de profil " id="avatar-profil"
                       class="img-fluid my-5"
-                      style="width: 120px;"
+                      style="width: 115px;"
                     />    
                     
                   <label class="text-center label" for="file">       
@@ -110,10 +110,7 @@
 </template>
 
 
-<script >
-
-
-
+<script>
 
 export default {
   name: "profilUser",
@@ -152,26 +149,21 @@ export default {
           }
       };
 
-    this.user = await fetch(url, options)
-    .then((res) => {
-      res.json().then((data) => {
-        // console.log(data)
+    await fetch(url, options).then((res) => {
+      res.json().then((data) => {       
         console.table(data)
         console.log(data)
         this.user = data.user;
-      
-          console.log(this.user)
-          this.user.createdAt = this.user.createdAt.split ("T")[0]
+        this.user.createdAt = this.user.createdAt.split ("T")[0]
           let jour = this.user.createdAt.split("-")[2];
           let mois = this.user.createdAt.split("-")[1];
           let annee = this.user.createdAt.split("-")[0];
           this.user.createdAt = jour + " " + mois + " " + annee;
         console.log(this.user);
-        // this.file = res.data.file;
-        // console.log(this.file);
-        return data;
-      })
-    })
+      
+        // return data;
+      });
+    });
   },
      
      
@@ -184,24 +176,22 @@ export default {
       this.file = this.$refs.file.files[0];
       this.imageUrl = URL.createObjectURL(this.file);
       },
-               
-    
-
-    async updatePicture() {     
+             
+      async updatePicture() {     
       // this.$refs.file.click();
       // créer element à envoyer au server et ajouter le fichier choisi à formData
       const formData = new FormData(); 
       // //clef/ valeur     
       formData.append("file", this.file);   
-      // console.log(this.file)    
-    
+        
       let url = `http://localhost:3000/api/user/${this.user.id}`
       let options = {
         method: "PUT",
         headers: {           
         'Authorization': 'Bearer ' + localStorage.getItem("token"),
-        } 
-      }
+        }, 
+        body:formData,
+      };
         
       return await fetch(url, options)
       .then(function (res) {
