@@ -43,14 +43,8 @@
                         accept="file/*" ref="file" 
                         aria-describedby="image" 
                         @change="selectFile()"         
-                        />                         
-                       
-                        <!-- <button 
-                        type="submit"
-                        id="btnP" class="btn btn-primary"
-                        @click="annulerPost"
-                        >Annuler</button>   -->
-                                                                            
+                        />                        
+                                                                                                  
                     </div>     
                 </div> 
             </form>                                           
@@ -90,12 +84,15 @@ export default {
             
       
         /*** Créer un nouveau post ***/
-        async addPost() {                      
-            // creation objet formData)         
-
+        async addPost() {     
+            if(this.content ===""&& this.file ==="" ){
+            return alert ("Veuillez inserer un fichier ou un texte")
+        }                   
+            // creation objet formData)       
             let formData = new FormData()
                 formData.append("file", this.file);
-                formData.append("content",this.content);
+                formData.append("content",this.content); 
+                formData.append("userId", parseInt(localStorage.getItem("userId")));              
               
             // let deliverPost = {                     
             //     "userId" : this.userId,              
@@ -116,39 +113,26 @@ export default {
 
                 }
             }
-            
-       let res = await fetch(url, options)
-       console.log(res)
-    //    .then((data) => {
-    //     console.log(data);
-        // let data = await res.json();
-        // alert (data.message)
-            // .then(res => res.json())    
-            // .then((post) => {    
-                
-                     
-            
-        // if (data.ok) {
-        //     window.location.reload();
-        //     this.Post = {} // Retour à 0 des inputs //
-        // } else {
-        //     alert("Post bien reçu ");
-        // }
-        // })
-        // .then(this.$router.push("/listPostPage"))
-        // .catch(error => console.log(error))
-            
-        
-    }
+               
+        await fetch(url, options)
+        .then((res) => {
+            res.json()
+            console.log(res)  
+            if (res.ok){
+                this.Post = {} // Retour à 0 des inputs //                    
+                this.$router.push("/listPostPage");
+                alert(" Post bien reçu"); 
+            }else{
+                alert("vous ne pouvez pas publier ce message ")
+            }
+        })
+        .catch(error => console.log(error)) 
+        }             
+
+    }                       
 } 
-}
 
-//   let res = await fetch(url, options)
-//         let result = await res.json();
-//         alert (result.message)
-
-      
-          
+       
 
 </script>
 

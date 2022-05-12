@@ -2,7 +2,10 @@
   <div class="container-fluid gedf-wrapper">
     <!-- On récupére les posts : boucle avec vfor -->
     <!-- tableau de post-->
-    <div v-for="post in posts.posts" v-bind:key="post.id" class="bloclist">
+    <div class="bloclist"
+      v-bind:key="post.id"
+      v-for="post in posts.posts"       
+    >
     <!-- {{ posts }} -->
       <div class="post-card">
         <div class="card gedf-card">
@@ -27,9 +30,9 @@
               
             </div>
             <div class="ml-2 info-post">
-              <div class="h5 m-0">{{ user.firstName }} {{user.lastName }}</div>
-              <div class="text-muted h7 mb-2 time-post">
-                <i class="fa fa-clock-o"></i> {{ post.createdAt }}
+              <div class="h5 m-0"> {{ user.firstName }} {{ user.firstName }}</div>
+              <div class="h5 m-0 h7 mb-2 time-post">
+                {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
               </div>
             </div>
           </div>
@@ -37,11 +40,14 @@
           <!--info du post-->
           <div class="card-body">
             <p v-if ="post.content!== 'null'" class="card-text">{{ post.content }}</p>
-            <div v-if = "post.imageUrl">
+
+            <div             
+            v-if = "post.imageUrl">
               <img class=" imagePost" 
               v-bind:src="post.imageUrl" alt="image du post" 
               />
-            </div>             
+            </div>    
+                    
             <div class ="btn-deletePost" v-if="post.userId == user.id">             
             <button             
               type="button"
@@ -53,8 +59,8 @@
               supprimer le post
             </button>
             </div>
-
           </div>
+         
 
          
             
@@ -104,6 +110,8 @@
    
 <script>
 // import { mapState } from "vuex";
+let moment = require('moment')
+moment.locale('fr')
 
 export default {
   name: "listPost",
@@ -115,46 +123,48 @@ export default {
       users:[],
       user: {
         id: localStorage.getItem("userId"),
-        isAdmin: localStorage.getItem("isAdmin"),
+        userId: "",    
+        firstName: " ",
+        lastName: "",      
+        imageUrl: "",         
+        isAdmin: "",
       },
-      post:[],
+      post: [],
       posts: [],
+      moment: moment,
     };
   },
 
   // computed:{
-  //   ...mapState(["user"])
+    
+
+  // // //   ...mapState(["user"])
   // },
 
-async created (){    
-    const url = `http://localhost:3000/api/user/${ this.user.id }`;
-    console.log(this.user.id)
-    const options = {
-      method: "GET",
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem("token"),
-          }
-      };
+// async created (){   
 
-    await fetch(url, options).then((res) => {
-      res.json().then((data) => {       
-        console.table(data)
-        console.log(data)
-        this.user = data.user;        
-        console.log(this.user);      
-        // return data;
-      });
-    });
-  },
+//     const url = `http://localhost:3000/api/user/accounts`;
+//     console.log(this.users)
+//     const options = {
+//       method: "GET",
+//       headers: {
+//         'Authorization': 'Bearer ' + localStorage.getItem("token"),
+//           }
+//       };
 
-
-
-
-
+//     this.users = await fetch(url, options).then((res) => {
+//       res.json().then((data) => {  
+//         console.table(data)
+//         console.log(data)      
+//       return data             
+      
+//       })
+//     })
+// }, 
+  
 
   async mounted() {
-    this.userId = localStorage.getItem("userId");
-    this.isAdmin = localStorage.getItem("isAdmin");
+    this.userId = JSON.parse(localStorage.getItem("userId"));    
     console.log(localStorage);
 
     // console.log("test");
@@ -167,7 +177,7 @@ async created (){
     };
     this.posts = await fetch(url, options).then((res) => {
       // traduction en json)
-        res.json()
+        res.json()      
       .then((data) => {
         console.log(data);
         this.posts = data;
@@ -176,6 +186,7 @@ async created (){
       });
     });
   },
+
   methods: {
     async getPosts() {
       console.log("test");
@@ -187,11 +198,14 @@ async created (){
         },
       };
       return await fetch(url, options).then(function (res) {
-        res.json().then(function (data) {
-          console.log(data);
-          return data;
+        res.json()
+         .then(function (data) {
+         this.posts = data;
+        console.log(this.posts);
+        return data;
+          
         });
-      });
+      })
     },
 
     //supprimer le message//
@@ -219,7 +233,7 @@ async created (){
 
 
 
-  <style lang="css">
+  <style scoped lang="css">
 body{
     background-color: #eeeeee;
 }
@@ -245,6 +259,7 @@ body{
 .imagePost{
   width : 300px;
   height : 200px;
+  text-align: center;
 
 }
 .card-comment{
@@ -288,13 +303,13 @@ body{
     }
 }
     .gedf-card {
-        margin-bottom: 2.77rem;                
+        margin-bottom: 0.5rem;                
             
     }
             
     .post-card{
         margin:auto;   
-        /* width: 50%;          */
+        width: 90%;         
         flex-direction: row;
         justify-content: center;
     }
@@ -312,13 +327,13 @@ width: 100%;
 }
 
 .bloclist {
-  width: 70%;
+  width: 100%;
   margin: auto;
-  margin-top: 25px;
+  margin-top: 15px;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 30px; 
-  padding: 25px;
+  padding: 0px;
 } 
 
 

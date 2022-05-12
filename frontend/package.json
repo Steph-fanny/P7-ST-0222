@@ -15,6 +15,7 @@
     "core-js": "^3.8.3",
     "dotenv": "^16.0.0",
     "dotenv-webpack": "^7.1.0",
+    "moment": "^2.29.3",
     "node-fetch": "^3.2.3",
     "npm-install-peers": "^1.2.2",
     "popper.js": "^1.16.1",
