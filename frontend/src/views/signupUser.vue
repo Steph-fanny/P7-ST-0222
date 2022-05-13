@@ -118,15 +118,14 @@ data(){
       }
       console.log(option)
             fetch(urlSignup, option)
-                .then(function(res) {
-                res.json()
-                })
-                .then(function(res) {                   
+                .then(res => res.json())
+                .then((res) => {
+                console.log(res)                  
                     localStorage.setItem("userId", res.userId);                                     
                     localStorage.setItem("token", res.token);
                     console.log(localStorage)
-                    this.$router.push("/forum");
-                    alert(" Bienvenue sur Groupomania");
+                    this.$router.push("/");
+                    alert(" Bienvenue sur Groupomania, connectez vous");
                     
                 })
                 .catch(error => console.log(error))

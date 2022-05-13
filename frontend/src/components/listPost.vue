@@ -1,5 +1,7 @@
 <template>
-  <div class="container-fluid gedf-wrapper">
+  <div class="container-fluid gedf-wrapper">   
+
+
     <!-- On récupére les posts : boucle avec vfor -->
     <!-- tableau de post-->
     <div class="bloclist"
@@ -25,12 +27,10 @@
                   alt="photo de profil " id="avatar-profil"
                    class="rounded-circle"
                   style="width: 50px;"
-                />    
-
-              
+                />              
             </div>
             <div class="ml-2 info-post">
-              <div class="h5 m-0"> {{ user.firstName }} {{ user.firstName }}</div>
+              <div class="h5 m-0"> {{user.firstName }} {{ user.firstName }}</div>
               <div class="h5 m-0 h7 mb-2 time-post">
                 {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
               </div>
@@ -62,9 +62,7 @@
           </div>
          
 
-         
-            
-
+    <!--commentaire -->    
           <div class="card-comment">
             <div class="comment-info">
               <span class="comment-avatar float-left">
@@ -110,8 +108,8 @@
    
 <script>
 // import { mapState } from "vuex";
-let moment = require('moment')
-moment.locale('fr')
+let moment = require("moment");
+moment.locale("fr"); 
 
 export default {
   name: "listPost",
@@ -132,6 +130,7 @@ export default {
       post: [],
       posts: [],
       moment: moment,
+      date:"",
     };
   },
 
@@ -141,29 +140,33 @@ export default {
   // // //   ...mapState(["user"])
   // },
 
-// async created (){   
+async created (){   
 
-//     const url = `http://localhost:3000/api/user/accounts`;
-//     console.log(this.users)
-//     const options = {
-//       method: "GET",
-//       headers: {
-//         'Authorization': 'Bearer ' + localStorage.getItem("token"),
-//           }
-//       };
+    const url = `http://localhost:3000/api/user/accounts`;
+    console.log(this.users)
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          }
+      };
 
-//     this.users = await fetch(url, options).then((res) => {
-//       res.json().then((data) => {  
-//         console.table(data)
-//         console.log(data)      
-//       return data             
+    this.users = await fetch(url, options).then((res) => {
+      res.json().then((data) => {  
+        console.log(data)
+         // console.table(data)
+        
+
+        })               
+           
       
-//       })
-//     })
-// }, 
+    
+    })
+}, 
   
 
   async mounted() {
+    // appel à l'api pour affichage 
     this.userId = JSON.parse(localStorage.getItem("userId"));    
     console.log(localStorage);
 
@@ -185,10 +188,21 @@ export default {
         return data;
       });
     });
+ 
+
   },
 
+
+ 
+
+
+
+
+
+
+
   methods: {
-    async getPosts() {
+    async getPosts()  {
       console.log("test");
       let url = "http://localhost:3000/api/post";
       let options = {
@@ -207,6 +221,15 @@ export default {
         });
       })
     },
+
+  // Permet d'afficher la date de publication au bon format
+    // dateFormat(date){
+    //   if (date) {
+    //     return moment(String(date)).format('DD/MM/YYYY')
+    //   }
+    // },
+
+
 
     //supprimer le message//
     deletePost(postid) {
