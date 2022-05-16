@@ -4,9 +4,21 @@
             <div class="bg-light p-2">
                 <div class="d-flex flex-row align-items-start">
                                   
-                    <img class="rounded-circle" 
-                        src="../assets/photo-avatar-profil.png" width="40"> 
-                         
+                    <img
+                        v-if="user.imageUrl == null"
+                        src="../assets/photo-avatar-profil.png"
+                        alt="photo de profil provisoire" id="avatar-profil"
+                        class="rounded-circle"
+                        style="width: 40px;"
+                        /> 
+                    
+                    <img
+                        v-else
+                        :src="user.imageUrl"
+                        alt="photo de profil " id="avatar-profil"
+                        class="rounded-circle"
+                        style="width: 40px;"
+                        />        
                         <textarea class="form-control ml-1 shadow-none textarea"
                             type="text" id="content" 
                             name="content" rows="2" 
@@ -18,7 +30,7 @@
                     <button class="send btn btn-primary btn-sm shadow-none " 
                         type="submit" title="commentaire"
                         aria-label="créer un commentaire"
-                        @click="createComment()">Publier
+                        @click="createComment(post.id)">Publier
                     </button>   
                 </div>
                   
@@ -27,7 +39,11 @@
 
         <!--liste des commentaire-->
         <div> 
-            <div v-for="comment in comments" :key="comment.id" class="blocComment" >                        
+            <div 
+                v-for="comment in comments.filter((comment) =>{
+                    return comment.postId == post.id})"
+                :key="comment.id" 
+                class="blocComment" >                        
                 <p> {{ comment.content }} </p>           
             </div>
             <div>
@@ -64,7 +80,7 @@ export default {
         }
         console.log(inputContent)
      
-        let url = "http://localhost:3000/api/comment/" 
+        let url = "http://localhost:3000/api/comment/${postId}" 
         let options = {
             method: "POST",
             body:JSON.stringify(inputContent),

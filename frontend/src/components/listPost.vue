@@ -1,7 +1,6 @@
 <template>
-  <div class="container-fluid gedf-wrapper">   
-
-
+  <div class="container-fluid gedf-wrapper">
+ 
     <!-- On récupére les posts : boucle avec vfor -->
     <!-- tableau de post-->
     <div class="bloclist"
@@ -11,10 +10,15 @@
     <!-- {{ posts }} -->
       <div class="post-card">
         <div class="card gedf-card">
-          <div class="card-header container-info">
-            <div class="mr-2">
+          <div class="card-header container-info"
+          v-for="user in users.users.filter((user)=>{
+              return user.id == post.userId})"
+            v-bind:key="user.id">
+           
+            <!-- info d'entete-->
+            <div class="mr-2">                          
               <img
-                v-if="user.imageUrl == null"
+                  v-if = "user.imageUrl == null"
                   src="../assets/photo-avatar-profil.png"
                   alt="photo de profil provisoire" id="avatar-profil"
                   class="rounded-circle"
@@ -22,7 +26,7 @@
               /> 
                     
               <img
-                v-else
+              
                   :src="user.imageUrl"
                   alt="photo de profil " id="avatar-profil"
                    class="rounded-circle"
@@ -30,7 +34,9 @@
                 />              
             </div>
             <div class="ml-2 info-post">
-              <div class="h5 m-0"> {{user.firstName }} {{ user.firstName }}</div>
+              <div class="h5 m-0"> 
+                {{ user.firstName }} {{user.lastName }}
+                </div>
               <div class="h5 m-0 h7 mb-2 time-post">
                 {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
               </div>
@@ -47,7 +53,7 @@
               v-bind:src="post.imageUrl" alt="image du post" 
               />
             </div>    
-                    
+          <!-- bouton effacer si l'utilisateur a écrit le post-->       
             <div class ="btn-deletePost" v-if="post.userId == user.id">             
             <button             
               type="button"
@@ -151,18 +157,20 @@ async created (){
           }
       };
 
-    this.users = await fetch(url, options).then((res) => {
-      res.json().then((data) => {  
+      await fetch(url, options).then((res) => {
+      res.json().then((data) => { 
         console.log(data)
-         // console.table(data)
-        
+         console.table(data)
+        this.users = data      
+        })
+                   
 
         })               
-           
+}, 
       
     
-    })
-}, 
+    
+ 
   
 
   async mounted() {
@@ -182,11 +190,13 @@ async created (){
       // traduction en json)
         res.json()      
       .then((data) => {
-        console.log(data);
+        console.log(data);        
         this.posts = data;
-        console.log(this.posts);
-        return data;
-      });
+        console.log(this.posts)
+        const currentPosts = this.posts.posts.reverse().slice;
+       console.log(currentPosts)
+      })
+       
     });
  
 
@@ -280,9 +290,19 @@ body{
 
 }       
 .imagePost{
-  width : 300px;
-  height : 200px;
+  /* width : 300px;
+  height : 200px; */
   text-align: center;
+  margin: 5px; 
+  width: 60vw;
+  min-width: 220px;
+  min-height: 220px;
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: cover;
+  border: 1px solid #1026b9;
+  border-radius: 8px;
+  box-shadow: 1px 1px 2px rgb(24, 24, 24);
 
 }
 .card-comment{
@@ -291,6 +311,13 @@ body{
     align-items: flex-end;
     padding:5px;
     border-top: solid 1px rgb(218, 210, 210);
+}
+
+.card-body{
+  display: flex;
+  flex-direction :column;
+  align-items: center;
+  justify-content: center;
 }
 
 .comment-info{
@@ -303,6 +330,12 @@ body{
 
 .bnt-send{
     margin-top: 2px !important;
+}
+.btn-deletePost{
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
 }
 
 .comment-avatar img{
@@ -326,7 +359,8 @@ body{
     }
 }
     .gedf-card {
-        margin-bottom: 0.5rem;                
+        margin-bottom: 0.5rem;  
+        width : 70%;              
             
     }
             
