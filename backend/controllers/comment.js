@@ -21,7 +21,7 @@ exports.addComment = (req, res, next) => {
       return res.status(400).json({message: 'le contenu ne peut pas être vide'});
     } 
     if (req.body.content.lenght<= CONTENT_LIMIT){
-       return res.status(400).json({message: 'le contenu doit etre plus eleve'});
+       return res.status(401).json({message: 'le contenu doit etre plus eleve'});
     } 
 
     // enregistrement dans bdd
@@ -32,7 +32,7 @@ exports.addComment = (req, res, next) => {
         createAt: 0
    })
     .then(() => res.status(201).json({ message: "Message envoyé!" }))
-    .catch(error => res.status(400).json({message: 'Vous ne pouvez pas publier un post' }))
+    .catch(error => res.status(400).json({message: 'Vous ne pouvez pas publier un commentaire' }))
 }  
            
 // /*** afficher tous les commentaires ***/

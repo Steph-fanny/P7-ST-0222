@@ -13,7 +13,7 @@ const commentCtrl = require("../controllers/comment")
 
     
   /*** créer un nouveau commentaire ***/ 
-  router.post("/", multer ,commentCtrl.addComment);
+  router.post("/new", commentCtrl.addComment);
 
   /*** afficher un commentaire ***/
   router.get("/:id", commentCtrl.getOneComment);

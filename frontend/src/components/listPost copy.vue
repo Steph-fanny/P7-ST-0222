@@ -1,6 +1,7 @@
 <template>
 
-  <div class="container-fluid gedf-wrapper"> 
+  <div class="container-fluid gedf-wrapper">
+ 
     <!-- On récupére les posts : boucle avec vfor -->
     <!-- tableau de post-->
     <div class="bloclist"
@@ -36,12 +37,12 @@
             <div class="ml-2 info-post">
               <div class="h5 m-0"> 
                 {{ user.firstName }} {{user.lastName }}
-              </div>
+                </div>
               <div class="h5 m-0 h7 mb-2 time-post">
                 {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
               </div>
             </div>
-        </div>
+          </div>
 
           <!--info du post-->
           <div class="card-body">
@@ -52,7 +53,7 @@
               <img class=" imagePost" 
               v-bind:src="post.imageUrl" alt="image du post" 
               />
-          </div>    
+            </div>    
           <!-- bouton effacer si l'utilisateur a écrit le post-->       
             <div class ="btn-deletePost">
                       
@@ -68,28 +69,90 @@
               </button>
            
               <button class="btn btn-danger" 
-                @click="showComments">
+                @click="showComments = !showComments">
                 Voir les Commentaires
               </button>
             
             </div>
-           
           </div>
-            <addComment/>
+            </div>
           </div>
-          
-      </div>       
-    </div>
-  </div>
-     
- 
+        </div>
+      </div>
    
          
 <!--**********************************commentaire **************-->
-    
+    <!-- affichage des commentaires   
+        <div  
+            
+              class="card-comment"            
+              v-for="comment in comments.filter((comment) => {
+              return comment.postId == post.id;
+              })"  
+              v-bind:key="comment.id"         
+            >
+                                               
+  
+            <div 
+            class="comment-info"             
+            v-for="user in users.users.filter((user)=>{
+            return user.id == post.userId})"
+            v-bind:key="user.id">
+
+              <span class="comment-avatar float-left">
+                <img
+                  v-if = "user.imageUrl == null"
+                  src="../assets/photo-avatar-profil.png"
+                  alt="photo de profil provisoire" id="avatar-profil"
+                  class="rounded-circle"
+                  style="width: 50px;"
+                  /> 
+                    
+                  <img  
+                  v-else            
+                  :src="user.imageUrl"
+                  alt="photo de profil " id="avatar-profil"
+                   class="rounded-circle"
+                  style="width: 50px;"
+                  /> 
+              </span>
+
+                <div class="card-author">                
+                  {{ user.firstName }} {{user.lastName }}
+                </div>
+            </div>     
+  
+          <div class="card-body">
+            <p v-if ="comment.content!== 'null'" class="card-text">{{ comment.content }}</p>
+           
+            <div class ="btn-deleteComment">                      
+              <button 
+              v-if="comment.userId == user.id" 
+              type="button"
+              class="btn btn-danger"
+              title="supprimer"
+              aria-label="bouton supprimer"
+              @click="deleteComment(comment.id)"
+              >
+              supprimer le commentaire
+              </button>   
+            </div>  
+          </div>  
+        </div>    -->                
+        
 
 
-   
+  <addComment/> 
+
+
+
+
+
+
+
+
+
+
 
 
           
@@ -184,8 +247,42 @@ export default {
     });
   },
 
+
+//commentaire//
+// async mounted() {
+//     // appel à l'api pour affichage 
+//     this.userId = JSON.parse(localStorage.getItem("userId"));    
+//     console.log(localStorage);
+
+//     // console.log("test");
+//     let url = "http://localhost:3000/api/comment";
+//     let options = {
+//       method: "GET",
+//       headers: {
+//         Authorization: "Bearer " + localStorage.getItem("token"),
+//       },
+//     };
+//     this.comments = await fetch(url, options).then((res) => {
+//       // traduction en json)
+//         res.json()      
+//       .then((data) => {
+//         console.log(data);        
+//         this.comments = data;
+//         console.log(this.comments)
+//         const currentPosts = this.comments.comments.reverse().slice;
+//        console.log(currentPosts)
+//       })
+       
+//     });
+  
  
- 
+
+
+
+
+
+
+
   methods: {
     async getPosts()  {
       console.log("test");
@@ -214,7 +311,25 @@ export default {
     //   }
     // },
 
-
+// async getComments()  {
+//       console.log("test");
+//       let url = "http://localhost:3000/api/comment";
+//       let options = {
+//         method: "GET",
+//         headers: {
+//           Authorization: "Bearer " + localStorage.getItem("token"),
+//         },
+//       };
+//       return await fetch(url, options).then(function (res) {
+//         res.json()
+//          .then(function (data) {
+//          this.comments = data;
+//         console.log(this.comments);
+//         return data;
+          
+//         });
+//       })
+//     },
 
     //supprimer le message//
     deletePost(postid) {
@@ -234,7 +349,26 @@ export default {
         .catch((error) => console.log(error));
     },
 
-    
+    //supprimer le commentaire//
+    // deleteComment(commentid) {
+    //   let url = `http://localhost:3000/api/comment/${commentid}`;
+    //   let options = {
+    //     method: "DELETE",
+    //     headers: {
+    //       Authorization: "Bearer " + localStorage.getItem("token"),
+    //     },
+    //   };
+    //   fetch(url, options)
+    //     .then(function (res) {
+    //       console.log(res);
+    //       alert("Suppression du commentaire confirmé ! ");
+    //       window.location.reload();
+    //     })
+    //     .catch((error) => console.log(error));
+    // },
+
+
+
 
   },
 };

@@ -1,62 +1,52 @@
 <template>
-    <div class="container mt-5">
+
+    <div class="container mt-2">
         <div class="commentaire d-flex justify-content-center row">           
             <div class="bg-light p-2">
-                <div class="d-flex flex-row align-items-start">
-                                  
-                    <img
-                        v-if="user.imageUrl == null"
-                        src="../assets/photo-avatar-profil.png"
-                        alt="photo de profil provisoire" id="avatar-profil"
-                        class="rounded-circle"
-                        style="width: 40px;"
-                        /> 
-                    
-                    <img
-                        v-else
-                        :src="user.imageUrl"
-                        alt="photo de profil " id="avatar-profil"
-                        class="rounded-circle"
-                        style="width: 40px;"
-                        />        
-                        <textarea class="form-control ml-1 shadow-none textarea"
-                            type="text" id="content" 
-                            name="content" rows="2" 
-                            v-model="content" 
-                            placeholder="Ecrivez votre commentaire ici">
-                        </textarea > 
-                </div>                                           
-                <div class="mt-2 text-right">
-                    <button class="send btn btn-primary btn-sm shadow-none " 
-                        type="submit" title="commentaire"
-                        aria-label="créer un commentaire"
-                        @click="createComment(post.id)">Publier
-                    </button>   
-                </div>
-                  
-            </div>    
-        </div>  
+                <div class="d-flex flex-row align-items-end">   
+                    <form 
+                        id="formElem"
+                        class="container text-center form-group"
+                        @submit.prevent="addComment"
+                        enctype="multipart/form-data"
+                        method="post"
+                        >
 
-        <!--liste des commentaire-->
-        <div> 
-            <div 
-                v-for="comment in comments.filter((comment) =>{
-                    return comment.postId == post.id})"
-                :key="comment.id" 
-                class="blocComment" >                        
-                <p> {{ comment.content }} </p>           
-            </div>
-            <div>
-            <button class="send btn btn-primary btn-sm shadow-none " 
-                type="submit" title="effacer le commentaire"
-                aria-label="créer un commentaire"
-                @click="deleteComment(comment.postId,comment.Id)">Effacer
-            </button>                 
-            </div>
-        </div>
-    </div>            
- 
+                        <div class= "form-group content-card">            
+                        <label for="content"></label>
+                            <textarea 
+                                type="text" 
+                                id="content" name="content" rows="2" cols="2"
+                                class="form-control ml-1 shadow-none textarea"
+                                placeholder="Ecrivez votre commentaire ici" 
+                                required 
+                                v-model="content">
+                            </textarea>
+                        </div>           
+                        <div class="mt-1 text-right" >
+                           
+                            <!--bouton envoyer un commentaire--> 
+                                <button 
+                                    type="submit"
+                                    title="commentaire"
+                                    id="btn-post"
+                                    class="send btn btn-primary btn-sm shadow-none " 
+                                    aria-label="créer un commentaire"                       
+                                    @click="createComment()"
+                                    >Publier
+                                </button>                                                                                           
+                          
+                        </div> 
+                    </form>                                         
+                </div>
+            </div> 
+        </div>    
+    </div>  
 </template>
+        
+  
+ 
+
 
 <script>
 
@@ -69,59 +59,87 @@ export default {
             postId: "",
             content: "",        
             comment: {},
-            comments: [],
+            comments: [],                                                 
+             
         };
     },
+
+     mounted() {
+            this.userId = JSON.parse(localStorage.getItem("userId"));
+            console.log(this.userId)
+    },
+
     methods: {
-        createComment(){
-        let inputContent = {
-            "content": this.content,
-            "commentId": this.commentId
-        }
-        console.log(inputContent)
-     
-        let url = "http://localhost:3000/api/comment/${postId}" 
+    /*** Créer un nouveau commetaire ***/
+        async createComment(){     
+            if(this.content ==="" ){
+            return alert ("Veuillez inserer un commentaire ")
+            }                    
+                                            
+        // creation objet formData)       
+            let formData = new FormData()           
+            formData.append("content",this.content); 
+            formData.append("userId", parseInt(localStorage.getItem("userId"))); 
+            formData.append("postId", this.post );             
+                              
+        // let inputContent = {
+        //     "content": this.content,
+        //     "commentId": this.commentId
+        // }        
+        // console.log(inputContent)
+               
+                    
+       
+        let url = "http://localhost:3000/api/comment/new"
+          
         let options = {
             method: "POST",
-            body:JSON.stringify(inputContent),
+            // body:JSON.stringify(inputContent),
+            body : formData,
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem("token"),
                 'Content-Type': 'application/json'
             }
-        };
-        fetch(url, options)
-            .then(res => res.json())
-            .then((res) => {
-                console.log(res)
+        };                    
+               
+        await fetch(url, options)
+         .then((res) => {
+            res.json()
+            console.log(res)         
+           
              if (res.ok) {    
-                this.content = {};
+                this.Comment = {} // Retour à 0 des inputs //   
+                console.log(this.Comment)              
+                alert(" Commentaire bien reçu"); 
             } else {
-                alert("Commentaire envoyé ")
+                alert("vous ne pouvez pas publier ce commentaire ")
                 }        
-            })
-            .then(window.location.reload())
+            })           
             .catch(error => console.log(error))
         }
-    },
+    }
 }
-
-
+                         
+       
+              
+          
+        
 
 </script>
 
 <style>
 .commentaire{
-width:50%;
+width:100%;
 display: block;
 flex-direction: row;
-text-align: center;
+text-align: right;
 }
 
 rounded-circle{
     margin-right: 10px;
 }
 .send{
-    background-color: #FD2D01 !important;
+     background-color: #0d0764 !important;
     color: white;    
     margin-right: 20px;
     
