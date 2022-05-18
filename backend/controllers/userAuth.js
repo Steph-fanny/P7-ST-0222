@@ -54,9 +54,9 @@ module.exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     console.log("salut")
-    const User = db.User
+    // const User = db.User
     // récupére les données de l'utilisateur
-    User.findOne ({ where: {email : req.body.email}})
+    db.User.findOne ({ where: {email : req.body.email}})
     // récupére l'email de la requete (input)
     .then(user => {
         // on vérifie que mail est dans la BDD
@@ -79,7 +79,7 @@ exports.login = (req, res, next) => {
                     {expiresIn: '24h'}
                    
                 ),           
-            })
+            });
         })
         .catch(error => {
             console.log(error)
@@ -160,7 +160,7 @@ exports.updateUserProfil = (req, res, next) => {
 /*** suppression du profil ***/
 exports.deleteUser = (req, res, next) => {    
   console.log("suppression compte user")
-  User.findOne({ where: {id: req.params.id}})
+  db.User.findOne({ where: {id: req.params.id}})
     .then((user) => { 
       // s'il y a une photo => supprime de la bdd
         if (user.imageUrl!==null) {
@@ -168,7 +168,7 @@ exports.deleteUser = (req, res, next) => {
           fs.unlink(`upload/${filename}`, () => {
 
           // on supprime le compte utilisateur  : fonction destroy
-            User.destroy({where: { id: req.params.id }})
+            db.User.destroy({where: { id: req.params.id }})
             .then (()=> res.status(200).json({ message: "Profil supprimé"}))
             .catch(error =>{
               console.log(error);

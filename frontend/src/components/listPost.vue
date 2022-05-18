@@ -1,38 +1,38 @@
 <template>
 
   <div class="container-fluid gedf-wrapper"> 
-    <!-- On récupére les posts : boucle avec vfor -->
-    <!-- tableau de post-->
+    <!-- On récupére les posts : boucle avec vfor  : tableau de post-->   
     <div class="bloclist"
       v-bind:key="post.id"
       v-for="post in posts.posts"       
     >
     <!-- {{ posts }} -->
-      <div class="post-card">
+      <div class="post-card">   
         <div class="card gedf-card">
-          <div class="card-header container-info"
-          v-for="user in users.users.filter((user)=>{
+          <div 
+            class="card-header container-info"
+            v-for="user in users.users.filter((user)=>{
               return user.id == post.userId})"
-            v-bind:key="user.id">
-           
-            <!-- info d'entete-->
-            <div class="mr-2">                          
-              <img
-                  v-if = "user.imageUrl == null"
-                  src="../assets/photo-avatar-profil.png"
-                  alt="photo de profil provisoire" id="avatar-profil"
+            v-bind:key="user.id"
+          >
+          <!-- photo profil user-->
+            <div class="mr-2">  
+               <img
+                v-if ="user.imageUrl != null"
+                :src="user.imageUrl"
+                alt="photo de profil " id="avatar-profil"
                   class="rounded-circle"
-                  style="width: 50px;"
-              /> 
-                    
-              <img
-                  v-else
-                  :src="user.imageUrl"
-                  alt="photo de profil " id="avatar-profil"
-                   class="rounded-circle"
-                  style="width: 50px;"
-                />              
+                style="width: 50px;"
+              />              
+              <img                
+               v-else
+                src="../assets/photo-avatar-profil.png"
+                alt="photo de profil provisoire" id="avatar-profil"
+                class="img-fluid my-5"
+                style="width: 50px;"
+              />             
             </div>
+            <!--info user-->
             <div class="ml-2 info-post">
               <div class="h5 m-0"> 
                 {{ user.firstName }} {{user.lastName }}
@@ -41,51 +41,112 @@
                 {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
               </div>
             </div>
-        </div>
+           
+          </div>
 
-          <!--info du post-->
-          <div class="card-body">
-            <p v-if ="post.content!== 'null'" class="card-text">{{ post.content }}</p>
-
-            <div             
-            v-if = "post.imageUrl">
-              <img class=" imagePost" 
+        <!--contenu du post-->
+        <div class="card-body">
+          <p v-if ="post.content!== 'null'" 
+            class="card-text">{{ post.content }}
+          </p>
+          <div             
+            v-if ="post.imageUrl != null">
+              <img class="imagePost" 
               v-bind:src="post.imageUrl" alt="image du post" 
               />
-          </div>    
-          <!-- bouton effacer si l'utilisateur a écrit le post-->       
-            <div class ="btn-deletePost">
-                      
+          </div> 
+
+          <!-- bouton effacer si l'utilisateur a écrit le post ou est admin-->       
+          <div class ="btn-deletePost">                      
+            <button 
+            v-if="post.userId == user.id" 
+            type="button"
+            class="btn btn-danger"
+            title="supprimer"
+            aria-label="bouton supprimer"
+            @click="deletePost(post.id)"
+            >
+            supprimer le post
+            </button>
+            <!-- bouton voir tous les commentaires-->  
+            <button class="btn btn-danger" 
+                @click="showComments">
+                Voir les Commentaires
+            </button>            
+          </div>
+          
+          
+        </div>
+         <!--affichage composant ecrire un commentaire-->
+            <addComment/>
+        <!--affichage la liste des  commentaires-->
+        <div              
+              class="card-comment"            
+              v-for="comment in comments"
+              v-bind:key="comment.id"          
+            >
+                                       
+  
+            <div 
+            class="comment-info"             
+            
+            v-bind:key="user.id">
+
+              <span class="comment-avatar float-left">
+                <img
+                  v-if = "user.imageUrl == null"
+                  src="../assets/photo-avatar-profil.png"
+                  alt="photo de profil provisoire" id="avatar-profil"
+                  class="rounded-circle"
+                  style="width: 50px;"
+                  /> 
+                    
+                  <img  
+                  v-else            
+                  :src="user.imageUrl"
+                  alt="photo de profil " id="avatar-profil"
+                   class="rounded-circle"
+                  style="width: 50px;"
+                  /> 
+              </span>
+
+                <div class="card-author">                
+                  {{ user.firstName }} {{user.lastName }}
+                </div>
+            </div>     
+  
+          <div class="card-body">
+            <p v-if ="comment.content!== 'null'" class="card-text">{{ comment.content }}</p>
+           
+            <div class ="btn-deleteComment">                      
               <button 
-              v-if="post.userId == user.id" 
+              v-if="comment.userId == user.id" 
               type="button"
               class="btn btn-danger"
               title="supprimer"
               aria-label="bouton supprimer"
-              @click="deletePost(post.id)"
+              @click="deleteComment(comment.id)"
               >
-              supprimer le post
-              </button>
-           
-              <button class="btn btn-danger" 
-                @click="showComments">
-                Voir les Commentaires
-              </button>
-            
-            </div>
-           
-          </div>
-            <addComment/>
-          </div>
-          
-      </div>       
+              supprimer le commentaire
+              </button>   
+            </div>  
+          </div>  
+        </div>    
+
+
+
+
+        </div>       
+      </div>
+
+      </div>
     </div>
-  </div>
+ 
      
  
    
          
-<!--**********************************commentaire **************-->
+
     
 
 
@@ -105,9 +166,11 @@ import addComment from'@/components/addComment'
 export default {
   name: "listPost",
   components : {
-    addComment
-     
+    addComment     
   },
+
+
+
 
   data() {
     return {        
@@ -129,10 +192,10 @@ export default {
     };
   },
 
-  // computed:{
-    
 
-  // // //   ...mapState(["user"])
+  // computed:{ 
+  
+      // // //   ...mapState(["user"])
   // },
 
   async created (){   
@@ -147,22 +210,23 @@ export default {
       };
 
       await fetch(url, options).then((res) => {
-      res.json().then((data) => { 
-        console.log(data)
-         console.table(data)
-        this.users = data      
-        })
-                   
-
-        })               
+        res.json().then((data) => { 
+          console.log(data)
+          console.table(data)
+          this.users = data 
+            // const currentUser = this.users.users.filter((user)=>{
+            // return user.id == this.post.userID})  
+            // console.log(currentUser) 
+        })                 
+      })               
   }, 
     
-  async mounted() {
-    // appel à l'api pour affichage 
+  async mounted() {    
     this.userId = JSON.parse(localStorage.getItem("userId"));    
     console.log(localStorage);
 
-    
+
+    // appel à l'api pour affichage des posts
     let url = "http://localhost:3000/api/post";
     let options = {
       method: "GET",
@@ -179,14 +243,37 @@ export default {
         console.log(this.posts)
         const currentPosts = this.posts.posts.reverse().slice;
        console.log(currentPosts)
-      })
-       
+      })       
+    });
+
+
+    // appel à l'api pour affichage des commentaires   
+    let urlComment = "http://localhost:3000/api/comment";
+    let optionsComment = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    };
+    this.comments = await fetch(urlComment, optionsComment).then((res) => {
+      // traduction en json)
+        res.json()      
+      .then((data) => {
+        console.log(data);        
+        this.comments = data;      
+      //   const currentComm = this.comments.comments.reverse().slice;
+      //  console.log(currentComm)
+      })       
     });
   },
+  
 
  
- 
   methods: {
+    // even(users){
+    //   return users.users.filter(this.user.id == this.post.userId)
+    // },
+
     async getPosts()  {
       console.log("test");
       let url = "http://localhost:3000/api/post";
@@ -234,7 +321,46 @@ export default {
         .catch((error) => console.log(error));
     },
 
-    
+// recupération des commentaires
+    async getComments()  {
+      console.log("test");
+      let url = "http://localhost:3000/api/comment";
+      let options = {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      return await fetch(url, options).then(function (res) {
+        res.json()
+         .then(function (data) {
+         this.comments = data;        
+        return data;          
+        });
+      })
+    },
+
+//supprimer le commentaire//
+    deleteComment(commentid) {
+      let url = `http://localhost:3000/api/comment/${commentid}`;
+      let options = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+      fetch(url, options)
+        .then(function (res) {
+          console.log(res);
+          alert("Suppression du commentaire confirmé ! ");
+          window.location.reload();
+        })
+        .catch((error) => console.log(error));
+    },
+
+
+
+
 
   },
 };
@@ -258,7 +384,7 @@ body{
 
 }
 .fa{
-    margin-right:5px;
+    margin-left:5px;
 }
 
 .info-post{

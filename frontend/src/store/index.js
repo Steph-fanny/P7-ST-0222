@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 
 
 
+
 export default createStore({
   state: {
     users:[],
@@ -9,15 +10,26 @@ export default createStore({
     firstName:"",
     lastName:"",
     email:"",
-    token : null,
+    
     isAdmin :false
   },
+  token: null,
 },
 
   getters: {
+    isLoggedIn(state) {
+    return !!state.token;
+  },
   },
 
   mutations: {
+    setUser(state, user){
+      state.user = user;
+    },
+    setToken(state, token) {
+      state.token = token;
+    },
+
     saveUserInfos (state, [firstName, lastName, email, isAdmin]) {
       state.user.firstName = firstName,
       state.user.lastName = lastName,

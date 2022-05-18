@@ -9,6 +9,7 @@ const CONTENT_LIMIT = 2;
 
 /**** creation d'un commentaire */
 exports.addComment = (req, res, next) => {
+    console.log(req.body)
     // récupérer les paramétres envoyés dans la requete
     const comment = {                    
         postId: req.body.postId,       

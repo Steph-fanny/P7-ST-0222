@@ -59,14 +59,16 @@ export default {
             postId: "",
             content: "",        
             comment: {},
-            comments: [],                                                 
+                                                            
              
         };
     },
 
      mounted() {
-            this.userId = JSON.parse(localStorage.getItem("userId"));
+            this.userId = parseInt(localStorage.getItem("userId"));
             console.log(this.userId)
+            
+
     },
 
     methods: {
@@ -77,16 +79,17 @@ export default {
             }                    
                                             
         // creation objet formData)       
-            let formData = new FormData()           
-            formData.append("content",this.content); 
-            formData.append("userId", parseInt(localStorage.getItem("userId"))); 
-            formData.append("postId", this.post );             
+            // let formData = new FormData()           
+            // formData.append("content",this.content); 
+            // formData.append("userId", parseInt(localStorage.getItem("userId"))); 
+            // formData.append("postId", this.post );             
                               
-        // let inputContent = {
-        //     "content": this.content,
-        //     "commentId": this.commentId
-        // }        
-        // console.log(inputContent)
+        let inputContent = {
+            "content": this.content,
+            "postId": this.postId,
+            "userId" : localStorage.getItem("userId")
+        }        
+        console.log(inputContent)
                
                     
        
@@ -94,8 +97,8 @@ export default {
           
         let options = {
             method: "POST",
-            // body:JSON.stringify(inputContent),
-            body : formData,
+            body:JSON.stringify(inputContent),
+            // body : formData,
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem("token"),
                 'Content-Type': 'application/json'
@@ -108,8 +111,7 @@ export default {
             console.log(res)         
            
              if (res.ok) {    
-                this.Comment = {} // Retour à 0 des inputs //   
-                console.log(this.Comment)              
+                this.comment = {} // Retour à 0 des inputs //  
                 alert(" Commentaire bien reçu"); 
             } else {
                 alert("vous ne pouvez pas publier ce commentaire ")

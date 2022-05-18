@@ -23,9 +23,9 @@ const authJwt = require('../middleware/authJwt');
 
 /*création et enregistrement d'un nouvel utilisateur*/
 //avant création verification MDP : middleware passwordValidation
-router.post("/signup",passwordValidation, userAuth.signup);
+router.post("/signup", authJwt, passwordValidation, userAuth.signup);
 /*connexion d'un utilisateur*/
-router.post("/login",userAuth.login);
+router.post("/login", userAuth.login);
 /* se deconnecter*/
 router.get("/logout",userAuth.logout);
 

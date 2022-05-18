@@ -13,9 +13,6 @@ l'utilisateur est authentifier avant d'autoriser l'envoi des requetes*/
 */
 const jwt = require('jsonwebtoken'); // On a besoin du package jwt //
 const db = require("../models/index");
-const User= db.User
-
-
 
 module.exports = (req, res, next) => { // On exporte un middleware //
    //tester si l'utilisateur est connecté  
@@ -27,8 +24,8 @@ module.exports = (req, res, next) => { // On exporte un middleware //
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
         const userId = decodedToken.userId;
         req.auth = { userId };
-        if(req.body.userId && req.body.userId != userId){
-            throw 'Mauvais ID utilisateur !'
+        if (req.body.userId && req.body.userId !== userId) {
+            throw error;
         }
         else{ 
             //verifier que c'est bien l'utilisateur "local"

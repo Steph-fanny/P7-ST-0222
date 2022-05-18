@@ -72,14 +72,22 @@
 <script>
 import logoHome from '@/components/logoHome.vue'
 import footerApp from '@/components/footerApp.vue'
+// import { mapMutations } from 'vuex';
+// import { mapGetters } from "vuex";
 
 
 export default {
+  
 name: 'loginUser',  
   components: {
   logoHome,
   footerApp,
   },
+
+
+// computed: {
+//     ...mapGetters(["isLoggedIn"])
+//   },
 
   data() {
     return {
@@ -91,13 +99,13 @@ name: 'loginUser',
   },
 
   methods:{
-    loginAccount(){
+    // ...mapMutations(["setUser","setToken"]),
+  loginAccount(){
       let loginDatas ={
         "email": this.input.email,
         "password": this.input.password
       }
       console.log(loginDatas)       
-
       let urlLogin = "http://localhost:3000/api/user/login"
       let option ={
         method : "POST",
@@ -124,6 +132,15 @@ name: 'loginUser',
     }
   }
 }  
+
+      
+//       const response = await fetch (url, option)
+// const { user, token } = await response.json();
+//       this.setUser(user);
+//       this.setToken(token);
+//       this.$router.push("/forum");  
+
+
 </script>  
 
 
