@@ -79,19 +79,18 @@
               @click="showComments= !showComments">
               Voir les Commentaires
             </button>            
-          </div>         
-        
+          </div>       
         </div>
         
         <!--affichage composant écrire un commentaire-->
             <div
-            v-if ="showCreateComment" >
+              v-if ="showCreateComment" >
               <addComment/>
-              </div>       
+            </div>       
             
             
-        <!--affichage la liste des  commentaires-->
-          <!-- <div v-if="comments == "null">        
+        <!-- affichage la liste des  commentaires-->
+          <!-- <div v-if="comments =="null">        
             <p> Aucun commentaire pour le moment!</p>
           </div>  -->
         <div v-if="showComments">
@@ -99,21 +98,14 @@
             <div
             class="card-comment"
             v-for="comment in comments"
-            :key="comment.id"
-          >
+            :key="comment.id"         
+            >
        
-
-        
-          <!-- <div 
-                                
-              class="card-comment"            
-              v-for="comment in comments"             
-              v-bind:key="comment.id"          
-            > -->
-                                       
+                                            
   
             <div 
-            class="comment-info"        
+            class="comment-info"  
+            v-for="user in users"                   
             v-bind:key="user.id">
 
               <span class="comment-avatar float-left">
@@ -232,11 +224,7 @@ export default {
   // },
 
   async created (){   
-
-  
-   
-    
-
+       
     const url = `http://localhost:3000/api/user/accounts`;
     console.log(this.users)
     const options = {
