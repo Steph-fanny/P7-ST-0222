@@ -54,9 +54,9 @@ module.exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     console.log("salut")
-    // const User = db.User
+    const User = db.User
     // récupére les données de l'utilisateur
-    db.User.findOne ({ where: {email : req.body.email}})
+    User.findOne ({ where: {email : req.body.email}})
     // récupére l'email de la requete (input)
     .then(user => {
         // on vérifie que mail est dans la BDD
@@ -74,7 +74,7 @@ exports.login = (req, res, next) => {
                 userId : user.id,
                 email : user.email,
                 token : jwt.sign(
-                    {userId: user.id},
+                    { userId: user.id },
                     'RANDOM_TOKEN_SECRET',
                     {expiresIn: '24h'}
                    

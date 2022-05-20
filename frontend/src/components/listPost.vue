@@ -1,5 +1,6 @@
 <template>
 
+
   <div class="container-fluid gedf-wrapper"> 
     <!-- On récupére les posts : boucle avec vfor  : tableau de post-->   
     <div class="bloclist"
@@ -40,8 +41,7 @@
               <div class="h5 m-0 h7 mb-2 time-post">
                 {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
               </div>
-            </div>
-           
+            </div>           
           </div>
 
         <!--contenu du post-->
@@ -59,37 +59,61 @@
           <!-- bouton effacer si l'utilisateur a écrit le post ou est admin-->       
           <div class ="btn-deletePost">                      
             <button 
-            v-if="post.userId == user.id" 
-            type="button"
-            class="btn btn-danger"
-            title="supprimer"
-            aria-label="bouton supprimer"
-            @click="deletePost(post.id)"
-            >
-            supprimer le post
+              v-if="post.userId == user.id" 
+              type="button"
+              class="btn btn-danger"
+              title="supprimer"
+              aria-label="bouton supprimer"
+              @click="deletePost(post.id)"
+              >
+              supprimer le post
             </button>
+            <!-- bouton voir pour ajouter un commentaire--> 
+            <button class="btn btn-danger" 
+              @click="showCreateComment = !showCreateComment ">
+              Commenter
+            </button>
+            
             <!-- bouton voir tous les commentaires-->  
             <button class="btn btn-danger" 
-                @click="showComments">
-                Voir les Commentaires
+              @click="showComments= !showComments">
+              Voir les Commentaires
             </button>            
-          </div>
-          
-          
+          </div>         
+        
         </div>
-         <!--affichage composant ecrire un commentaire-->
-            <addComment/>
+        
+        <!--affichage composant écrire un commentaire-->
+            <div
+            v-if ="showCreateComment" >
+              <addComment/>
+              </div>       
+            
+            
         <!--affichage la liste des  commentaires-->
-        <div              
+          <!-- <div v-if="comments == "null">        
+            <p> Aucun commentaire pour le moment!</p>
+          </div>  -->
+        <div v-if="showComments">
+          <!-- <div v-if="comments"> -->
+            <div
+            class="card-comment"
+            v-for="comment in comments"
+            :key="comment.id"
+          >
+       
+
+        
+          <!-- <div 
+                                
               class="card-comment"            
-              v-for="comment in comments"
+              v-for="comment in comments"             
               v-bind:key="comment.id"          
-            >
+            > -->
                                        
   
             <div 
-            class="comment-info"             
-            
+            class="comment-info"        
             v-bind:key="user.id">
 
               <span class="comment-avatar float-left">
@@ -130,17 +154,24 @@
               supprimer le commentaire
               </button>   
             </div>  
-          </div>  
-        </div>    
+          </div> 
+          </div> 
+       
+     
+          </div>
 
-
+        <!-- </div> -->
 
 
         </div>       
       </div>
-
       </div>
     </div>
+
+     
+
+     
+   
  
      
  
@@ -159,7 +190,7 @@
    
 <script>
 // import { mapState } from "vuex";
-let moment = require("moment");
+const moment = require("moment");
 moment.locale("fr"); 
 import addComment from'@/components/addComment'
 
@@ -173,7 +204,9 @@ export default {
 
 
   data() {
-    return {        
+    return { 
+      showCreateComment : false, 
+      showComments : false,      
       userId: localStorage.getItem("userId"),
       token: localStorage.getItem("token"),  
       users:[],
@@ -199,6 +232,10 @@ export default {
   // },
 
   async created (){   
+
+  
+   
+    
 
     const url = `http://localhost:3000/api/user/accounts`;
     console.log(this.users)
@@ -274,6 +311,7 @@ export default {
     //   return users.users.filter(this.user.id == this.post.userId)
     // },
 
+    
     async getPosts()  {
       console.log("test");
       let url = "http://localhost:3000/api/post";
@@ -464,7 +502,7 @@ body{
 }
     .gedf-card {
         margin-bottom: 0.5rem;  
-        width : 70%;              
+        width : 70%;             
             
     }
             

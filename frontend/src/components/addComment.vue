@@ -16,23 +16,25 @@
                         <label for="content"></label>
                             <textarea 
                                 type="text" 
-                                id="content" name="content" rows="2" cols="2"
+                                id="content" name="content" rows="2" cols="1"
                                 class="form-control ml-1 shadow-none textarea"
                                 placeholder="Ecrivez votre commentaire ici" 
                                 required 
-                                v-model="content">
+                                v-model="content"                                
+                                >
                             </textarea>
                         </div>           
                         <div class="mt-1 text-right" >
                            
                             <!--bouton envoyer un commentaire--> 
-                                <button 
+                                <button                                    
                                     type="submit"
                                     title="commentaire"
                                     id="btn-post"
                                     class="send btn btn-primary btn-sm shadow-none " 
-                                    aria-label="créer un commentaire"                       
-                                    @click="createComment()"
+                                    aria-label="créer un commentaire"  
+                                    ref="comment"  v-bind="$attrs"                    
+                                    @click="createComment()"                                                                                                           
                                     >Publier
                                 </button>                                                                                           
                           
@@ -67,9 +69,27 @@ export default {
      mounted() {
             this.userId = parseInt(localStorage.getItem("userId"));
             console.log(this.userId)
-            
+           
+     },
+    // let url = "http://localhost:3000/api/comment/new"          
+    //     let options = {
+    //         method: "POST",                    
+    //         headers: {
+    //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
+    //         }
+    //     };                   
+               
+    //     fetch(url, options)
+    //      .then((res) => {
+    //         res.json()
+    //     .then(data =>{
+    //         console.log(data)
+    //         this.comment = data
+    //     })              
 
-    },
+    // })
+    // },
+
 
     methods: {
     /*** Créer un nouveau commetaire ***/
@@ -84,43 +104,44 @@ export default {
             // formData.append("userId", parseInt(localStorage.getItem("userId"))); 
             // formData.append("postId", this.post );             
                               
-        let inputContent = {
-            "content": this.content,
-            "postId": this.postId,
-            "userId" : localStorage.getItem("userId")
-        }        
-        console.log(inputContent)
+            let inputContent = {
+                "content": this.content,
+                "postId": this.postId,
+                "userId" : localStorage.getItem("userId")
+            }        
+            console.log(inputContent)
                
                     
        
-        let url = "http://localhost:3000/api/comment/new"
-          
-        let options = {
-            method: "POST",
-            body:JSON.stringify(inputContent),
-            // body : formData,
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                'Content-Type': 'application/json'
-            }
-        };                    
+            let url = "http://localhost:3000/api/comment/new"          
+            let options = {
+                method: "POST",
+                body:JSON.stringify(inputContent),
+                // body : formData,
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                    // 'Content-Type': 'application/json'
+                }
+            }                    
                
-        await fetch(url, options)
-         .then((res) => {
+       await fetch(url, options)
+        .then((res) => {
             res.json()
-            console.log(res)         
-           
-             if (res.ok) {    
-                this.comment = {} // Retour à 0 des inputs //  
-                alert(" Commentaire bien reçu"); 
-            } else {
-                alert("vous ne pouvez pas publier ce commentaire ")
-                }        
-            })           
-            .catch(error => console.log(error))
-        }
-    }
-}
+            console.log(res)           
+
+            if (res.ok){
+                this.Post = {} // Retour à 0 des inputs //                    
+                this.$router.push("/listPostPage");
+                alert(" Post bien reçu"); 
+            }else{
+                alert("vous ne pouvez pas publier ce message ")
+            }
+        })
+        .catch(error => console.log(error)) 
+        }             
+
+    }                       
+} 
                          
        
               
@@ -130,6 +151,7 @@ export default {
 </script>
 
 <style>
+
 .commentaire{
 width:100%;
 display: block;

@@ -1,3 +1,46 @@
+<!-- bouton voir pour ajouter un commentaire  
+            <button class="btn btn-danger" 
+              @click="showCreateComment = !showCreateComment ">
+              Commenter
+            </button> --> 
+
+
+<!--affichage composant ecrire un commentaire
+            <div
+            v-if="showCreateComment" >-->
+              <addComment/>
+              <!--</div>-->
+
+
+<button class="btn btn-danger" 
+              @click="showComments= !showComments">
+              Voir les Commentaires
+</button>  
+
+
+ <div v-if="comments == null">        
+        <p> Aucun commentaire pour le moment!</p>
+        </div> 
+
+
+<div v-if="showComments">
+          <div v-if="comments">                       
+              class="card-comment"            
+              v-for="comment in comments"             
+              v-bind:key="comment.id"          
+            >
+
+
+
+
+
+
+
+
+
+
+
+
 <template>
 
   <div class="container-fluid gedf-wrapper">
@@ -378,132 +421,4 @@ export default {
 
 
 
-  <style scoped lang="css">
-body{
-    background-color: #eeeeee;
-}
-
-.container-info{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #0d0764 !important;
-    color: white;
-
-}
-.fa{
-    margin-right:5px;
-}
-
-.info-post{
-    display:flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-}       
-.imagePost{
-  /* width : 300px;
-  height : 200px; */
-  text-align: center;
-  margin: 5px; 
-  width: 60vw;
-  min-width: 220px;
-  min-height: 220px;
-  max-width: 300px;
-  max-height: 300px;
-  object-fit: cover;
-  border: 1px solid #1026b9;
-  border-radius: 8px;
-  box-shadow: 1px 1px 2px rgb(24, 24, 24);
-
-}
-.card-comment{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding:5px;
-    border-top: solid 1px rgb(218, 210, 210);
-}
-
-.card-body{
-  display: flex;
-  flex-direction :column;
-  align-items: center;
-  justify-content: center;
-}
-
-.comment-info{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding:5px;
-}
-
-.bnt-send{
-    margin-top: 2px !important;
-}
-.btn-deletePost{
-   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0px;
-}
-
-.comment-avatar img{
-  margin-top: 1px;
-  margin-right: 10px;
-  position: relative;
-  display: inline-block;
-  text-align: center;
-  width: 40px;
-  height: 40px;
-}
-
-.gedf-wrapper {
-    margin-top: 0.97rem;
-}
-
-@media (min-width: 992px) {
-    .gedf-main {
-        padding-left: 4rem;
-        padding-right: 4rem;
-    }
-}
-    .gedf-card {
-        margin-bottom: 0.5rem;  
-        width : 70%;              
-            
-    }
-            
-    .post-card{
-        margin:auto;   
-        width: 90%;         
-        flex-direction: row;
-        justify-content: center;
-    }
-        
-
-        /**Reset Bootstrap*/
-        .dropdown-toggle::after {
-            content: none;
-            display: none;
-        }
-
-container-fluid gedf-wrapper{
-height: auto;
-width: 100%;
-}
-
-.bloclist {
-  width: 100%;
-  margin: auto;
-  margin-top: 15px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 30px; 
-  padding: 0px;
-} 
-
-
-    </style>
+  

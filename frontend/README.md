@@ -1,19 +1,30 @@
-# frontend
+# Groupomania
+Projet 7 de la formation de developpeur web d'OpenClssrooms
+création d'un réseau social interne pour la sociéte Groupomania
 
-## Project setup
-```
-npm install
-```
+## Technologies : 
+### Backend : 
+    * MySQL : version
+    * Sequelize : version
+    * Node.js: version 
+    * Express :
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### frontend  
+    * vuejs : version
+    *bootstrap-Vue : 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Installation
+### backend : npm install
+### frontend : npm run serve
+### pour  production : npm run build
+
+### Base de donnée 
+Installez MySQL en localhost
+
+
+
+
+
 
 ### Lints and fixes files
 ```

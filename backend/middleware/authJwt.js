@@ -12,19 +12,18 @@ l'utilisateur est authentifier avant d'autoriser l'envoi des requetes*/
       *comparaison avec celui de la requete
 */
 const jwt = require('jsonwebtoken'); // On a besoin du package jwt //
-const db = require("../models/index");
 
 module.exports = (req, res, next) => { // On exporte un middleware //
    //tester si l'utilisateur est connecté  
 
     try {
-        console.log(req.headers)
+        console.log(req.headers)       
         const token = req.headers.authorization.split(' ')[1]; // [bear + N°]
         // const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET', {expireIn:'24h'});
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-        const userId = decodedToken.userId;
-        req.auth = { userId };
-        if (req.body.userId && req.body.userId !== userId) {
+        // const userId = decodedToken.userId;
+        // req.decodedToken = decotedToken
+        if (req.body.userId && req.body.userId !== userId) {          
             throw error;
         }
         else{ 

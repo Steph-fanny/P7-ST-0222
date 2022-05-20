@@ -117,6 +117,7 @@ name: 'loginUser',
       .then(res => res.json())
         .then((res) => {
           console.log(res)
+          // if(res.ok){
           if (res.userId && res.token) {
             localStorage.setItem("userId", res.userId)
             localStorage.setItem("token", res.token)  
