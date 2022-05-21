@@ -22,7 +22,7 @@ const multer =require ("../middleware/multer");
 
 /*création et enregistrement d'un nouvel utilisateur*/
 //avant création verification MDP : middleware passwordValidation
-router.post("/signup", authJwt, passwordValidation, userAuth.signup);
+router.post("/signup", passwordValidation, userAuth.signup);
 /*connexion d'un utilisateur*/
 router.post("/login", userAuth.login);
 /* se deconnecter*/

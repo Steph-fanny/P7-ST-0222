@@ -83,27 +83,69 @@
         </div>
         
         <!--affichage composant écrire un commentaire-->
-            <div
-              v-if ="showCreateComment" >
-              <addComment/>
-            </div>       
-            
-            
+        <div
+          v-if ="showCreateComment" >
+          <addComment/>
+        </div>       
+                        
         <!-- affichage la liste des  commentaires-->
           <!-- <div v-if="comments =="null">        
-            <p> Aucun commentaire pour le moment!</p>
+          <p> Aucun commentaire pour le moment!</p>
           </div>  -->
         <div v-if="showComments">
           <!-- <div v-if="comments"> -->
-            <div
+          <div
             class="card-comment"
             v-for="comment in comments"
             :key="comment.id"         
             >
-       
-                                            
-  
-            <div 
+            <div class="card-body height3">
+              <ul class="chat-list">     
+                <div class="chat-img">
+                  <div 
+                    class="comment-info"  
+                    v-for="user in users"                   
+                    v-bind:key="user.id"> 
+                      <img
+                          v-if = "user.imageUrl == null"
+                          src="../assets/photo-avatar-profil.png"
+                          alt="photo de profil provisoire" id="avatar-profil"
+                          class="rounded-circle"
+                          style="width: 50px;"
+                        /> 
+                            
+                      <img  
+                        v-else            
+                        :src="user.imageUrl"
+                        alt="photo de profil " id="avatar-profil"
+                        class="rounded-circle"
+                        style="width: 50px;"
+                        /> 
+                  </div>
+              </div>
+
+              <div class="chat-body">
+                <div class="chat-message">
+                  <h5> {{ user.firstName }} {{user.lastName }} </h5>
+                    <p v-if ="comment.content!== null" class="card-text">{{ comment.content }}</p> 
+                </div>
+        <div class ="btn-deleteComment">                      
+          <button 
+            v-if="comment.userId == user.id" 
+            type="button"
+            class="btn btn-danger"
+            title="supprimer"
+            aria-label="bouton supprimer"
+            @click="deleteComment(comment.id)"
+          >
+            supprimer le commentaire
+          </button>   
+        </div>  
+      </div>       
+    </ul>
+  </div>
+
+              <!-- <div 
             class="comment-info"  
             v-for="user in users"                   
             v-bind:key="user.id">
@@ -132,21 +174,10 @@
             </div>     
   
           <div class="card-body">
-            <p v-if ="comment.content!== 'null'" class="card-text">{{ comment.content }}</p>
+            <p v-if ="comment.content!== null" class="card-text">{{ comment.content }}</p> -->
            
-            <div class ="btn-deleteComment">                      
-              <button 
-              v-if="comment.userId == user.id" 
-              type="button"
-              class="btn btn-danger"
-              title="supprimer"
-              aria-label="bouton supprimer"
-              @click="deleteComment(comment.id)"
-              >
-              supprimer le commentaire
-              </button>   
-            </div>  
-          </div> 
+            
+          <!-- </div>  -->
           </div> 
        
      
@@ -439,8 +470,8 @@ body{
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    padding:5px;
-    border-top: solid 1px rgb(218, 210, 210);
+    /* padding:5px; */
+    /* border-top: solid 1px rgb(218, 210, 210); */
 }
 
 .card-body{
@@ -462,10 +493,11 @@ body{
     margin-top: 2px !important;
 }
 .btn-deletePost{
-   display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   margin: 0px;
+  
 }
 
 .comment-avatar img{
@@ -474,8 +506,8 @@ body{
   position: relative;
   display: inline-block;
   text-align: center;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 }
 
 .gedf-wrapper {
@@ -522,6 +554,50 @@ width: 100%;
   border-radius: 30px; 
   padding: 0px;
 } 
+
+
+.chat-list {
+    padding: 0;
+    font-size: .8rem;
+}
+
+.chat-list .chat-img {
+    float: right;
+    width: 48px;
+}
+
+.chat-list .chat-img img {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    width: 100%;
+}
+
+.chat-list .chat-message {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    background: #fcd9ba;
+    display: inline-block;
+    padding: 10px 20px;
+    position: relative;
+}
+
+
+
+.chat-list .chat-message h5 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    line-height: 100%;
+    font-size: .9rem;
+}
+
+
+
+
+
+
+
 
 
     </style>

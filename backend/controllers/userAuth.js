@@ -160,22 +160,23 @@ exports.updateUserProfil = (req, res, next) => {
 /*** suppression du profil ***/
 exports.deleteUser = (req, res, next) => {    
   console.log("suppression compte user")
-  db.User.findOne({ where: {id: req.params.id}})
+   const User = db.User
+    User.findOne({ where: {id: req.params.id}})
     .then((user) => { 
       // s'il y a une photo => supprime de la bdd
-        if (user.imageUrl!==null) {
-          const filename = user.imageUrl.split("/upload")[1];
-          fs.unlink(`upload/${filename}`, () => {
+        
+          // const filename = user.imageUrl.split('/images/')[1];          
+          // fs.unlink(`images/${filename}`, () => {
 
           // on supprime le compte utilisateur  : fonction destroy
-            db.User.destroy({where: { id: req.params.id }})
+            User.destroy({where: { id: req.params.id }})
             .then (()=> res.status(200).json({ message: "Profil supprimé"}))
             .catch(error =>{
               console.log(error);
               res.status(400).json({message: "utilisateur non trouvé" })
             });                  
-          })
-        }
+          // })
+        
       })
     .catch(error => {
       console.log(error)

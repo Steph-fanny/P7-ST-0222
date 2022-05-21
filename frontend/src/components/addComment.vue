@@ -16,7 +16,7 @@
                         <label for="content"></label>
                             <textarea 
                                 type="text" 
-                                id="content" name="content" rows="2" cols="1"
+                                id="content" name="content" rows="1" cols="2"
                                 class="form-control ml-1 shadow-none textarea"
                                 placeholder="Ecrivez votre commentaire ici" 
                                 required 
@@ -70,9 +70,9 @@ export default {
             this.userId = parseInt(localStorage.getItem("userId"));
             console.log(this.userId)
            
-     },
+     
     // let url = "http://localhost:3000/api/comment/new"          
-    //     let options = {
+    // let options = {
     //         method: "POST",                    
     //         headers: {
     //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
@@ -88,7 +88,7 @@ export default {
     //     })              
 
     // })
-    // },
+    },
 
 
     methods: {
@@ -105,9 +105,9 @@ export default {
             // formData.append("postId", this.post );             
                               
             let inputContent = {
-                "content": this.content,
-                "postId": this.postId,
-                "userId" : localStorage.getItem("userId")
+                "content": this.content,                
+                "userId" : localStorage.getItem("userId"),
+                "postId" : this.postId
             }        
             console.log(inputContent)
                

@@ -184,7 +184,7 @@ export default {
       // //clef/ valeur     
       formData.append("file", this.file);   
         
-      let url = `http://localhost:3000/api/user/${this.user.id}`
+      let url = `http://localhost:3000/api/user/${this.user.id}`     
       let options = {
         method: "PUT",
         headers: {           
@@ -212,10 +212,11 @@ export default {
 
     
   async getOneUser() {             
-        let url = `http://localhost:3000/api/user/${this.user.id }`;
-        let options = {
-          method: "GET",
-          headers: {
+    let url = `http://localhost:3000/api/user/${this.user.id}` 
+    console.log(this.user.id)
+    let options = {
+      method: "GET",
+      headers: {
             'Authorization': 'Bearer ' + localStorage.getItem("token"),
           }
         };
@@ -230,8 +231,9 @@ export default {
                  
                 
      
-      deleteUser(){
-        let url = "http://localhost:3000/api/user/${this.user.id }"
+    deleteUser(){
+       
+        let url = `http://localhost:3000/api/user/${this.user.id}` 
         console.log(this.user.id)
           let option = {
             method: "DELETE",
@@ -239,23 +241,36 @@ export default {
              'Authorization': 'Bearer ' + localStorage.getItem("token"),
             }
           };
-        fetch(url, option)
-          .then(function(response) {
-            console.log(response);
-            localStorage.clear();
-            alert("Compte supprimé !");
-          })
+
+        let confirmDeleteUser = confirm(
+        " la suppresion du compte est irréversible, voulez-vous vraiment supprimer le compte ?"
+      );
+      if (confirmDeleteUser == true) { 
+        return fetch(url, option)
+        .then(function (res) {
+        res.json()
+        console.log(res.json)      
+           
+            alert("Compte supprimé !");            
+            localStorage.clear(); 
+        })
+        .then(this.$router.push("/login"))           
+          
+      }else
+             alert("vous ne pouvez pas supprimer le compte") 
+
+                   
           //retour page accueil
-          .then(this.$router.push("/"))            
+                  
           .catch(error => console.log(error))
-      }    
+      }   
+    } 
+  }
 
 
 
 
-  } 
-}
-
+ 
 
 
 
