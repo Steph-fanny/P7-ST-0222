@@ -31,6 +31,14 @@
             Voir tous les posts
             </router-link>
           </li>  
+
+        <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
+          <router-link
+          to="/account/user"
+          class="nav-link">
+          Voir tous les utilisateurs
+          </router-link>
+        </li> 
   
           <!-- <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
               <router-link to= "/forum" 

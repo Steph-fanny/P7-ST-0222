@@ -9,12 +9,13 @@
     >
     <!-- {{ posts }} -->
       <div class="post-card">   
-        <div class="card gedf-card">
-          <div 
-            class="card-header container-info"
-            v-for="user in users.users.filter((user)=>{
-              return user.id == post.userId})"
-            v-bind:key="user.id"
+        <div class="card gedf-card">           
+            <div class="card-header container-info"
+              v-for="user in users.users.filter((user)=>{
+              return user.id == post.UserId})"
+              v-bind:key="user.id"
+            
+            
           >
           <!-- photo profil user-->
             <div class="mr-2">  
@@ -36,7 +37,7 @@
             <!--info user-->
             <div class="ml-2 info-post">
               <div class="h5 m-0"> 
-                {{ user.firstName }} {{user.lastName }}
+                {{ user.firstName }} {{ user.lastName }}
               </div>
               <div class="h5 m-0 h7 mb-2 time-post">
                 {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
@@ -59,7 +60,7 @@
           <!-- bouton effacer si l'utilisateur a écrit le post ou est admin-->       
           <div class ="btn-deletePost">                      
             <button 
-              v-if="post.userId == user.id" 
+              v-if="post.UserId == user.id" 
               type="button"
               class="btn btn-danger"
               title="supprimer"
@@ -85,7 +86,7 @@
         <!--affichage composant écrire un commentaire-->
         <div
           v-if ="showCreateComment" >
-          <addComment/>
+          <addComment :idPostParent="post.id"></addComment>
         </div>       
                         
         <!-- affichage la liste des  commentaires-->
@@ -96,7 +97,7 @@
           <!-- <div v-if="comments"> -->
           <div
             class="card-comment"
-            v-for="comment in comments"
+            v-for="comment in post.Comments"
             :key="comment.id"         
             >
             <div class="card-body height3">
@@ -127,7 +128,7 @@
               <div class="chat-body">
                 <div class="chat-message">
                   <h5> {{ user.firstName }} {{user.lastName }} </h5>
-                    <p v-if ="comment.content!== null" class="card-text">{{ comment.content }}</p> 
+                    <p v-if ="comment.content !== null" class="card-text">{{ comment.content }}</p> 
                 </div>
         <div class ="btn-deleteComment">                      
           <button 
@@ -218,6 +219,7 @@ moment.locale("fr");
 import addComment from'@/components/addComment'
 
 export default {
+  
   name: "listPost",
   components : {
     addComment     

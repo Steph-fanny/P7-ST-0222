@@ -11,7 +11,7 @@
                <div><logoHome/></div> 
               <h2 class=" signup-subtitle text-uppercase text-center mb-5">Créer votre compte</h2>
 
-              <form @submit.prevent="dataSignup()" id="form-signup">
+              <form  id="form-signup">
                
                 <div class="form-outline mb-4">
                   <label class="form-label signup-title" for="firstName">Prénom</label>
@@ -50,7 +50,7 @@
                             
                 <div class="d-flex justify-content-center">
                   <button 
-                    @click.prevent ="dataSignup()"
+                    @click.prevent ="dataSignup"
                     type="button" 
                     class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                     S'enregistrer
@@ -92,7 +92,8 @@ data(){
         firstName: "",
         lastName: "",
         email: "",
-        password: "",        
+        password: "", 
+        isAdmin:""       
       }          
     };     
   },

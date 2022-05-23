@@ -4,7 +4,7 @@ const fs = require ('fs');
 const db = require("../models/index");
 const User = db.User;
 const Post= db.Post;
-const Comment = require ('../models/comment');
+const Comment = db.Comment;
 
 const CONTENT_LIMIT = 4;
 //vérifier nombre de caractere <
@@ -14,7 +14,7 @@ const CONTENT_LIMIT = 4;
 exports.createPost = (req, res, next) => {
   // récupérer les paramétres envoyés dans la requete 
   const postObjet = { 
-      userId: req.body.userId,                
+      UserId: req.body.userId,                
       content: req.body.content,
   }
   console.log(postObjet)
@@ -57,7 +57,8 @@ exports.createPost = (req, res, next) => {
 /*** afficher tous les posts et les commentaires liés */
 exports.getAllPost = (req, res, next) => {  
   Post.findAll({   
-    attributes:["id", "userId", "content", "imageUrl",]   
+    include: Comment,
+    attributes:["id", "UserId", "content", "imageUrl",]   
   })
     .then(posts => res.status(200).json({ posts}))       
     .catch(error =>{
@@ -69,7 +70,7 @@ exports.getAllPost = (req, res, next) => {
 //*****Afficher un post  : get
 exports.getOnePost = (req, res, next) =>{
   Post.findOne({
-    attributes:["userId", "content", "imageUrl",],
+    attributes:["UserId", "content", "imageUrl",],
     where: { id: req.params.id },
   })    
   .then(post => res.status(200).json({ post }))

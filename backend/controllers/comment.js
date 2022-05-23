@@ -12,9 +12,9 @@ exports.addComment = (req, res, next) => {
     console.log(req.body)
     // récupérer les paramétres envoyés dans la requete
     const comment = {                    
-        postId: req.body.postId,       
+        PostId: req.body.postId,       
         content: req.body.content,
-        userId: req.body.userId,   
+        UserId: req.body.userId,   
     }
         console.log(comment)
      // vérification: si 1 des paramétre obligatoire est null   
@@ -27,9 +27,9 @@ exports.addComment = (req, res, next) => {
 
     // enregistrement dans bdd
     Comment.create({            
-        postId: req.body.postId,                 
+        PostId: req.body.postId,                 
         content:req.body.content,
-        userId: req.body.userId,
+        UserId: req.body.userId,
         createAt: 0
    })
     .then(() => res.status(201).json({ message: "Message envoyé!" }))

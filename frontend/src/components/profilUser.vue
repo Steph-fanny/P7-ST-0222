@@ -6,6 +6,8 @@
      <section class="vh-100" style="background-color: #f4f5f7;"> 
       <!-- <div class="container py-5 h-100">  -->
       <div class="row d-flex justify-content-center align-items-center h-100">
+
+        
         <div class="col col-lg-8 mb-4 mb-lg-0">
         <div class="card mb-3" style="border-radius: .5rem;">
           <div class="row g-0">
@@ -84,11 +86,20 @@
                     <p class="info-profil">{{ user.createdAt }} </p>
                   </div>
                 </div>
+                <div class="row pt-1">
+                  <div class="col-6 mb-3"
+                  v-if=" user.IsAdmin===true">
+                    <h6>Role</h6>
+                    <p class="info-profil"                   
+                    >Administrateur</p>
+                  </div>                  
+                </div>
 
               <div>
-                <!-- <div class ="btn" v-show ="user === admin"> 
-                 si user = admin => affichage bouton supprime-->
-                <button 
+                <!-- <div class ="btn" v-show ="user.isAdmin === true">  -->
+                 <!-- si user = admin => affichage bouton supprime -->
+                <button   
+                    v-if="userId = user.id || user.isAdmin == true"            
                     class= "form-control btn btn-danger"
                     v-bind= "user"
                     @click="deleteUser">

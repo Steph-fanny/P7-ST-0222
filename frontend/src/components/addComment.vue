@@ -66,6 +66,8 @@ export default {
         };
     },
 
+    props : ['idPostParent'],
+
      mounted() {
             this.userId = parseInt(localStorage.getItem("userId"));
             console.log(this.userId)
@@ -107,7 +109,7 @@ export default {
             let inputContent = {
                 "content": this.content,                
                 "userId" : localStorage.getItem("userId"),
-                "postId" : this.postId
+                "postId" : this.idPostParent
             }        
             console.log(inputContent)
                
@@ -120,7 +122,7 @@ export default {
                 // body : formData,
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem("token"),
-                    // 'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 }
             }                    
                

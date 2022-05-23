@@ -1,7 +1,6 @@
 /*importation modele user*/
 
 const db = require("../models/index");
-const User = db.User;
 const Post =db.Post;
 const bcrypt = require('bcrypt'); // hacher le MDP
 const jwt = require("jsonwebtoken"); // token 
@@ -35,7 +34,7 @@ module.exports.signup = (req, res, next) => {
           .then (hash => {
           // création du nouvel user
             
-              db.User.create ({                
+             db.User.create ({                
                 firstName : req.body.firstName,
                 lastName : req.body.lastName,        
                 email: req.body.email,
@@ -54,9 +53,9 @@ module.exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     console.log("salut")
-    const User = db.User
+    // const User = db.User
     // récupére les données de l'utilisateur
-    User.findOne ({ where: {email : req.body.email}})
+    db.User.findOne ({ where: {email : req.body.email}})
     // récupére l'email de la requete (input)
     .then(user => {
         // on vérifie que mail est dans la BDD
@@ -68,28 +67,32 @@ exports.login = (req, res, next) => {
         .then(valid => {
             if(!valid){
            return res.status(401).json ({message : 'mot de passe incorect !'});
-            }            
+            }  
+            let token = jwt.sign(
+            { userId: user.id },            
+            'RANDOM_TOKEN_SECRET',
+            {expiresIn: '24h'}
+            );   
+
             res.status(200).json({
                 //si ok :renvoi token 
                 userId : user.id,
                 email : user.email,
-                token : jwt.sign(
-                    { userId: user.id },
-                    'RANDOM_TOKEN_SECRET',
-                    {expiresIn: '24h'}
-                   
-                ),           
-            });
+                isAdmin : user.isAdmin,
+                token             
+            })           
         })
         .catch(error => {
-            console.log(error)
-            res.status(500).json({ error })
-
-        });
+          console.log(error)
+          res.status(500).json({ error })})
     })
+        .catch(error => {
+          console.log(error)
+          res.status(500).json({ error })})
 
     .catch(error => res.status(500).json({ error }));
 };
+
 
 exports.logout = (req, res,) => {     
 console.log(req.body);
@@ -106,7 +109,7 @@ console.log(req.body);
 // ****récupérer tous les utilisateurs
 exports.getAllUsers = (req, res, next) => {
    console.log("bonjour tous les utilisateurs")
-    User.findAll({
+    db.User.findAll({
       attributes: ['id', 'firstName', 'lastName', 'email', 'imageUrl', 'isAdmin']
     })
       .then(users => res.status(200).json({ users}))       
@@ -120,7 +123,7 @@ exports.getAllUsers = (req, res, next) => {
 // *****récupérer les info d'un utilisateur : profil par ex
 // Obtention d'un compte //
 exports.getOneUser = (req, res, next) => { 
-  User.findOne({ 
+  db.User.findOne({ 
     where: { id: req.params.id }})  
       .then(user => res.status(200).json({ user }))
       .catch(error =>{
@@ -142,10 +145,10 @@ exports.updateUserProfil = (req, res, next) => {
 
     console.log(userObject)
 
-  User.findOne({ 
+  db.User.findOne({ 
     where: { id: req.params.id,},  
   })  
-  User.update({
+  db.User.update({
    ...userObject
   }, {where: { id: req.params.id }
   })
@@ -160,8 +163,8 @@ exports.updateUserProfil = (req, res, next) => {
 /*** suppression du profil ***/
 exports.deleteUser = (req, res, next) => {    
   console.log("suppression compte user")
-   const User = db.User
-    User.findOne({ where: {id: req.params.id}})
+  //  const User = db.User
+    db.User.findOne({ where: {id: req.params.id}})
     .then((user) => { 
       // s'il y a une photo => supprime de la bdd
         
@@ -169,7 +172,7 @@ exports.deleteUser = (req, res, next) => {
           // fs.unlink(`images/${filename}`, () => {
 
           // on supprime le compte utilisateur  : fonction destroy
-            User.destroy({where: { id: req.params.id }})
+            db.User.destroy({where: { id: req.params.id }})
             .then (()=> res.status(200).json({ message: "Profil supprimé"}))
             .catch(error =>{
               console.log(error);
