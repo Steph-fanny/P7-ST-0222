@@ -9,21 +9,19 @@
     >
     <!-- {{ posts }} -->
       <div class="post-card">   
-        <div class="card gedf-card">           
-            <div class="card-header container-info"
+        <div class="card gedf-card">                
+            <div class="card-header container-info"          
               v-for="user in users.users.filter((user)=>{
               return user.id == post.UserId})"
-              v-bind:key="user.id"
-            
-            
-          >
+              v-bind:key="user.id"           
+            >
           <!-- photo profil user-->
             <div class="mr-2">  
                <img
                 v-if ="user.imageUrl != null"
                 :src="user.imageUrl"
-                alt="photo de profil " id="avatar-profil"
-                  class="rounded-circle"
+                 alt="photo de profil " id="avatar-profil"
+                class="rounded-circle"
                 style="width: 50px;"
               />              
               <img                
@@ -90,23 +88,27 @@
         </div>       
                         
         <!-- affichage la liste des  commentaires-->
-          <!-- <div v-if="comments =="null">        
+          <div v-if="post.Comments == 0">        
           <p> Aucun commentaire pour le moment!</p>
-          </div>  -->
+          </div> 
+
         <div v-if="showComments">
           <!-- <div v-if="comments"> -->
           <div
             class="card-comment"
-            v-for="comment in post.Comments"
+            v-for="comment in post.Comments.filter((comment) =>{
+              return comment.PostId })"
             :key="comment.id"         
             >
-            <div class="card-body height3">
+            <div class="card-body height3"
+            v-for="user in users.users.filter((user)=>{
+                    return user.id == comment.UserId})"
+                    v-bind:key="user.id"                  
+            >
               <ul class="chat-list">     
-                <div class="chat-img">
+                <div class="chat-img">                           
                   <div 
-                    class="comment-info"  
-                    v-for="user in users"                   
-                    v-bind:key="user.id"> 
+                    class="comment-info">               
                       <img
                           v-if = "user.imageUrl == null"
                           src="../assets/photo-avatar-profil.png"
@@ -132,7 +134,7 @@
                 </div>
         <div class ="btn-deleteComment">                      
           <button 
-            v-if="comment.userId == user.id" 
+            v-if="comment.UserId == userId" 
             type="button"
             class="btn btn-danger"
             title="supprimer"
