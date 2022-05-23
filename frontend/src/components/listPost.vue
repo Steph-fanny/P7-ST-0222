@@ -58,7 +58,7 @@
           <!-- bouton effacer si l'utilisateur a écrit le post ou est admin-->       
           <div class ="btn-deletePost">                      
             <button 
-              v-if="post.UserId == user.id" 
+              v-if="post.UserId == user.id || isAdmin === true"  
               type="button"
               class="btn btn-danger"
               title="supprimer"
@@ -243,12 +243,13 @@ export default {
         firstName: " ",
         lastName: "",      
         imageUrl: "",         
-        isAdmin: "",
+       
       },
       post: [],
       posts: [],
       moment: moment,
       date:"",
+      isAdmin: "",
     };
   },
 
@@ -284,6 +285,7 @@ export default {
   async mounted() {    
     this.userId = JSON.parse(localStorage.getItem("userId"));    
     console.log(localStorage);
+    this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
 
 
     // appel à l'api pour affichage des posts

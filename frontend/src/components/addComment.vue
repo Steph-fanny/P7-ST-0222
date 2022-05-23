@@ -134,7 +134,7 @@ export default {
             if (res.ok){
                 this.Post = {} // Retour à 0 des inputs //                    
                 this.$router.push("/listPostPage");
-                alert(" Post bien reçu"); 
+                alert(" Commentaire bien reçu"); 
             }else{
                 alert("vous ne pouvez pas publier ce message ")
             }

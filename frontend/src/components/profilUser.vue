@@ -88,7 +88,7 @@
                 </div>
                 <div class="row pt-1">
                   <div class="col-6 mb-3"
-                  v-if=" user.IsAdmin===true">
+                  v-if= "user.isAdmin == true">
                     <h6>Role</h6>
                     <p class="info-profil"                   
                     >Administrateur</p>
