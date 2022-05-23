@@ -18,17 +18,17 @@
           <!-- photo profil user-->
             <div class="mr-2">  
                <img
-                v-if ="user.imageUrl != null"
-                :src="user.imageUrl"
-                 alt="photo de profil " id="avatar-profil"
-                class="rounded-circle"
-                style="width: 50px;"
+                v-if ="user.imageUrl == null"
+                src="../assets/photo-avatar-profil.png"
+                alt="photo de profil provisoire" id="avatar-profil"
+               class="rounded-circle"
+                style="width: 50px;"                
               />              
               <img                
                v-else
-                src="../assets/photo-avatar-profil.png"
-                alt="photo de profil provisoire" id="avatar-profil"
-                class="img-fluid my-5"
+                :src="user.imageUrl"
+                alt="photo de profil " id="avatar-profil"
+                class="rounded-circle"
                 style="width: 50px;"
               />             
             </div>
@@ -68,16 +68,19 @@
               supprimer le post
             </button>
             <!-- bouton voir pour ajouter un commentaire--> 
-            <button class="btn btn-danger" 
+            <button class="btn btn-danger"               
               @click="showCreateComment = !showCreateComment ">
               Commenter
             </button>
             
-            <!-- bouton voir tous les commentaires-->  
+            <!-- bouton voir tous les commentaires-->
+             <div v-if="post.Comments != 0 ">   
             <button class="btn btn-danger" 
-              @click="showComments= !showComments">
+           
+              @click="showComments = !showComments">
               Voir les Commentaires
-            </button>            
+            </button>   
+             </div>         
           </div>       
         </div>
         
@@ -93,11 +96,11 @@
           </div> 
 
         <div v-if="showComments">
-          <!-- <div v-if="comments"> -->
+         
           <div
             class="card-comment"
             v-for="comment in post.Comments.filter((comment) =>{
-              return comment.PostId })"
+            return comment.PostId == post.id })"
             :key="comment.id"         
             >
             <div class="card-body height3"
@@ -134,7 +137,7 @@
                 </div>
         <div class ="btn-deleteComment">                      
           <button 
-            v-if="comment.UserId == userId" 
+            v-if="comment.UserId == userId || isAdmin === true" 
             type="button"
             class="btn btn-danger"
             title="supprimer"
@@ -248,6 +251,7 @@ export default {
       post: [],
       posts: [],
       moment: moment,
+      createdAt:"",
       date:"",
       isAdmin: "",
     };

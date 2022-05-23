@@ -119,13 +119,15 @@ export default {
             res.json()
             console.log(res)  
             if (res.ok){
-                this.Post = {} // Retour à 0 des inputs //                    
-                this.$router.push("/listPostPage");
+                this.content = {} // Retour à 0 des inputs //                    
+                // this.$router.push("/listPostPage");
                 alert(" Post bien reçu"); 
             }else{
                 alert("vous ne pouvez pas publier ce message ")
             }
+             this.$router.push("/listPostPage");
         })
+      
         .catch(error => console.log(error)) 
         }             
 

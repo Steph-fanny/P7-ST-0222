@@ -34,7 +34,8 @@
 
         <li class="nav-item navbar-nav me-auto mb-2 mb-lg-0">
           <router-link
-          to="/account/user"
+          v-if ="isAdmin === true"  
+          to='/listUsers'
           class="nav-link">
           Voir tous les utilisateurs
           </router-link>
@@ -110,7 +111,18 @@
 export default {
   name: "navApp",
 
- 
+  data() {
+    return { 
+      isAdmin:"",
+    } 
+  },
+
+ async mounted() {    
+    this.userId = JSON.parse(localStorage.getItem("userId"));    
+    console.log(localStorage);
+    this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+ },
+
 
   methods : {   
     

@@ -7,6 +7,7 @@ import signupUser from '@/views/signupUser.vue'
 import accountUser from '@/views/accountUser.vue'
 import forumPage from '@/views/forumPage.vue'
 import listPostPage from '@/views/listPostPage.vue'
+import listUsersAdmin from '@/views/listUsersAdmin.vue'
 
 
 
@@ -44,6 +45,11 @@ const routes = [
     path: '/listPostPage',
     name: 'listPostPage',
     component : listPostPage
+  },
+  {
+    path: '/listUsers',
+    name: 'listUsersAdmin',
+    component : listUsersAdmin
   },
   
 ]

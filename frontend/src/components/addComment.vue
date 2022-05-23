@@ -34,7 +34,7 @@
                                     class="send btn btn-primary btn-sm shadow-none " 
                                     aria-label="créer un commentaire"  
                                     ref="comment"  v-bind="$attrs"                    
-                                    @click="createComment()"                                                                                                           
+                                    @click="createComment(comment.id)"                                                                                                           
                                     >Publier
                                 </button>                                                                                           
                           
@@ -72,24 +72,25 @@ export default {
             this.userId = parseInt(localStorage.getItem("userId"));
             console.log(this.userId)
            
-     
-    // let url = "http://localhost:3000/api/comment/new"          
-    // let options = {
-    //         method: "POST",                    
-    //         headers: {
-    //             'Authorization': 'Bearer ' + localStorage.getItem("token"),
-    //         }
-    //     };                   
+     /// écrire un commentaire
+    let url = "http://localhost:3000/api/comment/new"          
+    let options = {
+            method: "POST",                    
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            }
+        };                   
                
-    //     fetch(url, options)
-    //      .then((res) => {
-    //         res.json()
-    //     .then(data =>{
-    //         console.log(data)
-    //         this.comment = data
-    //     })              
-
-    // })
+        fetch(url, options)
+         .then((res) => {
+            res.json()
+        .then(data =>{
+            console.log(data)
+            this.comment = data
+            console.log(this.comment)
+        })              
+         .catch(error => console.log(error))
+    })
     },
 
 
@@ -129,16 +130,23 @@ export default {
        await fetch(url, options)
         .then((res) => {
             res.json()
-            console.log(res)           
+            console.log(res)  
+            
+        // .then((data) => { 
+        //   console.log(data)          
+        //   this.comment = data 
 
-            if (res.ok){
-                this.Post = {} // Retour à 0 des inputs //                    
-                this.$router.push("/listPostPage");
-                alert(" Commentaire bien reçu"); 
+            if (res.ok){   
+                this.content= "" // Retour à 0 des inputs //              
+                alert(" Commentaire bien reçu");                 
+            //    this.$router.push("/listPostPage");
+            
+             
             }else{
                 alert("vous ne pouvez pas publier ce message ")
             }
         })
+         .then (window.location.reload())
         .catch(error => console.log(error)) 
         }             
 
