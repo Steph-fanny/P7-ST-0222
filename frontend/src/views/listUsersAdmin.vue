@@ -66,7 +66,7 @@
                     <button                       
                     class= "form-control btn btn-danger"
                     v-bind= "user"
-                    @click="deleteUser">
+                    @click="deleteUser(user.id)">
                     Supprimer le compte
                   </button> 
                     
@@ -149,7 +149,7 @@ export default {
     
  methods :{
    deleteUser(){
-       
+      //  this.users = this.users.filter((e) =>e.id !==id)
         let url = `http://localhost:3000/api/user/${this.user.id}` 
         console.log(this.user.id)
           let option = {

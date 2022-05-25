@@ -164,7 +164,7 @@ export default {
       res.json().then((data) => {       
         console.table(data)
         console.log(data)
-        this.user = data.user;
+        this.user = data.user
         this.user.createdAt = this.user.createdAt.split ("T")[0]
           let jour = this.user.createdAt.split("-")[2];
           let mois = this.user.createdAt.split("-")[1];
@@ -199,7 +199,7 @@ export default {
       let options = {
         method: "PUT",
         headers: {           
-        'Authorization': 'Bearer ' + localStorage.getItem("token"),
+                  'Authorization': 'Bearer ' + localStorage.getItem("token"),
         }, 
         body:formData,
       };

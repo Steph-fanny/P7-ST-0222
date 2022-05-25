@@ -114,21 +114,27 @@ data(){
         method : "POST",
         body :JSON.stringify(inputDatas),
         headers : {
-          "content-type" : 'application/json',         
+          "content-type" : 'application/json', 
+          
+         
+                
         }
       }
       console.log(option)
             fetch(urlSignup, option)
                 .then(res => res.json())
-                .then((res) => {
-                console.log(res)                  
+                .then((res) => {                 
+                    console.log(res)                  
                     localStorage.setItem("userId", res.userId);                                     
                     localStorage.setItem("token", res.token);
                     console.log(localStorage)
                     this.$router.push("/");
-                    alert(" Bienvenue sur Groupomania, connectez vous");
+                    alert(" Bienvenue sur Groupomania, connectez vous");                         
+                                                                
+              })
+               
                     
-                })
+               
                 .catch(error => console.log(error))
         }
     }

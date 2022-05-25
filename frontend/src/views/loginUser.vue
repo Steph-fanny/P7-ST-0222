@@ -111,8 +111,11 @@ name: 'loginUser',
         method : "POST",
         body :JSON.stringify(loginDatas),
         headers : { "content-type" : 'application/json',
-                    'Authorization': 'Bearer my-token',}
-      };
+                    
+                   
+                              
+        }
+      }
       fetch (urlLogin, option)
       .then(res => res.json())
         .then((res) => {

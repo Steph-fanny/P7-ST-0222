@@ -7,27 +7,27 @@
 6.controller pour crud POSTS*/
 
   const express = require('express')
-  const router = express.Router()
-  const auth = require("../middleware/authJwt");
+  const router = express.Router()  
   // const authAdmin = require("../middleware/authUserAdmin");
   const multer = require("../middleware/multer"); 
   const postCtrl = require("../controllers/post");
+  const authJwt = require ("../middleware/authJwt");
  
 
   /*** créer un nouveau post (et sauvegarder) ***/
-  router.post("/new",multer, postCtrl.createPost);
+  router.post("/new",authJwt,multer, postCtrl.createPost);
 
   /*** afficher tous les posts ***/
-  router.get("/",postCtrl.getAllPost);
+  router.get("/",authJwt,postCtrl.getAllPost);
 
   /*** afficher un post ***/
-  router.get ("/:id", postCtrl.getOnePost);
+  router.get ("/:id",authJwt, postCtrl.getOnePost);
 
   // *** modifier un post ***
-  router.put("/:id", multer, postCtrl.modifyPost);
+  router.put("/:id",authJwt, multer, postCtrl.modifyPost);
 
   /*** supprimer un post  : admin ***/
-  router.delete ("/:id", multer, postCtrl.deletePost);
+  router.delete ("/:id",authJwt, multer, postCtrl.deletePost);
 
   // /**aimer un post **/
   // router.post = ("/:id/like", auth, postCtrl.likePost);
