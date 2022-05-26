@@ -111,6 +111,7 @@ name: 'loginUser',
         method : "POST",
         body :JSON.stringify(loginDatas),
         headers : { "content-type" : 'application/json',
+                    "accept": 'application/json',
                     
                    
                               

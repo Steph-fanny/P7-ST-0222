@@ -161,8 +161,7 @@ async mounted() {
  methods :{
   
    deleteUser(index){         
-     console.log(index) 
-    //  this.users.users.splice(index, 1) 
+     console.log(index)     
 
         let url = `http://localhost:3000/api/user/${this.users.users[index].id }` 
        
@@ -180,14 +179,17 @@ async mounted() {
         return fetch(url, option)
         .then(function (res) {
         res.json()
-        console.log(res.json)      
-           
+        console.log(res.json)   
+        
+
+                       
             alert("Compte supprimé !");            
             localStorage.clear(); 
         })
-        .then(this.$router.push("/login"))           
+      
+             
           
-      }else
+      } else
              alert("vous ne pouvez pas supprimer le compte") 
 
                    

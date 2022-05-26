@@ -4,8 +4,8 @@
   <div class="container-fluid gedf-wrapper"> 
     <!-- On récupére les posts : boucle avec vfor  : tableau de post-->   
     <div class="bloclist"
-      v-bind:key="post.id"
-      v-for="post in posts.posts"       
+      v-bind:key="post.id"     
+      v-for="(post,index) in posts.posts"       
     >
     <!-- {{ posts }} -->
       <div class="post-card">   
@@ -36,10 +36,7 @@
             <div class="ml-2 info-post">
               <div class="h5 m-0"> 
                 {{ user.firstName }} {{ user.lastName }}
-              </div>
-              <div class="h5 m-0 h7 mb-2 time-post">
-                {{ moment(post.createdAt).fromNow() }}<i class="fa fa-clock-o"></i>
-              </div>
+              </div>              
             </div>           
           </div>
 
@@ -63,20 +60,19 @@
               class="btn btn-danger"
               title="supprimer"
               aria-label="bouton supprimer"
-              @click="deletePost(post.id)"
+              @click="deletePost(index)"
               >
               supprimer le post
             </button>
             <!-- bouton voir pour ajouter un commentaire--> 
-            <button class="btn btn-danger"               
+            <button class="btn btn-danger" 
               @click="showCreateComment = !showCreateComment ">
               Commenter
             </button>
             
             <!-- bouton voir tous les commentaires-->
              <div v-if="post.Comments != 0 ">   
-            <button class="btn btn-danger" 
-           
+            <button class="btn btn-danger"            
               @click="showComments = !showComments">
               Voir les Commentaires
             </button>   
@@ -195,22 +191,7 @@
         </div>       
       </div>
       </div>
-    </div>
-
-     
-
-     
-   
- 
-     
- 
-   
-         
-
-    
-
-
-   
+    </div>     
 
 
           
@@ -250,18 +231,17 @@ export default {
       },
       post: [],
       posts: [],
-      moment: moment,
-      createdAt:"",
+      moment: moment,      
       date:"",
       isAdmin: "",
     };
   },
 
 
-  // computed:{ 
-  
-      // // //   ...mapState(["user"])
-  // },
+     
+
+   
+ 
 
   async created (){   
        
@@ -307,6 +287,9 @@ export default {
         console.log(data);        
         this.posts = data;
         console.log(this.posts)
+        //  this.posts.createdAt = data.posts.createdAt
+        //  console.log(this.posts.createdAt)
+        //  this.posts.createdAt = this.posts.createdAt.split('T')[0].split('-').reverse().join('/')
         const currentPosts = this.posts.posts.reverse().slice;
        console.log(currentPosts)
       })       
@@ -336,10 +319,10 @@ export default {
 
  
   methods: {
-    // even(users){
-    //   return users.users.filter(this.user.id == this.post.userId)
+    
+    //  dateFormat(date){     
+    //    return date.split('T')[0].split('-').reverse().join('/')
     // },
-
     
     async getPosts()  {
       console.log("test");
@@ -348,12 +331,18 @@ export default {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-        },
+        }
       };
+
       return await fetch(url, options).then(function (res) {
         res.json()
          .then(function (data) {
-         this.posts = data;
+         this.posts = data
+        console.log(this.posts);   
+                             
+         this.posts.createdAt = data.posts.createdAt
+         console.log(this.posts.createdAt)
+         this.posts.createdAt = this.posts.createdAt.split('T')[0].split('-').reverse().join('/')
         console.log(this.posts);
         return data;
           
@@ -361,18 +350,19 @@ export default {
       })
     },
 
-  // Permet d'afficher la date de publication au bon format
-    // dateFormat(date){
-    //   if (date) {
-    //     return moment(String(date)).format('DD/MM/YYYY')
-    //   }
-    // },
+  
 
 
 
     //supprimer le message//
-    deletePost(postid) {
-      let url = `http://localhost:3000/api/post/${postid}`;
+    deletePost(index) {
+      console.log(index)
+      let confirmDeletePost = confirm(
+        "voulez-vous vraiment supprimer ce post ?"
+      );
+      if (confirmDeletePost == true) {
+
+      let url = `http://localhost:3000/api/post/${this.posts.posts[index].id }` 
       let options = {
         method: "DELETE",
         headers: {
@@ -382,14 +372,16 @@ export default {
       fetch(url, options)
         .then(function (res) {
           console.log(res);
-          alert("Suppression du message confirmé ! ");
+          alert("Suppression du post confirmé ! ");
           window.location.reload();
         })
         .catch((error) => console.log(error));
+      }
     },
 
 // recupération des commentaires
     async getComments()  {
+     
       console.log("test");
       let url = "http://localhost:3000/api/comment";
       let options = {
