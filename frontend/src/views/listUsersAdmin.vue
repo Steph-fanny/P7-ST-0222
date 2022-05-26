@@ -3,7 +3,7 @@
 <div><navApp/></div>
 
 <div>
-    <p>Listes des utilisateurs</p>
+    <p>Listes des utilisateurs (il y a {{ comptage }} utilisateurs ) </p>
 </div>
 
 <div class="container mt-3 mb-4">
@@ -16,11 +16,12 @@
               <tr>
                 <th>Nom de l'utilisateur</th>                
                 <th class="action text-right">Action</th>
+              
               </tr>
             </thead>
             <tbody>
               <tr class="candidates-list"
-               v-for="user in users.users"
+               v-for="(user,index) in users.users"
                   v-bind:key="user.id"
               >
                 <td class="title">
@@ -40,10 +41,7 @@
                       alt="photo de profil " id="avatar-profil"
                       class="img-fluid my-5"
                       style="width: 50px;"
-                    />     
-
-
-                    
+                    />    
                   </div>
                   <div 
                   class="candidate-list-details">         
@@ -55,7 +53,7 @@
                         <ul class="list-unstyled">
                           <li>{{user.email}}</li>                          
                         </ul>
-                      </div>
+                      </div>                   
                       
                     </div>
                   </div>
@@ -66,13 +64,14 @@
                     <button                       
                     class= "form-control btn btn-danger"
                     v-bind= "user"
-                    @click="deleteUser(user.id)">
+                    @click="deleteUser(index)">
                     Supprimer le compte
                   </button> 
                     
                   </ul>
                 </td>
 
+             
               </tr>
             </tbody>
           </table>
@@ -105,31 +104,25 @@ import navApp from "@/components/navApp.vue";
 export default {
   name: "listUsersAdmin",
   components: {
-    navApp,
-   
+    navApp,   
   },
 
   data() {
-    return { 
-      
+    return {       
       userId: localStorage.getItem("userId"),
       token: localStorage.getItem("token"),  
-      users:[],
-      user: {
-        id: localStorage.getItem("userId"),
-        userId: "",    
-        firstName: " ",
-        lastName: "",      
-        imageUrl: "",         
-       
-      },
-     
-    };
+      users:[],    
+    }
   },
 
- 
-  async created (){          
-    const url = `http://localhost:3000/api/user/accounts`;
+async mounted() {
+    this.userId = JSON.parse(localStorage.getItem("userId"));    
+    console.log(localStorage);
+    this.isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+    
+
+
+ const url = `http://localhost:3000/api/user/accounts`;
     console.log(this.users)
     const options = {
       method: "GET",
@@ -142,16 +135,37 @@ export default {
         res.json().then((data) => { 
           console.log(data)
           console.table(data)
-          this.users = data             
+          this.users = data  
+          
+          
+                 
         })                 
       })               
   }, 
+
+ 
+
     
+  
+  computed: {
+    // comptage(){
+    //   return this.users.users.length
+    // },
+
+    
+  },
+  
+
+
+
  methods :{
-   deleteUser(){
-      //  this.users = this.users.filter((e) =>e.id !==id)
-        let url = `http://localhost:3000/api/user/${this.user.id}` 
-        console.log(this.user.id)
+  
+   deleteUser(index){         
+     console.log(index) 
+    //  this.users.users.splice(index, 1) 
+
+        let url = `http://localhost:3000/api/user/${this.users.users[index].id }` 
+       
           let option = {
             method: "DELETE",
             headers: {
